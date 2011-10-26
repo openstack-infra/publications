@@ -5,7 +5,7 @@
 <head>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
-<title>HTML Slidy</title>
+<title>OpenStack Distributed QA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
@@ -49,10 +49,73 @@ Monty Taylor
 </div>
 
 <div class="slide">
-<h1>OpenStack's Trunk is Gated</h1>
+<h1>OpenStack's Gated Trunk</h1>
 
 <img src="images/jenkins-gate.png"/>
 
 </div>
+
+<div class="slide">
+<h1>Types of Tests</h1>
+
+
+<ul class="incremental">
+<li> Unit tests </li>
+<li> Functional tests 
+  <ul> 
+    <li> Can be run on real or virtual servers </li>
+    <li> Easy for developers to run </li>
+  </ul>
+</li>
+<li> Integration tests 
+  <ul> 
+    <li> May be able to run on virtual servers, should run on real servers </li>
+    <li> Difficult or impossible for a developer to run </li>
+  </ul>
+</li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>OpenStack Projects</h1>
+
+<center>
+<img src="images/lp-os-projects.png"/>
+</center>
+
+</div>
+
+<div class="slide">
+<h1>Test Process</h1>
+
+  <ul>
+  <li> PXE boot </li>
+  <li> Install Ubuntu </li>
+  <li> Install OpenStack </li>
+  <li> Run test suite </li>
+  </ul>
+
+</div>
+
+<div class="slide">
+<h1>Test Process Improved</h1>
+
+<p>One time:</p>
+  <ul>
+  <li> PXE boot </li>
+  <li> Install Ubuntu </li>
+  <li> Install OpenStack dependencies </li>
+  <li> Snapshot LVM volume </li>
+  </ul>
+<p>Each test:</p>
+  <ul>
+  <li> Kexec boot into LVM snapshot
+  <li> Install OpenStack </li>
+  <li> Run test suite </li>
+  </ul>
+
+</div>
+
 </body>
 </html>

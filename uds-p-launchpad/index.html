@@ -208,75 +208,103 @@ Other nice things:
 
 -->
 
+<div class="slide">
+<h1>OpenStack Project - Then</h1>
 
+<ul>
+  <li>http://launchpad.net/openstack</li>
+  <li>http://jenkins.openstack.org</li>
+</div>
+
+<div class="slide">
+<h1>OpenStack Project - Now</h1>
+
+<ul>
+  <li>http://launchpad.net/openstack</li>
+  <li>http://jenkins.openstack.org</li>
+  <li>http://review.openstack.org</li>
+  <li>http://github.com/openstack</li>
+</div>
 
 
 <div class="slide">
-<h1>Where We Came From</h1>
+<h1>Bug Integration - Gerrit</h1>
 
-<img src="images/jenkins-gate.png"/>
+<img src="images/gerrit-bug.png"/>
 
 </div>
 
 <div class="slide">
-<h1>Types of Tests</h1>
+<h1>Bug Integration - Launchpad</h1>
+
+<img src="images/lp-bug.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Blueprint Integration - Gerrit</h1>
+
+<img src="images/gerrit-bp.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Blueprint Integration - Launchpad</h1>
+
+<img src="images/lp-bp.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Blueprint Integration - Gerrit Topics</h1>
+
+<img src="images/gerrit-bp-topic.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Launchpad SSO Integration</h1>
+
+<img src="images/gerrit-sso.png"/>
+
+</div>
 
 
+<div class="slide">
+<h1>Gerrit Jenkins Integration</h1>
+
+<img src="images/gerrit-jenkins.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Gerrit Verification State</h1>
+
+<img src="images/gerrit-verify.png"/>
+
+</div>
+
+<div class="slide">
+<h1>To build this using Launchpad, we need:</h1>
 <ul class="incremental">
-<li> Unit tests </li>
-<li> Functional tests 
-  <ul> 
-    <li> Can be run on real or virtual servers </li>
-    <li> Easy for developers to run </li>
-  </ul>
-</li>
-<li> Integration tests 
-  <ul> 
-    <li> May be able to run on virtual servers, should run on real servers </li>
-    <li> Difficult or impossible for a developer to run </li>
-  </ul>
-</li>
+  <li>Subscribable event triggers.</li>
+  <li>Verification status in merge requests.</li>
+  <li>Launchpad API Language Bindings.</li>
 </ul>
-
 </div>
 
 <div class="slide">
-<h1>OpenStack Projects</h1>
-
-<center>
-<img src="images/lp-os-projects.png"/>
-</center>
-
+<h1>While we're making feature requests</h1>
+<ul class="incremental">
+  <li>Foreign Merge Props.</li>
+  <li>Mirrored Branches.</li>
+  <li>Branch/Merge Proposal Integration with Blueprints.</li>
+  <li>First class git support.</li>
+</ul>
 </div>
 
 <div class="slide">
-<h1>Test Process</h1>
-
-  <ul>
-  <li> PXE boot </li>
-  <li> Install Ubuntu </li>
-  <li> Install OpenStack </li>
-  <li> Run test suite </li>
-  </ul>
-
-</div>
-
-<div class="slide">
-<h1>Test Process Improved</h1>
-
-<p>One time:</p>
-  <ul>
-  <li> PXE boot </li>
-  <li> Install Ubuntu </li>
-  <li> Install OpenStack dependencies </li>
-  <li> Snapshot LVM volume </li>
-  </ul>
-<p>Each test:</p>
-  <ul>
-  <li> Kexec boot into LVM snapshot
-  <li> Install OpenStack </li>
-  <li> Run test suite </li>
-  </ul>
+<h1>Thanks!</h1>
 
 </div>
 

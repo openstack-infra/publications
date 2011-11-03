@@ -133,33 +133,6 @@ if there are three jobs that are all tied to the same gerrit event, that
 they all need to pass in order for the calling event to be considered
 successful. This makes for excellent jenkins-level parallelism.
 
-----------------
-
-So what does a patch lifecycle look like for OpenStack?
-
-A developer writes a patch, and then commits it.
-
-In the commit message, he mentions any bug or blueprint he's working on.
-
-He submits it for review. With gerrit, this is done via git push - but we
-have a helper program we wrote which does some fancy things.
-
-If the commit message mentioned a bug, we update the bug. If it mentioned a
-blueprint, we update the blueprint.
-
-Peer review of the patch happens.
-
-If the patch is approved, jenkins is trigger and runs tests on the patch.
-
-Jenkins votes on the patch with verified status or with a negative code
-review comment.
-
-Gerrit completes the merge. Updates bug and blueprint status.
-
-SO - all the dev needs to do is write patches, push them to a location and
-respond to code reviews. All of the rest of the meta-information tracking
-that's necessary is taken care of.
-
 -----
 
 Why are we telling you about this?
@@ -207,23 +180,41 @@ Other nice things:
    messages right now)
 
 -->
-
 <div class="slide">
-<h1>OpenStack Project - Then</h1>
-
-<ul>
-  <li>http://launchpad.net/openstack</li>
-  <li>http://jenkins.openstack.org</li>
+<h1>OpenStack Infrastructure Lineage</h1>
+<ul class="incremental">
+  <li><img src="images/489px-MySQL.svg.png" /></li>
+  <li><img src="images/Drizzle-med.png" /></li>
+  <li><img src="images/OpenStackLogo_wTag.png" /></li>
+</li>
 </div>
 
 <div class="slide">
-<h1>OpenStack Project - Now</h1>
+<h1>OpenStack Gated Trunk</h1>
+
+<img src="images/jenkins-gate.png" />
+
+</div>
+
+<div class="slide">
+<h1>Git Revolt</h1>
+
+<ul>
+  <li>developers wanted to use git</li>
+  <li>Launchpad had no git support</li>
+  <li>Github has no approval state</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Enter Gerrit</h1>
 
 <ul>
   <li>http://launchpad.net/openstack</li>
   <li>http://jenkins.openstack.org</li>
   <li>http://review.openstack.org</li>
   <li>http://github.com/openstack</li>
+</ul>
 </div>
 
 
@@ -299,6 +290,8 @@ Other nice things:
   <li>Foreign Merge Props.</li>
   <li>Mirrored Branches.</li>
   <li>Branch/Merge Proposal Integration with Blueprints.</li>
+  <li>Structured Information in blueprints</li>
+  <li>Branch link fields supporting arbitrary urls</li>
   <li>First class git support.</li>
 </ul>
 </div>
@@ -342,6 +335,33 @@ responsibility to fix. In general, this is a Good Thing.
 
 To gate trunk, we had jenkins run tarmac, which would request approved merge
 requests, test them, and then complete the merge on successful test run.
+----------------
+
+So what does a patch lifecycle look like for OpenStack?
+
+A developer writes a patch, and then commits it.
+
+In the commit message, he mentions any bug or blueprint he's working on.
+
+He submits it for review. With gerrit, this is done via git push - but we
+have a helper program we wrote which does some fancy things.
+
+If the commit message mentioned a bug, we update the bug. If it mentioned a
+blueprint, we update the blueprint.
+
+Peer review of the patch happens.
+
+If the patch is approved, jenkins is trigger and runs tests on the patch.
+
+Jenkins votes on the patch with verified status or with a negative code
+review comment.
+
+Gerrit completes the merge. Updates bug and blueprint status.
+
+SO - all the dev needs to do is write patches, push them to a location and
+respond to code reviews. All of the rest of the meta-information tracking
+that's necessary is taken care of.
+
 -->
 </body>
 </html>

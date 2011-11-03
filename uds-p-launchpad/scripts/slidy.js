@@ -1982,18 +1982,12 @@ var w3c_slidy = {
 
     if (key == 34) // Page Down
     {
-      if (w3c_slidy.view_all)
-        return true;
-
-      w3c_slidy.next_slide(false);
+      w3c_slidy.next_slide(!event.shiftKey);
       return w3c_slidy.cancel(event);
     }
     else if (key == 33) // Page Up
     {
-      if (w3c_slidy.view_all)
-        return true;
-
-      w3c_slidy.previous_slide(false);
+      w3c_slidy.previous_slide(!event.shiftKey);
       return w3c_slidy.cancel(event);
     }
     else if (key == 32) // space bar
@@ -2003,7 +1997,10 @@ var w3c_slidy = {
     }
     else if (key == 37) // Left arrow
     {
-      w3c_slidy.previous_slide(!event.shiftKey);
+      if (w3c_slidy.view_all)
+        return true;
+
+      w3c_slidy.previous_slide(false);
       return w3c_slidy.cancel(event);
     }
     else if (key == 36) // Home
@@ -2018,7 +2015,10 @@ var w3c_slidy = {
     }
     else if (key == 39) // Right arrow
     {
-      w3c_slidy.next_slide(!event.shiftKey);
+      if (w3c_slidy.view_all)
+        return true;
+
+      w3c_slidy.next_slide(false);
       return w3c_slidy.cancel(event);
     }
     else if (key == 13) // Enter

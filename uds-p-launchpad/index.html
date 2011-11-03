@@ -5,16 +5,21 @@
 <head>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
-<title>OpenStack Distributed QA</title>
+<title>OpenStack Project Continuous Integration and Launchpad</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
-<meta name="duration" content="5" />
-<meta name="font-size-adjustment" content="-2" />
+<meta name="duration" content="15" />
+<meta name="font-size-adjustment" content="0" />
 <link rel="stylesheet" href="styles/slidy.css" type="text/css" />
 <link rel="stylesheet" href="styles/openstack.css" type="text/css" />
 <script src="scripts/slidy.js" charset="utf-8" type="text/javascript">
 </script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
 <div class="background"><img alt="" id="head-icon"
@@ -36,17 +41,14 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 
 <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
  class="cover" /><br clear="all" />
-<h1>How OpenStack integrates Launchpad and Continuous Integration</h1>
+<h1>How OpenStack Integrates Launchpad and Continuous Integration</h1>
 
 <p>
 Monty Taylor
 &lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;<br />
 James E. Blair
 &lt;<a href="mailto:corvus@inaugust.com">corvus@inaugust.com</a>&gt;<br />
-<br />
-<br />
-<br />
-<br /><em>Hit the space bar or swipe right for next slide</em></p>
+
 </div>
 
 <!--
@@ -181,7 +183,7 @@ Other nice things:
 
 -->
 <div class="slide">
-<h1>OpenStack Infrastructure Lineage</h1>
+<h1>Infrastructure Lineage</h1>
 <ul class="incremental">
   <li><img src="images/489px-MySQL.svg.png" /></li>
   <li><img src="images/Drizzle-med.png" /></li>
@@ -200,7 +202,7 @@ Other nice things:
 <h1>Git Revolt</h1>
 
 <ul>
-  <li>developers wanted to use git</li>
+  <li>Developers wanted to use git</li>
   <li>Launchpad had no git support</li>
   <li>Github has no approval state</li>
 </ul>
@@ -210,10 +212,10 @@ Other nice things:
 <h1>Enter Gerrit</h1>
 
 <ul>
-  <li>http://launchpad.net/openstack</li>
-  <li>http://jenkins.openstack.org</li>
-  <li>http://review.openstack.org</li>
-  <li>http://github.com/openstack</li>
+  <li><a href="http://review.openstack.org">http://review.openstack.org</a></li>
+  <li><a href="http://jenkins.openstack.org">http://jenkins.openstack.org</a></li>
+  <li><a href="http://launchpad.net/openstack">http://launchpad.net/openstack</a></li>
+  <li><a href="http://github.com/openstack">http://github.com/openstack</a></li>
 </ul>
 </div>
 
@@ -233,21 +235,21 @@ Other nice things:
 </div>
 
 <div class="slide">
-<h1>Blueprint Integration - Gerrit</h1>
+<h1>Blueprints - Gerrit</h1>
 
 <img src="images/gerrit-bp.png"/>
 
 </div>
 
 <div class="slide">
-<h1>Blueprint Integration - Launchpad</h1>
+<h1>Blueprints - Launchpad</h1>
 
 <img src="images/lp-bp.png"/>
 
 </div>
 
 <div class="slide">
-<h1>Blueprint Integration - Gerrit Topics</h1>
+<h1>Blueprints - Gerrit Topics</h1>
 
 <img src="images/gerrit-bp-topic.png"/>
 
@@ -276,30 +278,31 @@ Other nice things:
 </div>
 
 <div class="slide">
-<h1>To build this using Launchpad, we need:</h1>
+<h1>To Build This Using Launchpad</h1>
 <ul class="incremental">
-  <li>Subscribable event triggers.</li>
-  <li>Verification status in merge requests.</li>
-  <li>Launchpad API Language Bindings.</li>
+  <li>Subscribable event triggers</li>
+  <li>Verification status in merge requests</li>
+  <li>Launchpad API language bindings</li>
 </ul>
 </div>
 
 <div class="slide">
-<h1>While we're making feature requests</h1>
+<h1>While We're at It</h1>
 <ul class="incremental">
-  <li>Foreign Merge Props.</li>
-  <li>Mirrored Branches.</li>
-  <li>Branch/Merge Proposal Integration with Blueprints.</li>
+  <li>Foreign merge props</li>
+  <li>Mirrored branches</li>
+  <li>Branch/merge proposal integration with blueprints</li>
+  <li>Globally unique blueprint IDs</li>
   <li>Structured Information in blueprints</li>
   <li>Branch link fields supporting arbitrary urls</li>
-  <li>First class git support.</li>
+  <li>First class git support</li>
 </ul>
 </div>
 
 <div class="slide">
 <h1>Thanks!</h1>
 
-<img src="images/stack-o-pancakes-150x150.png"/>
+<p><img src="images/stack-o-pancakes-150x150.png"/>
 
 </div>
 

@@ -160,24 +160,123 @@ Monty Taylor
   </ul>
 <p>Each test:</p>
   <ul>
-  <li> Kexec boot into LVM snapshot
+  <li> Kexec boot into LVM snapshot</li>
   <li> Install OpenStack </li>
   <li> Run test suite </li>
   </ul>
 
 </div>
 
-Ubuntu Orchestra
- - cobbler
- - squid
- - dnsmasq
- - nagios
- - rsyslog
+<div class="slide">
+<h1>Cobbler</h1>
+ <ul>
+ <li> Written by RedHat </li>
+ <li> PXE/net-install </li>
+ <li> Pluggable power management support (impi, drac, ilo ...) </li>
+ <li> Manage dns/dhcp/tftp - or use others </li>
+ <li> Templated kickstart or preseed files </li>
+ </ul>
+</div>
 
-Cobbler
- - Written by RedHat
- - PXE/net-install
- - Pluggable ilo support (impi, etc)
+<div class="slide">
+<h1>Ubuntu Orchestra</h1>
+ <ul>
+ <li> cobbler </li>
+ <li> squid </li>
+ <li> dnsmasq </li>
+ <li> nagios </li>
+ <li> rsyslog </li>
+ <li> cloud-init </li>
+ </ul>
+</div>
+
+<div class="slide">
+<h1>Walkthrough</h1>
+ <ul>
+ <li> https://github.com/openstack/openstack-ci-puppet </li>
+ <li> https://github.com/openstack/openstack-ci-puppet/tree/master/modules/orchestra </li>
+ </ul>
+</div>
+
+<div class="slide">
+<h1>Install Orchestra</h1>
+ <ul>
+ <li> apt-get install ubuntu-orchestra-server ipmitool </li>
+ <li> (install will download ubuntu install images and import them) </li>
+ </ul>
+</div>
+
+<div class="slide">
+<h1>Configure dnsmasq</h1>
+ <ul>
+ <li> Edit dhcp options in /etc/cobbler/dnsmasq.template </li>
+ <li> Add "dhcp-ignore=tag:!known" </li>
+ <li> Insert network range </li>
+ </ul>
+</div>
+
+<div class="slide">
+<h1>Cloud Init Script</h1>
+ <ul>
+ <li> Ubuntu Orchestra pre-seed files </li>
+ <li> In the preseed/late_command, use snippets </li>
+ <li> Run a cloud-init script to bootstrap puppet or chef  </li>
+ </ul>
+</div>
+
+<div class="slide">
+<h1>Add Profile</h1>
+<pre>
+cobbler profile add \
+--name=natty-x86_64-ostest \
+--parent=natty-x86_64 \
+--kickstart=/var/lib/cobbler/kickstarts/openstack.preseed \
+--kopts="priority=critical locale=en_US"
+</pre>
+</div>
+
+<div class="slide">
+<h1>Add machines manually</h1>
+<p>For each machine</p>
+<pre>
+cobbler system add \
+--name=baremetal1 \
+--hostname=baremetal1 \
+--profile=natty-x86_64-ostest \
+--mac=00:11:22:33:44:55 \
+--power-type=ipmitool \
+--power-user=IPMI_USERNAME \
+--power-pass=IPMI_PASS \
+--power-address=IPMI_IP_ADDR \
+--ip-address=SYSTEM_IP_ADDRESS \
+--subnet=SYSTEM_SUBNET \
+--kopts="netcfg/choose_interface=auto netcfg/dhcp_timeout=60 auto=true
+priority=critical"
+</pre>
+</div>
+
+<div class="slide">
+<h1>Adding systems automatically</h1>
+<p>cobbler-enlist</p>
+<pre>
+d-i preseed/early_command string anna-install cobbler-enlist-udeb
+d-i cobbler-enlist/cobbler-server-address http://IP/cobbler_api
+d-i cobbler-enlist/cobbler-server-username cobbler
+d-i cobbler-enlist/cobbler-server-password password
+d-i cobbler-enlist/host-name some-host
+d-i cobbler-enlist/host-profile 
+d-i cobbler-enlist/warning-note note
+</pre>
+</div>
+
+<div class="slide">
+<h1>Reinstall a machine</h1>
+<pre>
+cobbler sync
+cobbler system edit --netboot-enabled=Y --name=baremetal1
+cobbler system reboot --name=baremetal1
+</pre>
+</div>
 
 
 <div class="slide">

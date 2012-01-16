@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
-<meta name="duration" content="15" />
+<meta name="duration" content="40" />
 <meta name="font-size-adjustment" content="0" />
 <link rel="stylesheet" href="styles/slidy.css" type="text/css" />
 <link rel="stylesheet" href="styles/openstack.css" type="text/css" />
@@ -237,6 +237,23 @@ James E. Blair
 <li>Zero-configuration</li>
 <li>Can be used for any project, being adopted by other projects</li>
 </ul>
+
+<pre>
+corvus@shiprock:~/rs/github/quantum$ git commit -a
+[new-versionpy ddf1dce] Base version.py on glance.
+ 3 files changed, 28 insertions(+), 107 deletions(-)
+ delete mode 100644 version.py
+
+corvus@shiprock:~/rs/github/quantum$ git review
+remote: Resolving deltas:   0% (0/3)
+remote: 
+remote: New Changes:
+remote:   https://review.openstack.org/3072
+remote: 
+To ssh://corvus@review.openstack.org:29418/openstack/quantum.git
+ * [new branch]      HEAD -> refs/for/master/bug/916018
+</pre>
+
 </div>
 
 <div class="slide">

@@ -5,11 +5,11 @@
 <head>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
-<title>OpenStack Hands-On Lab Session</title>
+<title>OpenStack Overview</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
-<meta name="duration" content="40" />
+<meta name="duration" content="60" />
 <meta name="font-size-adjustment" content="0" />
 <link rel="stylesheet" href="styles/slidy.css" type="text/css" />
 <link rel="stylesheet" href="styles/openstack.css" type="text/css" />
@@ -41,12 +41,12 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 
 <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
  class="cover" /><br clear="all" />
-<h1>OpenStack Hands-On Lab Session</h1>
-<p>
+<h1>OpenStack Overview</h1>
 Monty Taylor
-&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;<br />
-twitter:e_monty<br />
-https://github.com/openstack-ci/publications
+&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;|
+twitter:e_monty |
+<a
+href="https://github.com/openstack-ci/publications">https://github.com/openstack-ci/publications</a>
 </div>
 
 <div class="slide">
@@ -142,7 +142,8 @@ https://github.com/openstack-ci/publications
   <li>hpcloud in Private Beta (diablo)</li></ul>
 <li>trystack (diablo)</li>
 <li>AT&amp;T (diablo)</li>
-<li>you?</li>
+<li>Cern</li>
+<li>Mercado Libre</li>
 </ul>
 </div>
 
@@ -464,6 +465,7 @@ git review
 <div class="slide">
 <h1>Installing a Cloud using Devstack</h1> <ul>
 <li>Get an Ubuntu Oneiric Server Image</li>
+<small> Don't do this yet </small>
 <pre>
 git clone git://github.com/openstack-dev/devstack.git
 cd devstack; ./stack.sh
@@ -475,13 +477,15 @@ cd devstack; ./stack.sh
 <li>Get an Ubuntu Oneiric Server Image</li>
 <p><a
 href="https://help.ubuntu.com/community/Installation/MinimalCD">https://help.ubuntu.com/community/Installation/MinimalCD</a></p>
+<li>Spin up an HP Cloud 2G Node</li>
+<li>Note the lack of swap</li>
 </ul> </div>
 
 <div class="slide">
-<h1>Run devstack</h1> <ul>
+<h1>Get devstack</h1> <ul>
 <pre>
 git clone git://github.com/openstack-dev/devstack.git
-cd devstack; ./stack.sh
+cd devstack
 </pre>
 </ul> </div>
 
@@ -489,15 +493,27 @@ cd devstack; ./stack.sh
 <div class="slide">
 <h1>Customizing Devstack</h1> <ul>
 <li>localrc</li>
-<li>Look in stackrc for the set of options</li>
+<pre>
+FIXED_RANGE=10.1.0.0/24
+FIXED_NETWORK_SIZE=256
+</pre>
+<li>Look in stackrc and stack.sh for other options</li>
 </ul></div>
+
+<div class="slide">
+<h1>Run devstack</h1> <ul>
+<pre>
+./stack.sh
+</pre>
+</ul> </div>
+
 
 <div class="slide">
 <h1>Now What?</h1> <ul>
 <li>Services running in screen <em>rejoin-stack.sh</em></li>
 <li>Run tests <em>exercise.sh</em></li>
 <li>Horizon running on port 80 on localhost</li>
-<li>Credentials in openrc<pre>
+<li>devstack puts credentials in localrc, openrc does useful things. Get them with<pre>
 source openrc
 </pre></li>
 </ul></div>
@@ -507,6 +523,7 @@ source openrc
 <pre>
 glance -f index
 </pre>
+<p>Save the UUID you want in a var called IMAGE_ID</p>
 </ul></div>
 
 <div class="slide">
@@ -546,16 +563,20 @@ nova flavor-list
 +----+-----------+-----------+------+-----------+------+-------+-------------+
 </small>
 </pre>
+<p>Save the flavor id as FLAVOR_ID</p>
 </ul></div>
 
 <div class="slide">
 <h1>Boot an Instance</h1> <ul>
 <li>Returns the UUID of the server</li>
+<li>Using the values saved previously:
 <pre>
-nova boot --flavor $INSTANCE_TYPE --image $IMAGE --security_groups=$SECGROUP \
+nova boot --flavor $FLAVOR_ID --image $IMAGE_ID --security_groups=$SECGROUP \
           --key_name $KEY_NAME $INSTANCE_NAME
 nova list
 </pre>
+<p>Save the UUID returned as VM_UUID</p>
+</li>
 </ul></div>
 
 <div class="slide">

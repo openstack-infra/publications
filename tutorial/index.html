@@ -5,7 +5,7 @@
 <head>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
-<title>OpenStack Overview</title>
+<title>Developing OpenStack with devstack</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
@@ -46,7 +46,7 @@ Monty Taylor
 &lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;|
 twitter:e_monty |
 <a
-href="https://github.com/openstack-ci/publications">https://github.com/openstack-ci/publications</a>
+href="https://openstack-ci.github.com/publications/tutorial">https://openstack-ci.github.com/publications/tutorial</a>
 </div>
 
 <div class="slide">
@@ -67,7 +67,6 @@ href="https://github.com/openstack-ci/publications">https://github.com/openstack
 <li>OpenStack Overview</li>
 <li>Dev Process Overview</li>
 <li>Devstack Install</li>
-<li>Discuss bare-metal install <small>maybe</small></li>
 </ul></div>
 
 <div class="slide">
@@ -239,6 +238,62 @@ href="http://paste.openstack.org">http://paste.openstack.org</a></li>
 <li>gated trunk based on master</li>
 </ul>
 </div>
+
+<div class="slide">
+<h1>Getting Started With Devstack</h1>
+<ul>
+<li><a href="http://devstack.org">devstack.org</a></li>
+<li>Annotated shell script which installs devstack in a VM</li>
+<li><em>NOT FOR PRODUCTION USE</em></li>
+<li>For developers to test stuff</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Installing a Cloud using Devstack</h1> <ul>
+<li>Get an Ubuntu Oneiric Server Image</li>
+<small> Don't do this yet </small>
+<pre>
+git clone git://github.com/openstack-dev/devstack.git
+cd devstack; ./stack.sh
+</pre>
+</ul> </div>
+
+<div class="slide">
+<h1>Slower this time</h1> <ul>
+<li>Get an Ubuntu Oneiric Server Image</li>
+<p><a
+href="https://help.ubuntu.com/community/Installation/MinimalCD">https://help.ubuntu.com/community/Installation/MinimalCD</a></p>
+<li>Spin up an HP Cloud 2G Node</li>
+<li>Note the lack of swap</li>
+</ul> </div>
+
+<div class="slide">
+<h1>Get devstack</h1> <ul>
+<pre>
+git clone git://github.com/openstack-dev/devstack.git
+cd devstack
+</pre>
+</ul> </div>
+
+
+<div class="slide">
+<h1>Customizing Devstack</h1> <ul>
+<li>localrc</li>
+<pre>
+FIXED_RANGE=10.1.0.0/24
+FIXED_NETWORK_SIZE=256
+</pre>
+<li>Look in stackrc and stack.sh for other options</li>
+</ul></div>
+
+<div class="slide">
+<h1>Run devstack</h1> <ul>
+<pre>
+./stack.sh
+</pre>
+</ul> </div>
+
 
 
 <div class="slide">
@@ -432,81 +487,6 @@ git add planet.ini
 git commit
 git review
 </pre></div>
-
-<div class="slide">
-<h1>tox</h1>
-<ul>
-<li>Manages python virtualenvs</li>
-<li>Runs multiple python versions</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Doing something more useful</h1>
-<pre>git clone git://github.com/openstack/nova.git
-# do things, now, to test it:
-tox
-# it's perfect - submit!
-git commit
-git review
-</pre>
-</div>
-
-<div class="slide">
-<h1>Getting Started With Devstack</h1>
-<ul>
-<li><a href="http://devstack.org">devstack.org</a></li>
-<li>Annotated shell script which installs devstack in a VM</li>
-<li><em>NOT FOR PRODUCTION USE</em></li>
-<li>For developers to test stuff</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Installing a Cloud using Devstack</h1> <ul>
-<li>Get an Ubuntu Oneiric Server Image</li>
-<small> Don't do this yet </small>
-<pre>
-git clone git://github.com/openstack-dev/devstack.git
-cd devstack; ./stack.sh
-</pre>
-</ul> </div>
-
-<div class="slide">
-<h1>Slower this time</h1> <ul>
-<li>Get an Ubuntu Oneiric Server Image</li>
-<p><a
-href="https://help.ubuntu.com/community/Installation/MinimalCD">https://help.ubuntu.com/community/Installation/MinimalCD</a></p>
-<li>Spin up an HP Cloud 2G Node</li>
-<li>Note the lack of swap</li>
-</ul> </div>
-
-<div class="slide">
-<h1>Get devstack</h1> <ul>
-<pre>
-git clone git://github.com/openstack-dev/devstack.git
-cd devstack
-</pre>
-</ul> </div>
-
-
-<div class="slide">
-<h1>Customizing Devstack</h1> <ul>
-<li>localrc</li>
-<pre>
-FIXED_RANGE=10.1.0.0/24
-FIXED_NETWORK_SIZE=256
-</pre>
-<li>Look in stackrc and stack.sh for other options</li>
-</ul></div>
-
-<div class="slide">
-<h1>Run devstack</h1> <ul>
-<pre>
-./stack.sh
-</pre>
-</ul> </div>
-
 
 <div class="slide">
 <h1>Now What?</h1> <ul>

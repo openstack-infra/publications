@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
+<head>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>CI and Developer Infrastructure Roadmap for Folsom</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="60" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript">
+</script>
+<style>
+div.slide ul {
+font-size: 100%
+}
+</style>
+</head>
+<body>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
+
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>CI and Developer Infrastructure Roadmap for Folsom</h1>
+Monty Taylor
+&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;|
+twitter:e_monty |
+<a
+href="https://openstack-ci.github.com/publications/ci-roadmap-folsom">https://openstack-ci.github.com/publications/ci-roadmap-folsom</a>
+</div>
+
+<div class="slide">
+<h1>Overview</h1>
+<ul><li>
+  What do we run?
+  </li><li>
+  What did we do during Essex?
+  </li><li>
+  What are we going to do for Folsom
+  </li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h1>What do we run?</h1>
+<li>Gerrit (code review, git) <a href="http://review.openstack.org">http://review.openstack.org</a></li>
+<li>Jenkins (CI, automation) <a href="http://jenkins.openstack.org">http://jenkins.openstack.org</a></li>
+<li>git-review</li>
+<li>jenkins gerrit trigger plugin</li>
+<li>Launchpad Admin (bugs, blueprints, releases, translations, SSO) <a href="http://launchpad.net/openstack">http://launchpad.net/openstack</a></li>
+<li>Documentation servers</li>
+<li>IRC bots</li>
+<li>planet.openstack.org</li>
+<li>paste.openstack.org</li>
+<li>StackForge</li>
+<li>Etherpad</li>
+<li>devstack-gate</li>
+<li>tox</li>
+<li>Common Testing Inferface</li>
+</div>
+
+
+<div class="slide">
+<h1>Devstack</h1>
+<ul><li>
+  devstack working for single node install 
+  </li><li>
+  Added devstack-based gate to Jenkins
+  </li><li>
+  Wrote devstack-gate to deal with cloud reliability
+  </li><li>
+  Added support for multiple cloud providers
+  </li><li>
+  Added support for multiple distro versions
+  </li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h1>Stable Branches</h1>
+<ul><li>
+  Added stable/diablo
+  </li><li>
+  Stable Mainatiners Team
+  </li><li>
+  Parallel Testing
+  </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>pip based testing</h1>
+<ul><li>
+  Unittesting in virtualenv
+  </li><li>
+  Dependencies declared in projects
+  </li><li>
+  Pre-caching of pip downloads
+  </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>tox based virtualenvs</h1>
+<ul><li>
+  Added support for using tox to create/manage virtualenvs 
+  </li><li>
+  Run unittests against python 2.6 and 2.7
+  </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>gerrit improvements</h1>
+<ul><li>
+  CLA enforcement
+  </li><li>
+  Approved field in gerrit
+  </li><li>
+  Integrated external testers via gerrit api
+  </li><li>
+  Upgraded to Gerrit 2.3
+  <ul>
+    <li>Draft changes</li>
+    <li>InnoDB</li>
+    <li>submodule support</li>
+  </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>jenkins improvements</h1>
+<ul><li>
+  Jenkins jobs into git/puppet
+  </li><li>
+  Added events to gerrit trigger plugin
+  </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Infrastructure</h1>
+<ul><li>
+  Repeatability of OpenStack CI setup
+  </li><li>
+  StackForge
+  </li><li>
+  Skinned jenkins/gerrit
+  </li><li>
+  Management of planet and pastebin
+  </li><li>
+  Automatic Translations Merges
+  </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>StackForge</h1>
+<ul><li>
+  Place for Satellite projects
+  </li><li>
+  Copy of OpenStack CI Infrastructure
+  </li><li>
+  Cloud-based builders
+  </li><li>
+  Run tests against devstack target
+</li></ul>
+</div>
+
+<div class="slide">
+<h1>Now What</h1>
+<p>
+<em><b>Folsom Roadmap</b></em>
+</p>
+</div>
+
+<div class="slide">
+<h1>gating</h1>
+<ul><li>
+  gate on Tempest
+</li><li>
+  gate on quantum
+</li> <li>
+  multi-node testing
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>jenkins</h1>
+<ul><li>
+  jclouds-plugin replaces devstack gate
+</li> <li>
+  gerrit trigger support for matrix and sub jobs
+</li> <li>
+  support for non-python projects(?)
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>gerrit</h1>
+<ul><li>
+  single page diff
+</li> <li>
+  coordinated changes/topic review
+</li> <li>
+  investigate use of symbolic-ref for moving pointers
+</li> <li>
+  document external testing hooks
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>pre-apporval checks</h1>
+<ul><li>
+  +2/-2 for VRFY
+</li> <li>
+  run unittests/pep8 pre and post approval
+</li> <li>
+  grant smokestack/canonical/whoever +1/-1 VRFY
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>exploration</h1>
+<ul><li>
+  feature branch workflow/baking area
+</li> <li>
+  way for vendors to report architecture and tests
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>python</h1>
+<ul><li>
+  single global dependency list
+</li> <li>
+  client lib uploads to PyPI
+</li> <li>
+  support libraries supporting py3
+</li> <li>
+  turn on hash randomization for unittests
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>openstack-ci</h1>
+<ul><li>
+  consistent templated jobs for projects
+</li> <li>
+  management of meetbot and etherpad in puppet
+</li> <li>
+  refactor puppet into submodules
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>miscellaneous</h1>
+<ul><li>
+  explicit voting support for meetbot
+</li> <li>
+  add caching support to tox
+</li> <li>
+  mailing-lists and forums
+</li>
+</ul>
+</div>
+
+
+
+<div class="slide">
+<h1>Thanks!</h1>
+
+Slides are available at https://openstack-ci.github.com/publications.
+
+</div>
+
+</body>
+</html>

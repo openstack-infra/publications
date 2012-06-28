@@ -44,22 +44,12 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 <h1>OpenStack Overview</h1>
 Monty Taylor
 &lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;|
-twitter:e_monty |
+twitter:e_monty <br />
+James E. Blair
+&lt;<a href="mailto:corvus@inaugust.com">corvus@inaugust.com</a>&gt;<br />
 <a
 href="https://openstack-ci.github.com/publications/tutorial">https://openstack-ci.github.com/publications/tutorial</a>
 </div>
-
-<div class="slide">
-<h1>whoami</h1>
-<ul>
-<li>Manager of the OpenStack Developer Infrastructure</li>
-<li>Work for HP on hpcloud</li>
-<li>Helped Found OpenStack</li>
-<li>Former member of the OpenStack PPB</li>
-<li>Core dev on Drizzle</li>
-<li>mtaylor on IRC</li>
-<li>e_monty on twitter</li>
-</ul></div>
 
 <div class="slide">
 <h1>Overview</h1>
@@ -171,9 +161,10 @@ href="https://openstack-ci.github.com/publications/tutorial">https://openstack-c
   <li>Develop directly on master</li>
 </ul><li>One Month Milestone Releases</li>
 <li>Post-release Stable Branches</li>
-<li>Current stable: diablo</li>
-<li>Current devel: essex</li>
-<li>Next devel: folsom</li>
+<li>Previous stable: diablo</li>
+<li>Current stable: essex</li>
+<li>Current devel: folsom</li>
+<li>Next devel: G[...]</li>
 </ul>
 </div>
 
@@ -490,7 +481,92 @@ git review
 </pre></div>
 
 <div class="slide">
+<h1>tox</h1>
+<ul>
+<li>Manages python virtualenvs</li>
+<li>Runs multiple python versions</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Doing something more useful</h1>
+<pre>git clone git://github.com/openstack/nova.git
+# do things, now, to test it:
+tox
+# it's perfect - submit!
+git commit
+git review
+</pre>
+</div>
+
+<div class="slide">
+<h1>Getting Started With Devstack</h1>
+<ul>
+<li><a href="http://devstack.org">devstack.org</a></li>
+<li>Annotated shell script which installs devstack in a VM</li>
+<li><em>NOT FOR PRODUCTION USE</em></li>
+<li>For developers to test stuff</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Installing a Cloud using Devstack</h1> <ul>
+<li>Get an Ubuntu Oneiric Server Image</li>
+<small> Don't do this yet </small>
+<pre>
+git clone git://github.com/openstack-dev/devstack.git
+cd devstack; ./stack.sh
+</pre>
+</ul> </div>
+
+<div class="slide">
+<h1>Slower this time</h1> <ul>
+<li>Get an Ubuntu Oneiric Server Image</li>
+<p><a
+href="https://help.ubuntu.com/community/Installation/MinimalCD">https://help.ubuntu.com/community/Installation/MinimalCD</a></p>
+<li>Spin up an HP Cloud 2G Node</li>
+<li>Note the lack of swap</li>
+</ul> 
+<pre>
+sudo umount /mnt
+sudo mkswap /dev/vdb
+sudo swapon /dev/vdb
+</pre>
+</div>
+
+<div class="slide">
+<h1>Get devstack</h1> <ul>
+<pre>
+git clone git://github.com/openstack-dev/devstack.git
+cd devstack
+
+# to run essex:
+git checkout stable/essex
+</pre>
+</ul> </div>
+
+
+<div class="slide">
+<h1>Customizing Devstack</h1> <ul>
+<li>localrc</li>
+<pre>
+FIXED_RANGE=10.1.0.0/24
+FIXED_NETWORK_SIZE=256
+</pre>
+<li>Look in stackrc and stack.sh for other options</li>
+</ul></div>
+
+<div class="slide">
+<h1>Run devstack</h1> <ul>
+<pre>
+./stack.sh
+</pre>
+</ul> </div>
+
+
+<div class="slide">
 <h1>Now What?</h1> <ul>
+<li>sudo apt-get remove python-keyring</li>
 <li>Services running in screen <em>rejoin-stack.sh</em></li>
 <li>Run tests <em>exercise.sh</em></li>
 <li>Horizon running on port 80 on localhost</li>
@@ -522,7 +598,7 @@ nova secgroup-add-rule $SECGROUP tcp 22 22 0.0.0.0/0
 <h1>Keypairs</h1> <ul>
 <li>ssh credentials for logging in</li>
 <pre>
-KEY_NAME=test_key
+KEY_NAME=test2_key
 KEY_FILE=key.pem
 nova keypair-add $KEY_NAME > $KEY_FILE
 </pre>

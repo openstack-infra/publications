@@ -83,6 +83,7 @@ href="https://openstack-ci.github.com/publications/tutorial">https://openstack-c
 <li>Get an Ubuntu Precise Server Image</li>
 <small> Don't do this yet </small>
 <pre>
+sudo apt-get install git
 git clone git://github.com/openstack-dev/devstack.git
 cd devstack; ./stack.sh
 </pre>
@@ -191,6 +192,24 @@ sudo swapon /dev/vdb
 
 
 <div class="slide">
+<h1>Release Management</h1>
+<ul>
+<li>Time Based Releases</li>
+<li>Six Month Cadence<ul>
+  <li>Tied to Ubuntu Releases</li>
+</ul><li>Design summits each cycle</li>
+<li>Continuously Open Trunk<ul>
+  <li>Develop directly on master</li>
+</ul><li>One Month Milestone Releases</li>
+<li>Post-release Stable Branches</li>
+<li>Previous stable: diablo</li>
+<li>Current stable: essex</li>
+<li>Current devel: folsom</li>
+<li>Next devel: grizzly</li>
+</ul>
+</div>
+
+<div class="slide">
 <h1>Who is Running It?</h1>
 <ul>
 <li>Rackspace<ul>
@@ -216,24 +235,6 @@ sudo swapon /dev/vdb
 <li>Nicira</li>
 <li>RedHat</li>
 <li>Canonical</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Release Management</h1>
-<ul>
-<li>Time Based Releases</li>
-<li>Six Month Cadence<ul>
-  <li>Tied to Ubuntu Releases</li>
-</ul><li>Design summits each cycle</li>
-<li>Continuously Open Trunk<ul>
-  <li>Develop directly on master</li>
-</ul><li>One Month Milestone Releases</li>
-<li>Post-release Stable Branches</li>
-<li>Previous stable: diablo</li>
-<li>Current stable: essex</li>
-<li>Current devel: folsom</li>
-<li>Next devel: grizzly</li>
 </ul>
 </div>
 
@@ -402,7 +403,7 @@ href="http://etherpad.openstack.org">http://etherpad.openstack.org</a></li>
 <div class="slide">
 <h1>Git Review</h1>
 <ul>
-<li>External Git subcommand</li>
+<li>External Git subcommand - pip/apt/yum</li>
 <li>Developers can easily incorporate code review into git workflow</li>
 <li>Zero-configuration</li>
 <li>Can be used for any project, being adopted by other projects</li>
@@ -601,6 +602,7 @@ https://region-a.geo-1.identity.hpcloudsvc.com:35357/v2.0/tokens</li>
     <li>vlan</li>
   </ul></li>
   <li>Quantum</li>
+  <li>Floating IP Extension</li>
 </ul></div>
 
 <div class="slide">
@@ -608,6 +610,13 @@ https://region-a.geo-1.identity.hpcloudsvc.com:35357/v2.0/tokens</li>
 <ul>
   <li>LVM to iscsi mapping</li>
   <li>cinder</li>
+</ul></div>
+
+<div class="slide">
+<h1>Glance</h1>
+<ul>
+  <li> Image Registry </li>
+  <li> Image Store </li>
 </ul></div>
 
 <div class="slide">
@@ -622,6 +631,35 @@ source openrc
 </ul></div>
 
 <div class="slide">
+<h1>screen refresher</h1>
+<ul>
+  <li> C-a " windowlist </li>
+  <li> C-a 0  select window 0 </li>
+  <li> C-a n next window </li>
+  <li> C-a p previous window </li>
+</li></ul>
+</div>
+
+<div class="slide">
+<h1>Client Access</h1> <ul>
+ <li>pip install python-${PROJECT}client</li>
+ <li>Environment:<ul>
+   <li>OS_USERNAME</li>
+   <li>OS_PASSWORD</li>
+   <li>OS_AUTH_URL</li>
+   <li>OS_TENANT_NAME</li>
+   <li>OS_REGION_NAME</li>
+ </ul></li>
+</ul></div>
+
+<div class="slide">
+<h1>debug info</h1>
+<pre>
+export NOVACLIENT_DEBUG=1
+</pre>
+</div>
+
+<div class="slide">
 <h1>Images in Glance</h1> <ul>
 <pre>
 glance -f index
@@ -630,7 +668,7 @@ glance -f index
 </ul></div>
 
 <div class="slide">
-<h1>Security Groups</h1> <ul>
+<h1>Security Groups (extension)</h1> <ul>
 <li>Control what ports are open</li>
 <pre>
 SECGROUP=test_secgroup
@@ -641,7 +679,7 @@ nova secgroup-add-rule $SECGROUP tcp 22 22 0.0.0.0/0
 </ul></div>
 
 <div class="slide">
-<h1>Keypairs</h1> <ul>
+<h1>Keypairs (extension)</h1> <ul>
 <li>ssh credentials for logging in</li>
 <pre>
 KEY_NAME=test2_key
@@ -703,86 +741,11 @@ nova volume-attach $INSTANCE_NAME $VOLUME_ID $DEVICE
 </ul></div>
 
 <div class="slide">
-<h1>Images in Glance</h1> <ul>
-<pre>
-glance -f index
-</pre>
-<p>Save the UUID you want in a var called IMAGE_ID</p>
+<h1>Hacking Code</h1>
+<ul>
+  <li> Repos in /opt/stack </li>
+  <li> Installed via python setup.py develop </li>
 </ul></div>
-
-<div class="slide">
-<h1>Security Groups</h1> <ul>
-<li>Control what ports are open</li>
-<pre>
-SECGROUP=test_secgroup
-nova secgroup-create $SECGROUP "$SECGROUP description"
-nova secgroup-add-rule $SECGROUP icmp -1 -1 0.0.0.0/0
-nova secgroup-add-rule $SECGROUP tcp 22 22 0.0.0.0/0
-</pre>
-</ul></div>
-
-<div class="slide">
-<h1>Keypairs</h1> <ul>
-<li>ssh credentials for logging in</li>
-<pre>
-KEY_NAME=test_key
-KEY_FILE=key.pem
-nova keypair-add $KEY_NAME > $KEY_FILE
-</pre>
-</ul></div>
-
-<div class="slide">
-<h1>Flavors</h1> <ul>
-<pre>
-nova flavor-list
-<small>
-+----+-----------+-----------+------+-----------+------+-------+-------------+
-| ID |    Name   | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor |
-+----+-----------+-----------+------+-----------+------+-------+-------------+
-| 1  | m1.tiny   | 512       | 0    | 0         |      | 1     | 1.0         |
-| 2  | m1.small  | 2048      | 10   | 20        |      | 1     | 1.0         |
-| 3  | m1.medium | 4096      | 10   | 40        |      | 2     | 1.0         |
-| 4  | m1.large  | 8192      | 10   | 80        |      | 4     | 1.0         |
-| 5  | m1.xlarge | 16384     | 10   | 160       |      | 8     | 1.0         |
-+----+-----------+-----------+------+-----------+------+-------+-------------+
-</small>
-</pre>
-<p>Save the flavor id as FLAVOR_ID</p>
-</ul></div>
-
-<div class="slide">
-<h1>Boot an Instance</h1> <ul>
-<li>Returns the UUID of the server</li>
-<li>Using the values saved previously:
-<pre>
-nova boot --flavor $FLAVOR_ID --image $IMAGE_ID --security_groups=$SECGROUP \
-          --key_name $KEY_NAME $INSTANCE_NAME
-nova list
-</pre>
-<p>Save the UUID returned as VM_UUID</p>
-</li>
-</ul></div>
-
-<div class="slide">
-<h1>Add an IP</h1> <ul>
-<pre>
-nova floating-ip-create
-nova floating-ip-list
-nova add-floating-ip $VM_UUID $FLOATING_IP
-</pre>
-</ul></div>
-
-<div class="slide">
-<h1>Volumes</h1> <ul>
-<pre>
-DEVICE=/dev/vdb
-VOL_NAME=test_volume
-nova volume-create --display_name=$VOL_NAME 1
-nova volume-list
-nova volume-attach $INSTANCE_NAME $VOLUME_ID $DEVICE
-</pre>
-</ul></div>
-
 
 <div class="slide">
 <h1>Simulated Production</h1>

@@ -66,8 +66,83 @@ href="https://openstack-ci.github.com/publications/tutorial">https://openstack-c
 <li>Tutorial on chef/puppet/juju/cfengine/salt</li>
 <li>Endorsement of any of the above</li>
 <li>End-user Cloud Tutorial</li>
-<li>A Duck</li>
 </ul></div>
+
+<div class="slide">
+<h1>Getting Started With Devstack</h1>
+<ul>
+<li><a href="http://devstack.org">devstack.org</a></li>
+<li>Annotated shell script which installs devstack in a VM</li>
+<li><em>NOT FOR PRODUCTION USE</em></li>
+<li>For developers to test stuff</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Installing a Cloud using Devstack</h1> <ul>
+<li>Get an Ubuntu Precise Server Image</li>
+<small> Don't do this yet </small>
+<pre>
+git clone git://github.com/openstack-dev/devstack.git
+cd devstack; ./stack.sh
+</pre>
+</ul> </div>
+
+<div class="slide">
+<h1>Step One</h1>
+<ul>
+<li>Get an Ubuntu Precise Image</li>
+<li><h3><em>NOT YOUR LAPTOP</em></h3></li>
+<li><h3><em>NOT YOUR LAPTOP</em></h3></li>
+<li><h3><em>NOT YOUR LAPTOP</em></h3></li>
+</ul></div>
+
+
+<div class="slide">
+<h1>Get devstack</h1> <ul>
+<pre>
+git clone git://github.com/openstack-dev/devstack.git
+cd devstack
+
+# to run essex:
+git checkout stable/essex
+</pre>
+</ul> </div>
+
+
+<div class="slide">
+<h1>Customizing Devstack</h1> <ul>
+<li>localrc</li>
+<pre>
+FIXED_RANGE=10.1.0.0/24
+FIXED_NETWORK_SIZE=256
+</pre>
+<li>Look in stackrc and stack.sh for other options</li>
+</ul></div>
+
+<div class="slide">
+<h1>Fix Swap</h1> <ul>
+<li>Notice the lack of swap!</li>
+<pre>
+sudo umount /mnt
+sudo mkswap /dev/vdb
+sudo swapon /dev/vdb
+</pre>
+</ul></div>
+
+
+
+<div class="slide">
+<h1>Run devstack</h1> <ul>
+<pre>
+./stack.sh
+</pre>
+</ul> </div>
+
+<div class="slide">
+<h1>And now we wait</h1> <ul>
+</ul> </div>
+
 
 <div class="slide">
 <h1>OpenStack Overview</h1>
@@ -80,22 +155,25 @@ href="https://openstack-ci.github.com/publications/tutorial">https://openstack-c
 <div class="slide">
 <h1>Projects</h1>
 <ul>
-<li>nova (compute)</li>
-<li>swift (object storge)</li>
-<li>glance (image service)</li>
 <li>keystone (identity service)</li>
+<li>nova (compute)</li>
+<li>glance (image service)</li>
+<li>swift (object storge)</li>
 <li>quantum (network service)</li>
-<li>melange (network information service)</li>
+<li>cinder (volume)</li>
 <li>horizon (dashboard)</li>
 </ul></div>
 
 <div class="slide">
 <h1>Libraries</h1>
 <ul>
-<li>python-novaclient</li>
 <li>python-keystoneclient</li>
+<li>python-novaclient</li>
+<li>python-glanceclient</li>
+<li>python-swiftclient</li>
 <li>python-quantumclient</li>
-<li>python-melangeclient</li>
+<li>python-cinderclient</li>
+<li>python-openstackclient</li>
 </ul></div>
 
 <div class="slide">
@@ -104,22 +182,13 @@ href="https://openstack-ci.github.com/publications/tutorial">https://openstack-c
 <li>tempest</li>
 <li>git-review</li>
 <li>devstack</li>
+<li>devstack-gate</li>
 <li>openstack.nose_plugin</li>
-<li>openstack-ci</li>
 <li>openstack-ci-puppet</li>
+<li>pbr</li>
+<li>zuul</li>
 </ul></div>
 
-<div class="slide">
-<h1>Nova Componenets</h1>
-<ul>
-<li>API</li>
-<li>Scheduler</li>
-<li>Compute</li>
-<li>Network</li>
-<li>Volume</li>
-<li>messaging</li>
-<li>database</li>
-</ul></div>
 
 <div class="slide">
 <h1>Who is Running It?</h1>
@@ -164,7 +233,7 @@ href="https://openstack-ci.github.com/publications/tutorial">https://openstack-c
 <li>Previous stable: diablo</li>
 <li>Current stable: essex</li>
 <li>Current devel: folsom</li>
-<li>Next devel: G[...]</li>
+<li>Next devel: grizzly</li>
 </ul>
 </div>
 
@@ -207,12 +276,16 @@ href="https://openstack-ci.github.com/publications/tutorial">https://openstack-c
   <li>pre-merge testing</li>
   <li>post-merge testing</li>
   <li>post-merge artifact management</li>
-</ul><li>Orchestra (bare metal deployment)</li>
-<li>Launchpad (bugs, blueprints, releases, translations, SSO) <a href="http://launchpad.net/openstack">http://launchpad.net/openstack</a></li>
+</ul>
+<li>Zuul (build triggering) <a
+href="http://jenkins.openstack.org/zuul/status">http://zuul.openstack.org/zuul/status</a></li>
+<li>Launchpad (bugs, blueprints, releases, SSO) <a href="http://launchpad.net/openstack">http://launchpad.net/openstack</a></li>
 <li>Blog Aggregator <a
 href="http://planet.openstack.org">http://planet.openstack.org</a></li>
 <li>Pastebin <a
 href="http://paste.openstack.org">http://paste.openstack.org</a></li>
+<li>Etherpad <a
+href="http://etherpad.openstack.org">http://etherpad.openstack.org</a></li>
 </ul>
 </div>
 
@@ -229,63 +302,6 @@ href="http://paste.openstack.org">http://paste.openstack.org</a></li>
 <li>gated trunk based on master</li>
 </ul>
 </div>
-
-<div class="slide">
-<h1>Getting Started With Devstack</h1>
-<ul>
-<li><a href="http://devstack.org">devstack.org</a></li>
-<li>Annotated shell script which installs devstack in a VM</li>
-<li><em>NOT FOR PRODUCTION USE</em></li>
-<li>For developers to test stuff</li>
-<li><em>RUN IN A VM OR A CLOUD SERVER<small>not your personal laptop</small></em></li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Installing a Cloud using Devstack</h1> <ul>
-<li>Get an Ubuntu Oneiric Server Image</li>
-<small> Don't do this yet </small>
-<pre>
-git clone git://github.com/openstack-dev/devstack.git
-cd devstack; ./stack.sh
-</pre>
-</ul> </div>
-
-<div class="slide">
-<h1>Slower this time</h1> <ul>
-<li>Get an Ubuntu Oneiric Server Image</li>
-<p><a
-href="https://help.ubuntu.com/community/Installation/MinimalCD">https://help.ubuntu.com/community/Installation/MinimalCD</a></p>
-<li>Spin up an HP Cloud 2G Node</li>
-<li>Note the lack of swap</li>
-</ul> </div>
-
-<div class="slide">
-<h1>Get devstack</h1> <ul>
-<pre>
-git clone git://github.com/openstack-dev/devstack.git
-cd devstack
-</pre>
-</ul> </div>
-
-
-<div class="slide">
-<h1>Customizing Devstack</h1> <ul>
-<li>localrc</li>
-<pre>
-FIXED_RANGE=10.1.0.0/24
-FIXED_NETWORK_SIZE=256
-</pre>
-<li>Look in stackrc and stack.sh for other options</li>
-</ul></div>
-
-<div class="slide">
-<h1>Run devstack</h1> <ul>
-<pre>
-./stack.sh
-</pre>
-</ul> </div>
-
 
 
 <div class="slide">
@@ -500,69 +516,99 @@ git review
 </div>
 
 <div class="slide">
-<h1>Getting Started With Devstack</h1>
-<ul>
-<li><a href="http://devstack.org">devstack.org</a></li>
-<li>Annotated shell script which installs devstack in a VM</li>
-<li><em>NOT FOR PRODUCTION USE</em></li>
-<li>For developers to test stuff</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Installing a Cloud using Devstack</h1> <ul>
-<li>Get an Ubuntu Oneiric Server Image</li>
-<small> Don't do this yet </small>
-<pre>
-git clone git://github.com/openstack-dev/devstack.git
-cd devstack; ./stack.sh
-</pre>
-</ul> </div>
-
-<div class="slide">
-<h1>Slower this time</h1> <ul>
-<li>Get an Ubuntu Oneiric Server Image</li>
-<p><a
-href="https://help.ubuntu.com/community/Installation/MinimalCD">https://help.ubuntu.com/community/Installation/MinimalCD</a></p>
-<li>Spin up an HP Cloud 2G Node</li>
-<li>Note the lack of swap</li>
-</ul> 
-<pre>
-sudo umount /mnt
-sudo mkswap /dev/vdb
-sudo swapon /dev/vdb
-</pre>
-</div>
-
-<div class="slide">
-<h1>Get devstack</h1> <ul>
-<pre>
-git clone git://github.com/openstack-dev/devstack.git
-cd devstack
-
-# to run essex:
-git checkout stable/essex
-</pre>
-</ul> </div>
-
-
-<div class="slide">
-<h1>Customizing Devstack</h1> <ul>
-<li>localrc</li>
-<pre>
-FIXED_RANGE=10.1.0.0/24
-FIXED_NETWORK_SIZE=256
-</pre>
-<li>Look in stackrc and stack.sh for other options</li>
+<h1>Now We Have a Cloud!</h1> <ul>
+<li>What are all of the different parts of it again?</li>
 </ul></div>
 
 <div class="slide">
-<h1>Run devstack</h1> <ul>
-<pre>
-./stack.sh
-</pre>
-</ul> </div>
+<h1>Keystone</h1> <ul>
+<li>Identity/Authentication Service</li>
+<li>Service Catalog</li>
+</ul></div>
 
+<div class="slide">
+<h1>Keystone: Authentication</h1><ul>
+  <li> Authentication </li>
+  <li> Pluggable: <ul>
+    <li>ldap</li>
+    <li>pam</li>
+    <li>sql</li>
+  </ul></li>
+</ul></div>
+
+<div class="slide">
+<h1>Keystone: Service Catalog</h1><ul>
+<li>curl
+https://region-a.geo-1.identity.hpcloudsvc.com:35357/v2.0/tokens</li>
+<pre>
+"serviceCatalog": [
+    {
+     "name": "Identity",
+      "type": "identity",
+      "endpoints": [{
+        "publicURL": "https:\/\/region-a.geo-1.identity.hpcloudsvc.com:35357\/v2.0\/",
+     ....
+    {
+     "name": "Image Management",
+     "type": "image",
+     "endpoints": [{
+        "tenantId": "74682717556353",
+        "publicURL": "https:\/\/glance2.uswest.hpcloud.net:9292\/v1.0",
+</pre>
+</ul></div>
+
+<div class="slide">
+<h1>Nova</h1>
+<ul>
+<li>API</li>
+<li>Scheduler</li>
+<li>Compute</li>
+<li>Network</li>
+<li>Volume</li>
+<li>messaging <small>RabbitMQ, zeroMQ</small></li>
+<li>database <small>sqlalchemy: MySQL, PostGres, whatever</small></li>
+</ul></div>
+
+<div class="slide">
+<h1>Nova API</h1>
+<ul>
+  <li>OpenStack</li>
+  <li>ec2</li>
+</ul></div>
+
+<div class="slide">
+<h1>Nova Compute</h1>
+<ul>
+<li>Compute Service</li>
+<li>Pluggable</li>
+<li>Virt Layer
+  <ul><li>libvirt/kvm</li>
+  <li>xen</li>
+  <li><small>openvz</small></li>
+  <li><small>hyperv</small></li>
+  <li><small>baremetal</small></li>
+  </ul></li>
+</ul></div>
+
+<div class="slide">
+<h1>Nova Network</h1>
+<ul>
+  <li>Hard bit :)</li>
+  <li>Provides/configures network to guests</li>
+  <li><ul>
+    <li>flat</li>
+    <li>flatdhcp</li>
+    <li>vlan</li>
+  </ul></li>
+  <li>Quantum</li>
+</ul></div>
+
+<div class="slide">
+<h1>Nova Volume</h1>
+<ul>
+  <li>LVM to iscsi mapping</li>
+  <li>cinder</li>
+</ul></div>
 
 <div class="slide">
 <h1>Now What?</h1> <ul>
@@ -599,6 +645,87 @@ nova secgroup-add-rule $SECGROUP tcp 22 22 0.0.0.0/0
 <li>ssh credentials for logging in</li>
 <pre>
 KEY_NAME=test2_key
+KEY_FILE=key.pem
+nova keypair-add $KEY_NAME > $KEY_FILE
+</pre>
+</ul></div>
+
+<div class="slide">
+<h1>Flavors</h1> <ul>
+<pre>
+nova flavor-list
+<small>
++----+-----------+-----------+------+-----------+------+-------+-------------+
+| ID |    Name   | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor |
++----+-----------+-----------+------+-----------+------+-------+-------------+
+| 1  | m1.tiny   | 512       | 0    | 0         |      | 1     | 1.0         |
+| 2  | m1.small  | 2048      | 10   | 20        |      | 1     | 1.0         |
+| 3  | m1.medium | 4096      | 10   | 40        |      | 2     | 1.0         |
+| 4  | m1.large  | 8192      | 10   | 80        |      | 4     | 1.0         |
+| 5  | m1.xlarge | 16384     | 10   | 160       |      | 8     | 1.0         |
++----+-----------+-----------+------+-----------+------+-------+-------------+
+</small>
+</pre>
+<p>Save the flavor id as FLAVOR_ID</p>
+</ul></div>
+
+<div class="slide">
+<h1>Boot an Instance</h1> <ul>
+<li>Returns the UUID of the server</li>
+<li>Using the values saved previously:
+<pre>
+nova boot --flavor $FLAVOR_ID --image $IMAGE_ID --security_groups=$SECGROUP \
+          --key_name $KEY_NAME $INSTANCE_NAME
+nova list
+</pre>
+<p>Save the UUID returned as VM_UUID</p>
+</li>
+</ul></div>
+
+<div class="slide">
+<h1>Add an IP</h1> <ul>
+<pre>
+nova floating-ip-create
+nova floating-ip-list
+nova add-floating-ip $VM_UUID $FLOATING_IP
+</pre>
+</ul></div>
+
+<div class="slide">
+<h1>Volumes</h1> <ul>
+<pre>
+DEVICE=/dev/vdb
+VOL_NAME=test_volume
+nova volume-create --display_name=$VOL_NAME 1
+nova volume-list
+nova volume-attach $INSTANCE_NAME $VOLUME_ID $DEVICE
+</pre>
+</ul></div>
+
+<div class="slide">
+<h1>Images in Glance</h1> <ul>
+<pre>
+glance -f index
+</pre>
+<p>Save the UUID you want in a var called IMAGE_ID</p>
+</ul></div>
+
+<div class="slide">
+<h1>Security Groups</h1> <ul>
+<li>Control what ports are open</li>
+<pre>
+SECGROUP=test_secgroup
+nova secgroup-create $SECGROUP "$SECGROUP description"
+nova secgroup-add-rule $SECGROUP icmp -1 -1 0.0.0.0/0
+nova secgroup-add-rule $SECGROUP tcp 22 22 0.0.0.0/0
+</pre>
+</ul></div>
+
+<div class="slide">
+<h1>Keypairs</h1> <ul>
+<li>ssh credentials for logging in</li>
+<pre>
+KEY_NAME=test_key
 KEY_FILE=key.pem
 nova keypair-add $KEY_NAME > $KEY_FILE
 </pre>

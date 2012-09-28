@@ -352,7 +352,7 @@ node "jenkins.openstack.org" {
  }
 
  </pre></small>
- <p>Perhaps package commands should fundamental, and should create an idempotent package installation set. You know, kinda like how apt and yum already work?</p>
+ <p>Perhaps package commands should be fundamental units, and should create an idempotent package installation set. You know, kinda like how apt and yum already work?</p>
 </div>
 
 <div class="slide">
@@ -462,6 +462,18 @@ node 'puppet-dashboard.openstack.org' {
  <li> Essentially the same </li>
  <li> All share a cert </li>
  <li> Dashboard finds this confusing - I don't care </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>What next?/Usage Pattern 3</h1>
+<ul>
+ <li> Add unittesting to our modules (oops) </li>
+ <li> More importantly - add real testing to our manifest </li>
+ <li><ul>
+   <li> Make manifest that installs all of our modules single server </li>
+   <li> Per-commit pre-merge, spin up machine, run manifest, test </li>
+ </ul></li>
 </ul>
 </div>
 

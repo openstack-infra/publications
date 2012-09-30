@@ -670,6 +670,26 @@ projects:
 </div>
 
 <div class="slide">
+<h1>Zuul Change Queues</h1>
+
+<p> Projects with shared jobs automatically get a shared queue: </p>
+<pre>
+projects:
+  - name: openstack/nova
+    gate:
+      - gate-nova-merge:
+        - gate-nova-python27
+        - gate-tempest-devstack-vm
+
+  - name: openstack/glance
+    gate:
+      - gate-glance-merge:
+        - gate-glance-python27
+        - gate-tempest-devstack-vm
+</pre>
+</div>
+
+<div class="slide">
 <h1>Jenkins API</h1>
 
 <ul>

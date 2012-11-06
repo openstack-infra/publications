@@ -26,6 +26,7 @@ div.slide.titlepage {
 }
 
 div.slide.titlepage h1 {
+    position: absolute;
   padding-top: 40%;
 }
 
@@ -439,9 +440,21 @@ div.slide.cover {
 }
 
 div.slide.cover h1 {
+  position: absolute;
   float: left;
+  top: 50%;
   margin: 0;
   padding: 0.5em;
+  height: auto;
+}
+
+div.slide.cover h3 {
+  padding-left: 1em;
+  position: absolute;
+  float: center;
+  bottom: 15%;
+  margin: 0;
+  /*padding: 0.5em;*/
   height: auto;
 }
 

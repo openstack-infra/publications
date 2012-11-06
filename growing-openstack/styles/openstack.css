@@ -69,7 +69,7 @@ div.slide + div[class].slide { page-break-before: always;}
 div.center {
   float: center;
 /*  position: absolute; */
-  top: 50%;display: table-cell; vertical-align: middle; 
+  top: 45%;display: table-cell; vertical-align: middle; 
   font-size: 160%;
   line-height: 1.1em;
   }
@@ -83,6 +83,13 @@ img.center {
   text-align: center;
   font-size: 160%;
   line-height: 1.1em;
+  }
+
+img.last {
+  position: absolute;
+  float: center;
+  top: 10%;
+  left: 22%;
   }
 
 

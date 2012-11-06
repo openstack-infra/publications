@@ -70,15 +70,15 @@ div.center {
   float: center;
 /*  position: absolute; */
   top: 45%;display: table-cell; vertical-align: middle; 
-  font-size: 160%;
+  font-size: 260%;
   line-height: 1.1em;
   }
 
 img.center {
   position: absolute;
   float: center;
-  top: 30%;
-  left: 25%;
+  top: 15%;
+  left: 15%;
   display: table-cell; vertical-align: middle; 
   text-align: center;
   font-size: 160%;

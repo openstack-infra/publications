@@ -217,6 +217,8 @@ div.cover p.explanation {
 
 .smaller { font-size: smaller }
 
+.gray { color: gray }
+
 td,th { padding: 0.2em }
 
 ul {
@@ -252,7 +254,7 @@ ul li {
 ol li { 
   margin: 0.1em 0em 0.6em 1.5em;
   padding: 0 0 0 0px;
-  line-height: 140%;
+  line-height: 120%;
 }
 
 li li { 
@@ -261,6 +263,7 @@ li li {
   list-style-type: disc;
   background: transparent;
   padding: 0 0 0 0;
+  line-height: 100%;
 }
 li li li { 
   font-size: 85%; 
@@ -268,11 +271,13 @@ li li li {
   list-style-type: circle;
   background: transparent;
   padding: 0 0 0 0;
+  line-height: 100%;
 }
 li li li li {
   list-style-type: disc;
   background: transparent;
   padding: 0 0 0 0;
+  line-height: 100%;
 }
 
 /* rectangular blue bullet + unfold/nofold/fold widget */
@@ -418,7 +423,8 @@ div.slide.cover {
 
 div.slide.cover h1 {
   margin: 0;
-  padding: 0.5em;
+  padding-top: 10%;
+  padding-left: 0;
   height: auto;
 }
 
@@ -432,6 +438,8 @@ div.slide.cover img.cover {
 /* for Bert as an ardent user of the old W3C slidemaker tool */
 
 div.comment { display: none; visibility: hidden }
+
+div.indent { margin-left: 1em }
 
 @media print {
  div.slide h1 { background: transparent; color: black }

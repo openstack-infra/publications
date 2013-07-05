@@ -230,60 +230,57 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>OpenID SSO Integration</h1>
-  <img src="images/gerrit-sso.png"/>
-</div>
-
-<div class="slide">
 <h1>Development Environment</h1>
-<ul>
-<li>Python<ul>
-  <li>CentOS (2.6), Ubuntu LTS (2.7), Fedora (3.3)</li>
-  <li>PEP-8 standards</li>
-  <li>Oslo (common libraries)</li>
-  <li>virtualenv/pip/tox</li>
-</ul></li>
-<li>Freenode IRC (#openstack-dev, #openstack-meeting)</li>
-<li>DevStack</li>
-<li>gated trunk based on master</li>
-</ul>
+  <ul>
+  <li>Python<ul>
+    <li>CentOS (2.6), Ubuntu LTS (2.7), Fedora (3.3)</li>
+    <li>PEP-8 standards</li>
+    <li>Oslo (common libraries)</li>
+    <li>virtualenv/pip/tox</li>
+  </ul></li>
+  <li>Freenode IRC (#openstack-dev, #openstack-meeting)</li>
+  <li>DevStack</li>
+  <li>Tests run on all newly submitted changes</li>
+  <li>Code merges are gated on tests</li>
+  </ul>
 </div>
 
 <div class="slide">
-<h1>Gated Trunk</h1>
-<ul>
-<li>Ensures Code Quality</li>
-<li>Protects developers<ul>
-  <li>Devs always start from working code</li>
-</ul><li>Protects tree<ul>
-  <li>Bad code doesn't land</li>
-</ul><li>Egalitarian<ul>
-  <li>Process is the same for everyone</li>
-  <li>Process is transparent</li>
-  <li>Process is automated</li>
-</ul></ul>
-</ul>
+<h1>Project Gating</h1>
+  <img style="float:right; margin-right:24pt" src="images/jobs-launched.png"/>
+  <!--
+  http://graphite.openstack.org/render/?from=00%3A00_20130601&fgcolor=000000&title=Jobs%20Launched%20%28per%20Day%29&_t=0.7862690862083328&height=300&bgcolor=ffffff&width=400&showTarget=alias%28summarize%28sumSeries%28stats_counts.zuul.job.*%29%2C%271h%27%29%2C%27All%20Jobs%27%29&_salt=1373041766.855&target=alias%28summarize%28sumSeries%28stats_counts.zuul.job.*%29%2C%271d%27%29%2C%27All%20Jobs%27%29&until=23%3A59_20130630
+  -->
+  <ul>
+  <li>Ensures Code Quality</li>
+  <li>Protects developers<ul>
+    <li>Devs always start from working code</li>
+  </ul><li>Protects tree<ul>
+    <li>Bad code doesn't land</li>
+  </ul><li>Egalitarian<ul>
+    <li>Process is the same for everyone</li>
+    <li>Process is transparent</li>
+    <li>Process is automated</li>
+  </ul></ul>
+  </ul>
 </div>
+
 
 <div class="slide">
 <h1>Everything Is Automated</h1>
-<!-- TODO: replace with zuul status screen -->
-<img src="images/jenkins-gate.png" />
+
+<center>
+<img src="images/status.png"/>
+</center>
+</div>
+
 </div>
 
 <div class="slide">
 <h1>Process Flow</h1>
-<ol>
-<li>Code is written and locally tested in a virtualenv</li>
-<li>Code is submitted for code review</li>
-<li>Code is run through patch-uploaded automated checks</li>
-<li>Code is peer-reviewed</li>
-<li>Code is accepted or rejected by core team</li>
-<li>Code is run through pre-merge automated checks</li>
-<li>Code is merged or rejected</li>
-<li>Code is run through post-merge automated builds</li>
-<li>Code is periodically re-tested for bitrot</li>
-</ol>
+<center>
+<img src="images/contribution-path.png"/>
+</center>
 </div>
 
 <div class="slide">
@@ -297,58 +294,31 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 </div>
 
 <div class="slide">
-<h1>Bug Integration - Gerrit</h1>
-<img src="images/gerrit-bug.png"/>
+<h1>Gerrit</h1>
+<center>
+<img style="margin-top:2em" src="images/gerrit.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Gerrit Diff View</h1>
+<center>
+<img style="margin-top:2em" src="images/gerrit-diff.png"/>
+</center>
 </div>
 
 <div class="slide">
 <h1>Bug Integration - Launchpad</h1>
-<img src="images/lp-bug.png"/>
-</div>
-
-<div class="slide">
-<h1>Blueprints - Gerrit</h1>
-<img src="images/gerrit-bp.png"/>
-</div>
-
-<div class="slide">
-<h1>Blueprints - Launchpad</h1>
-<img src="images/lp-bp.png"/>
-</div>
-
-<div class="slide">
-<h1>Blueprints - Gerrit Topics</h1>
-<img src="images/gerrit-bp-topic.png"/>
-</div>
-
-<div class="slide">
-<h1>Pre-merge Check</h1>
-<img src="images/gerrit-jenkins.png"/>
-</div>
-
-<div class="slide">
-<h1>States of a Patch</h1>
-<ul>
-  <li>Code submitted</li>
-  <li>Code verified</li>
-  <li>Code reviewed</li>
-  <li>Code accepted</li>
-  <li>Code merged</li>
-</ul>
+<center>
+<img style="margin-top:2em" src="images/lp-bug.png"/>
+</center>
 </div>
 
 <div class="slide">
 <h1>Approved Reviews</h1>
-<img src="images/gerrit-approved.png"/>
-</div>
-
-<div class="slide">
-<h1>Types of Gerrit Triggers</h1>
-<ul>
-<li>Patchset uploaded</li>
-<li>Change merged (ref updated)</li>
-<li>Comment added (review state)</li>
-</ul>
+<center>
+<img style="margin-top:2em"src="images/gerrit-approved.png"/>
+</center>
 </div>
 
 <div class="slide">
@@ -360,12 +330,12 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 <li>Can be used for any project, being adopted by other projects</li>
 </ul>
 <pre>
-corvus@shiprock:~/rs/git/neutron$ git commit -a
+corvus@shiprock:~/git/neutron$ git commit -a
 [new-versionpy ddf1dce] Base version.py on glance.
  3 files changed, 28 insertions(+), 107 deletions(-)
  delete mode 100644 version.py
 
-corvus@shiprock:~/rs/git/neutron$ git review
+corvus@shiprock:~/git/neutron$ git review
 remote: Resolving deltas:   0% (0/3)
 remote: 
 remote: New Changes:
@@ -892,14 +862,6 @@ projects:
       - nova-tarball
       - nova-docs
 </pre>
-</div>
-
-<div class="slide">
-<h1>Zuul Status View</h1>
-
-<center>
-<img src="images/status.png"/>
-</center>
 </div>
 
 <div class="slide">

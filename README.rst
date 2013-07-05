@@ -22,38 +22,45 @@ Talking points...
         - many important contributions are not focused on a project
         - might span multiple software projects
         - could be something other than traditional software development
+    * Release Management:
+        - scaling challenge faced as a community
+        - integrated release and roadmap follow a rigid schedule
+        - limitations chosen to improve output and quality
     * Contributors:
         - scaling challenge faced as a community
         - contributors come from varied places and backgrounds
         - different levels of involvement
         - have a variety of goals and motives (usually not a bad thing)
         - there are many, many, many of them
-    * Release Management:
-        - scaling challenge faced as a community
-        - integrated release and roadmap follow a rigid schedule
-        - limitations chosen to improve output and quality
-    * Vision:
-        - consistency increases throughput with fewer people
     * Consistent Tooling:
         - meta-development happens independently without consistency
+        - consistency increases throughput with fewer people
     * Developer Infrastructure:
         - both a scaling challenge and solution
         - vast array of systems used for development efforts
-    * OpenID SSO Integration
-    * Environment
-    * Gated Trunk
+    * Developer Environment
+        - operating systems and python versions supported (and how that
+          impacts testing)
+        - developers on IRC aids distributed development
+        - openstack is complicated to install; devstack makes it simple
+        - lots of testing helps stabilize rapid development and
+          facilitates contributions
+    * Project Gating
     * Everything Is Automated
     * Process Flow
     * Gerrit
-    * Bug Integration - Gerrit
+    * Gerrit (screenshot)
+        - change information
+        - commit message
+        - bug and blueprint linkage
+        - review status, categories
+        - patchsets
+        - comments
+        - pre merge testing
+        - gating
+    * Gerrit Diff View
     * Bug Integration - Launchpad
-    * Blueprints - Gerrit
-    * Blueprints - Launchpad
-    * Blueprints - Gerrit Topics
-    * Pre-merge Check
-    * States of a Patch
     * Approved Reviews
-    * Types of Gerrit Triggers
     * Git Review
     * Types of Tests
     * Specific Challenges/Solutions
@@ -61,7 +68,6 @@ Talking points...
     * Interrelated Integration Testing
     * Devstack-Gate Problems
     * Devstack-Gate Solutions
-    * Jclouds-Plugin
     * Zuul
     * Bottlenecking
     * Zuul Simulation:
@@ -77,10 +83,10 @@ Talking points...
         10. zuul restarts tests on the new queue of one change
         11. first change passes all tests
         12. merged to nova and becomes the branch tip
-    * Zuul Check Queue
-    * Zuul Gate Queue
-    * Zuul Post-Merge Queue
-    * Zuul Silent Queue
+    * Zuul Check Pipeline
+    * Zuul Gate Pipeline
+    * Zuul Post-Merge Pipeline
+    * Zuul Release Pipeline
     * Zuul Project Configuration
     * Templated Jobs
     * Example Job

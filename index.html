@@ -44,9 +44,19 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
   <div class="smaller">Monty Taylor
     &lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;</div>
   <div class="smaller">James E. Blair
-    &lt;<a href="mailto:corvus@inaugust.com">corvus@inaugust.com</a>&gt;</div>
+    &lt;<a href="mailto:jeblair@openstack.org">jeblair@openstack.org</a>&gt;</div>
   <div class="smaller">Jeremy Stanley
     &lt;<a href="mailto:fungi@yuggoth.org">fungi@yuggoth.org</a>&gt;</div>
+</div>
+
+<div class="slide">
+<h1>OpenStack</h1>
+
+<p>Is open source software for building private and public clouds.</p>
+
+<center>
+<img src="images/openstack-software-diagram.png"/>
+</center>
 </div>
 
 <div class="slide">
@@ -114,22 +124,11 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Contributors</h1>
-  <ul>
-    <li>Unaffiliated individuals</li>
-    <li>Commercial entities</li>
-    <li>Nonprofit organizations</li>
-    <li>National and local governments</li>
-    <li>Number, quality, and area of contributions can change daily</li>
-  </ul>
-</div>
-
-<div class="slide">
   <h1>Release Management</h1>
   <ul>
     <li>Time Based Releases</li>
     <li>Six Month Cadence<ul>
-      <li>Similar to Ubuntu Release Schedule</li>
+      <li>Similar to Ubuntu and Fedora Release Schedules</li>
     </ul>
     <li>Design summits each cycle</li>
     <li>Continuously Open Trunk<ul>
@@ -141,12 +140,14 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Vision</h1>
+  <h1>Contributors</h1>
+  <img style="float:right; margin-right:24pt" src="images/contributor-pie-chart.png"/>
   <ul>
-    <li>Consistent Tooling</li>
-    <li>Consistent Process</li>
-    <li>Consistent Product</li>
-    <li>Multiplier Effect</li>
+    <li>Unaffiliated individuals</li>
+    <li>Commercial entities</li>
+    <li>Nonprofit organizations</li>
+    <li>National and local governments</li>
+    <li>Number, quality, and area of contributions can change daily</li>
   </ul>
 </div>
 
@@ -234,12 +235,12 @@ src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 </div>
 
 <div class="slide">
-<h1>Environment</h1>
+<h1>Development Environment</h1>
 <ul>
 <li>Python<ul>
   <li>CentOS (2.6), Ubuntu LTS (2.7), Fedora (3.3)</li>
   <li>PEP-8 standards</li>
-  <li>oslo-incubator (formerly openstack.common)</li>
+  <li>Oslo (common libraries)</li>
   <li>virtualenv/pip/tox</li>
 </ul></li>
 <li>Freenode IRC (#openstack-dev, #openstack-meeting)</li>
@@ -432,9 +433,8 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
 <h1>Devstack-Gate Problems</h1>
 <ul>
   <li>Tests are slow</li>
-  <li>Clouds are unreliable</li>
-  <li>GitHub, PyPI, distro package repos...<br />
-  <b><em>ALL NETWORK ACCESS IS FAILURE</em></b></li>
+  <li>Cloud API calls can fail</li>
+  <li>External services are unreliable</li>
 </ul>
 </div>
 
@@ -447,17 +447,6 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
   <li>Maintain a pool of cloud nodes</li>
   <li>Slave can only be used for one test run</li>
   <li>Python and shell scripts run as jobs</li>
-</ul>
-</div>
-
-<h1>Jclouds-Plugin</h1>
-<ul>
-  <li>ec2 plugin useless to us (sorry)</li>
-  <li>Adrian Cole and Cloudsoft wrote jclouds-plugin</li>
-  <li>Provisions on any provider via jclouds</li>
-  <li>Image pre-creation and pooling features</li>
-  <li>single use slaves</li>
-  <li>Slave provisioning as build step</li>
 </ul>
 </div>
 
@@ -822,9 +811,9 @@ $(document).ready(function() {
 </div>
 
 <div class="slide">
-<h1>Zuul Check Queue</h1>
+<h1>Zuul Check Pipeline</h1>
 <pre>
-queues:
+pipelines:
   - name: check
     manager: IndependentQueueManager
     trigger:
@@ -837,8 +826,7 @@ queues:
 </div>
 
 <div class="slide">
-<h1>Zuul Gate Queue</h1>
-<!-- TODO: update this example -->
+<h1>Zuul Gate Pipeline</h1>
 <pre>
 pipelines:
   - name: gate
@@ -858,53 +846,60 @@ pipelines:
 </div>
 
 <div class="slide">
-<h1>Zuul Post-Merge Queue</h1>
-<!-- TODO: update this example -->
+<h1>Zuul Post-Merge Pipeline</h1>
 <pre>
-queues:
+pipelines:
   - name: post
     manager: IndependentQueueManager
     trigger:
       - event: ref-updated
-        ref: ^(?!refs/).*$
+        ref: ^(?!refs/.*).*$
 </pre>
 </div>
 
 <div class="slide">
-<h1>Zuul Silent Queue</h1>
-<!-- TODO: update this example -->
+<h1>Zuul Release Pipeline</h1>
 <pre>
-queues:
-  - name: silent
-    manager: IndependentQueueManager
+pipelines:
+  - name: release
+    manager: IndependentPipelineManager
     trigger:
-      - event: patchset-created
+      - event: ref-updated
+        ref: ^refs/tags/([0-9]+\.)+[0-9]+$
 </pre>
 </div>
 
 <div class="slide">
 <h1>Zuul Project Configuration</h1>
-<!-- TODO: update this example -->
 <pre>
 projects:
   - name: openstack/nova
     check:
-      - gate-nova-merge:
-        - gate-nova-pep8
-        - gate-nova-python26
-        - gate-nova-python27
-        - gate-integration-tests-devstack-vm
-    gate:
-      - gate-nova-merge:
-        - gate-nova-pep8
-        - gate-nova-python26
-        - gate-nova-python27
-        - gate-integration-tests-devstack-vm
-    post:
-      - nova-tarball
-    silent:
+      - gate-nova-pep8
+      - gate-nova-python26
+      - gate-nova-python27
       - gate-tempest-devstack-vm
+    gate:
+      - gate-nova-pep8
+      - gate-nova-python26
+      - gate-nova-python27
+      - gate-tempest-devstack-vm
+    post:
+      - nova-branch-tarball
+      - nova-docs
+      - nova-upstream-translation-update
+    release:
+      - nova-tarball
+      - nova-docs
 </pre>
+</div>
+
+<div class="slide">
+<h1>Zuul Status View</h1>
+
+<center>
+<img src="images/status.png"/>
+</center>
 </div>
 
 <div class="slide">
@@ -921,40 +916,35 @@ projects:
 
 <div class="slide">
 <h1>Example Job</h1>
-<!-- TODO: update this example --><pre>
-main:
-  name: gate-ceilometer-python26-essex
-  review_site: review.stackforge.org
-  github_org: stackforge
-  project: ceilometer
-  authenticatedBuild: true
-  concurrent: true
-  assigned_node: oneiric
+<pre>
+- job:
+  name: gate-nova-pep8
 
-triggers:
-  - zuul
+  builders:
+    - gerrit_git_prep
+    - pep8
 
-builders:
-  - gerrit_git_prep
-  - python26_essex
+  publishers:
+    - console-log
 </pre>
 </div>
 
 <div class="slide">
 <h1>Example Template</h1>
-<!-- TODO: update this example --><pre>
-project:
-  template: python_jobs
+<pre>
+- project:
+    name: nova
+    github-org: openstack
+    tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
 
-values:
-  name: python-novaclient
-  disabled: false
-  github_org: openstack
-  review_site: review.openstack.org
-  publisher_site: nova.openstack.org
-  tarball_project: nova
-  doc_publisher_site: docs.openstack.org
-  node: precise
+    jobs:
+      - python-jobs
+      - python-folsom-bitrot-jobs
+      - python-grizzly-bitrot-jobs
+      - openstack-publish-jobs
+      - gate-{name}-pylint
+      - translation-jobs
 </pre>
 </div>
 

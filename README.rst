@@ -1,5 +1,28 @@
+Abstract
+========
+
 Scaling OpenStack Development: Continuous Integration Overview
-==============================================================
+--------------------------------------------------------------
+
+OpenStack is not only the fastest-growing open-source cloud project but
+is also a large-scale, complex system with a rapidly expanding code base
+and more than 1,000 contributors to date.  Handling the quantity and
+pace of contributions is a huge challenge on its own.  We've been able
+to handle the dramatic scale of development by having automation systems
+that allow us to treat all developers equally from a process perspective
+and keep our trunk always clean by performing testing pre-merge.  The
+beautiful thing about this approach has been that it doesn't just keep
+up with demands, it facilities and encourages more development.
+
+This talk will cover the design and implementation of the current
+system, based around a combination of Gerrit and Jenkins, as well as the
+workflow that we support and require, how we implemented it and what the
+challenges were.  At the end of this talk you should have a good
+understanding of how OpenStack handles up to 200 contribution
+activities an hour.
+
+Talking points
+==============
 
 The OpenStack Grizzly release brought roughly 400,000 new lines of
 source code in 10,000 changes from 500 developers over a 6-month period.
@@ -8,8 +31,6 @@ tests over the course if its development and review, and again before
 being merged into the official codebase. This presentation will provide
 a high-level examination of the techniques used to coordinate and
 automate software development efforts at such a scale.
-
-Talking points...
 
     * Projects:
         - scaling challenge faced as a community

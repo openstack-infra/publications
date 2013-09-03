@@ -38,7 +38,7 @@ def git_branches():
 
 def git_tags():
     r, tag_list = run_local(['git', 'tag', '-n'])
-    return tag_list.split('\n')
+    return [x for x in tag_list.split('\n') if x]
 
 current = ''
 previous = ''

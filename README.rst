@@ -1,8 +1,8 @@
-Abstract
-========
-
 Scaling OpenStack Development: Continuous Integration Overview
---------------------------------------------------------------
+==============================================================
+
+Abstract
+--------
 
 OpenStack is not only the fastest-growing open-source cloud project but
 is also a large-scale, complex system with a rapidly expanding code base
@@ -22,7 +22,7 @@ understanding of how OpenStack handles up to 200 contribution
 activities an hour.
 
 Talking points
-==============
+--------------
 
 The OpenStack Grizzly release brought roughly 400,000 new lines of
 source code in 10,000 changes from 500 developers over a 6-month period.

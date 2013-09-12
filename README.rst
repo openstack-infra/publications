@@ -1,116 +1,31 @@
-Scaling OpenStack Development: Continuous Integration Overview
-==============================================================
+Template Branch for new OpenStack Infra Publications
+====================================================
 
-Abstract
---------
+Creating new OpenStack Infra Publications is easy and you have started
+in the right place.
 
-OpenStack is not only the fastest-growing open-source cloud project but
-is also a large-scale, complex system with a rapidly expanding code base
-and more than 1,000 contributors to date.  Handling the quantity and
-pace of contributions is a huge challenge on its own.  We've been able
-to handle the dramatic scale of development by having automation systems
-that allow us to treat all developers equally from a process perspective
-and keep our trunk always clean by performing testing pre-merge.  The
-beautiful thing about this approach has been that it doesn't just keep
-up with demands, it facilities and encourages more development.
+  1. Clone publications, create and checkout template tracking branch::
 
-This talk will cover the design and implementation of the current
-system, based around a combination of Gerrit and Jenkins, as well as the
-workflow that we support and require, how we implemented it and what the
-challenges were.  At the end of this talk you should have a good
-understanding of how OpenStack handles up to 200 contribution
-activities an hour.
+       git clone https://git.openstack.org/openstack-infra/publications
+       cd publications
+       git review -s
+       git checkout -b template origin/template
 
-Talking points
---------------
-
-The OpenStack Grizzly release brought roughly 400,000 new lines of
-source code in 10,000 changes from 500 developers over a 6-month period.
-Every change passed a battery of style, unit, functional and integration
-tests over the course if its development and review, and again before
-being merged into the official codebase. This presentation will provide
-a high-level examination of the techniques used to coordinate and
-automate software development efforts at such a scale.
-
-    * Projects:
-        - scaling challenge faced as a community
-        - number of individual software projects being integrated
-        - server projects are part of an integrated release
-        - client library projects are released on separate schedules
-        - incubated projects shown in gray
-    * Programs/Horizontal Efforts:
-        - scaling challenge faced as a community
-        - many important contributions are not focused on a project
-        - might span multiple software projects
-        - could be something other than traditional software development
-    * Release Management:
-        - scaling challenge faced as a community
-        - integrated release and roadmap follow a rigid schedule
-        - limitations chosen to improve output and quality
-    * Contributors:
-        - scaling challenge faced as a community
-        - contributors come from varied places and backgrounds
-        - different levels of involvement
-        - have a variety of goals and motives (usually not a bad thing)
-        - there are many, many, many of them
-    * Consistent Tooling:
-        - meta-development happens independently without consistency
-        - consistency increases throughput with fewer people
-    * Developer Infrastructure:
-        - both a scaling challenge and solution
-        - vast array of systems used for development efforts
-    * Developer Environment
-        - operating systems and python versions supported (and how that
-          impacts testing)
-        - developers on IRC aids distributed development
-        - openstack is complicated to install; devstack makes it simple
-        - lots of testing helps stabilize rapid development and
-          facilitates contributions
-    * Project Gating
-    * Everything Is Automated
-    * Process Flow
-    * Gerrit
-    * Gerrit (screenshot)
-        - change information
-        - commit message
-        - bug and blueprint linkage
-        - review status, categories
-        - patchsets
-        - comments
-        - pre merge testing
-        - gating
-    * Gerrit Diff View
-    * Bug Integration - Launchpad
-    * Approved Reviews
-    * Git Review
-    * Types of Tests
-    * Specific Challenges/Solutions
-    * Gerrit Git Prep
-    * Interrelated Integration Testing
-    * Devstack-Gate Problems
-    * Devstack-Gate Solutions
-    * Zuul
-    * Bottlenecking
-    * Zuul Simulation:
-        1. branch tip of repositories for nova and keystone
-        2. changes enter the gate pipeline, merged to a test queue
-        3. zuul initiates tests on each in parallel, keystone fails
-        4. first change passes all tests
-        5. merged to nova and becomes the branch tip
-        6. second change passes all tests
-        7. merged to nova and becomes the branch tip
-        8. third change is ejected and keystone branch tip is unchanged
-        9. fourth change is merged to a new test queue, now in first
-        10. zuul restarts tests on the new queue of one change
-        11. first change passes all tests
-        12. merged to nova and becomes the branch tip
-    * Zuul Check Pipeline
-    * Zuul Gate Pipeline
-    * Zuul Post-Merge Pipeline
-    * Zuul Release Pipeline
-    * Zuul Project Configuration
-    * Templated Jobs
-    * Example Job
-    * Example Template
-    * Scaling Hardware Needs
-    * Thanks!
+  2. Create a new branch based on this template branch.
+     ``git checkout -b $BRANCH_NAME``.
+  3. Edit ``.gitreview`` and change the defaultbranch value to
+     ``$BRANCH_NAME``.
+  4. Create ``$BRANCH_NAME`` in Gerrit. It should be based on the
+     template branch as well to avoid any potential merge conflicts in
+     your first commit. Not everyone has the ability to do this in
+     Gerrit. If you don't, ask an openstack infra core to do it for you.
+  5. Now we get to do the fun stuff. Edit index.html editing lines with
+     ``CHANGEME`` or ``changeme`` in them. You can also add new slides
+     if you like but that isn't necessary in this bootstrapping change.
+     You can follow up with new slides in subsequent changes.
+  6. Edit this file, ``README.rst``. The title of this document will
+     be the name used on the root publications index so be sure to
+     update the title. You should also add an Abstract section and
+     general talk info.
+  7. At this point you are ready to push your new changes back up to
+     Gerrit. ``git commit -a && git review``

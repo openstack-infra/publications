@@ -46,6 +46,8 @@ previous = ''
 for branch in git_branches():
     if branch.startswith('remotes/origin/master'):
         continue
+    if branch.startswith('remotes/origin/template'):
+        continue
     if branch.startswith('remotes/origin/HEAD'):
         continue
     if '->' in branch:

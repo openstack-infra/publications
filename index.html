@@ -3,13 +3,14 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Scaling OpenStack Development: Continuous Integration Overview</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>How OpenStack Improves Code Quality with Project Gating and Zuul
+</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
-<meta name="duration" content="60" />
+<meta name="duration" content="45" />
 <meta name="font-size-adjustment" content="0" />
 <link rel="stylesheet" href="styles/slidy.css" type="text/css" />
 <link rel="stylesheet" href="styles/openstack.css" type="text/css" />
@@ -22,9 +23,9 @@
 </head>
 <body>
 <div class="background"><img alt="" id="head-icon"
-src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 
-<div class="slide cover titlepage">
+<div class="slide cover title">
   <!-- hidden style graphics to ensure they are saved with other content -->
   <img class="hidden" src="graphics/bullet.png" alt="" />
   <img class="hidden" src="graphics/fold.gif" alt="" />
@@ -37,16 +38,25 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
-  <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Scaling OpenStack Development<br />
-  <span class="smaller">Continuous Integration Overview</span></h1>
-  <hr />
-  <div class="smaller">Monty Taylor
-    &lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;</div>
-  <div class="smaller">James E. Blair
-    &lt;<a href="mailto:jeblair@openstack.org">jeblair@openstack.org</a>&gt;</div>
-  <div class="smaller">Jeremy Stanley
-    &lt;<a href="mailto:fungi@yuggoth.org">fungi@yuggoth.org</a>&gt;</div>
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>How OpenStack Improves Code Quality with Project Gating and Zuul</h1>
+<p>
+James E. Blair
+&lt;<a href="mailto:jeblair@openstack.org">jeblair@openstack.org</a>&gt;<br />
+
+</div>
+
+<div class="slide">
+<h1>About this Presentation</h1>
+
+<ul>
+<li> The OpenStack development process </li>
+<li> Project Gating: Preemptive CI </li>
+<li> Zuul: a system to implement gating </li>
+<li> Using Gearman to distribute work for Zuul </li>
+</ul>
 </div>
 
 <div class="slide">
@@ -57,6 +67,9 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 <center>
 <img src="images/openstack-software-diagram.png"/>
 </center>
+
+<ul>
+  <li><a href="http://openstack.org">http://openstack.org</a></li>
 </div>
 
 <div class="slide">
@@ -95,51 +108,6 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Programs/Horizontal Efforts</h1>
-  <div style="float:left;width:50%"><ul>
-    <li>Documentation<ul>
-      <li>installation guides</li>
-      <li>operations manuals</li>
-      <li>API references</li>
-      <li>howtos and tutorials</li>
-    </ul></li>
-    <li>Infrastructure<ul>
-      <li>continuous integration systems</li>
-      <li>developer community resources</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:50%"><ul>
-    <li>Oslo<ul>
-      <li>common libraries</li>
-      <li>copied code incubation</li>
-    </ul></li>
-    <li>Quality Assurance<ul>
-      <li>integration testing</li>
-      <li>upgrade testing</li>
-    </ul></li>
-    <li>Release Management</li>
-    <li>Translation/Internationalization</li>
-    <li>Vulnerability Management</li>
-  </ul></div>
-</div>
-
-<div class="slide">
-  <h1>Release Management</h1>
-  <ul>
-    <li>Time Based Releases</li>
-    <li>Six Month Cadence<ul>
-      <li>Similar to Ubuntu and Fedora Release Schedules</li>
-    </ul>
-    <li>Design summits each cycle</li>
-    <li>Continuously Open Trunk<ul>
-      <li>Develop directly on master</li>
-    </ul>
-    <li>Intra-Cycle Milestone Releases</li>
-    <li>Post-Release Stable Branches</li>
-  </ul>
-</div>
-
-<div class="slide">
   <h1>Contributors</h1>
   <img style="float:right; margin-right:24pt" src="images/contributor-pie-chart.png"/>
   <ul>
@@ -152,97 +120,14 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Consistent Tooling</h1>
-  <ul>
-    <li>Minimize meta-development</li>
-    <li>Process divergence == wasted developer time</li>
-    <li>Lowers onboarding time</li>
-    <li>Consolidate tool development</li>
-    <li>Minimize project-specific weird build crud</li>
-  </ul>
-</div>
-
-<div class="slide">
-  <h1>Developer Infrastructure</h1>
-  <small>
-  <div style="float:left;width:33%"><ul>
-    <li>Code review and VCS<ul>
-      <li>Gerrit</li>
-      <li>Git</li>
-      <li>git-review</li>
-      <li>reviewday</li>
-    </ul></li>
-    <li>Test/build automation<ul>
-      <li>devstack-gate</li>
-      <li>Jenkins</li>
-      <li>JJB</li>
-      <li>Zuul</li>
-    </ul></li>
-    <li>Repository mirrors<ul>
-      <li>Apache</li>
-      <li>Cgit</li>
-      <li>GitHub</li>
-      <li>PyPI packages</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:33%"><ul>
-    <li>Job logs, artifacts<ul>
-      <li>logs site</li>
-      <li>Logstash</li>
-    </ul></li>
-    <li>Documentation/publication<ul>
-      <li>Sphinx</li>
-      <li>Wiki</li>
-    </ul></li>
-    <li>Releases/pre-releases<ul>
-      <li>PyPI uploads</li>
-      <li>tarballs</li>
-    </ul></li>
-    <li>IRC<ul>
-      <li>eavesdrop</li>
-      <li>gerritbot</li>
-      <li>meetbot</li>
-      <li>statusbot</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:33%"><ul>
-    <li>Project blogs<ul>
-      <li>Foundation</li>
-      <li>Planet</li>
-    </ul></li>
-    <li>Collaboration<ul>
-      <li>Mailing lists</li>
-      <li>Lodgeit paste</li>
-      <li>Etherpad</li>
-    </ul></li>
-    <li>Authentication<ul>
-      <li>CLA</li>
-      <li>membership</li>
-      <li>Launchpad SSO</li>
-    </ul></li>
-    <li>Feature/bug tracking<ul>
-      <li>LP blueprints</li>
-      <li>LP bugs</li>
-    </ul></li>
-    <!-- TODO: add transifex? -->
-  </ul></div>
-  </small>
-</div>
-
-<div class="slide">
-<h1>Development Environment</h1>
-  <ul>
-  <li>Python<ul>
-    <li>CentOS (2.6), Ubuntu LTS (2.7), Fedora (3.3)</li>
-    <li>PEP-8 standards</li>
-    <li>Oslo (common libraries)</li>
-    <li>virtualenv/pip/tox</li>
-  </ul></li>
-  <li>Freenode IRC (#openstack-dev, #openstack-meeting)</li>
-  <li>DevStack</li>
-  <li>Tests run on all newly submitted changes</li>
-  <li>Code merges are gated on tests</li>
-  </ul>
+<h1>Consistent Tooling</h1>
+<ul>
+<li>Minimize meta-development</li>
+<li>Process divergence == wasted developer time</li>
+<li>Lowers onboarding time</li>
+<li>Consolidate tool development</li>
+<li>Minimize project-specific weird build crud</li>
+</ul>
 </div>
 
 <div class="slide">
@@ -265,15 +150,12 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   </ul>
 </div>
 
-
 <div class="slide">
 <h1>Everything Is Automated</h1>
 
 <center>
 <img src="images/status.png"/>
 </center>
-</div>
-
 </div>
 
 <div class="slide">
@@ -294,144 +176,76 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-<h1>Gerrit</h1>
-<center>
-<img style="margin-top:2em" src="images/gerrit.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Gerrit Diff View</h1>
-<center>
-<img style="margin-top:2em" src="images/gerrit-diff.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Bug Integration - Launchpad</h1>
-<center>
-<img style="margin-top:2em" src="images/lp-bug.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Approved Reviews</h1>
-<center>
-<img style="margin-top:2em"src="images/gerrit-approved.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Git Review</h1>
+<h1>States of a Patch</h1>
 <ul>
-<li>External Git subcommand</li>
-<li>Developers can easily incorporate code review into git workflow</li>
-<li>Zero-configuration</li>
-<li>Can be used for any project, being adopted by other projects</li>
-</ul>
-<pre>
-corvus@shiprock:~/git/neutron$ git commit -a
-[new-versionpy ddf1dce] Base version.py on glance.
- 3 files changed, 28 insertions(+), 107 deletions(-)
- delete mode 100644 version.py
-
-corvus@shiprock:~/git/neutron$ git review
-remote: Resolving deltas:   0% (0/3)
-remote: 
-remote: New Changes:
-remote:   https://review.openstack.org/3072
-remote: 
-To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
- * [new branch]      HEAD -> refs/for/master/bug/916018
-</pre>
-</div>
-
-<div class="slide">
-<h1>Types of Tests</h1>
-<ul>
-<li>Unit tests<ul>
-  <li>Should be run in virtual environments, may run in operating systems</li>
-  <li>Fairly quick and easy for a developer to run</li>
-</ul></li>
-<li>Integration tests<ul>
-  <li>May be able to run on virtual servers, should run on real servers</li>
-  <li>Difficult and time-consuming for a developer to run</li>
-</ul></li>
-</li>
+  <li>Code Submitted</li>
+  <li>Code Verified</li>
+  <li>Code Reviewed</li>
+  <li>Code Accepted</li>
+  <li>Code Merged</li>
 </ul>
 </div>
 
 <div class="slide">
-<h1>Specific Challenges/Solutions</h1>
+<h1>Types of Gerrit Triggers</h1>
 <ul>
-  <li>Testing effect of merging change</li>
-  <li>Using cloud builders</li>
-  <li>Large numbers of similar projects</li>
-  <li>Disparate hardware configurations</li>
-</ul>
-
-</div>
-
-<div class="slide">
-<h1>Gerrit Git Prep</h1>
-<ul>
-<li>Test the result of the change, not the change</li>
-<li>openstack-infra/config:modules/jenkins/files/slave_scripts/gerrit-git-prep.sh</li>
-<li>For each gerrit change:
-<ul>
-  <li>grabs target branch</li>
-  <li>cleans tree</li>
-  <li>merges change to be tested</li>
-</ul>
-</li>
+<li> Patchset uploaded </li>
+<li> Change merged </li>
+<li> Comment added (review state) </li>
+<li> Ref updated (branches, tags, etc) </li>
 </ul>
 </div>
 
 <div class="slide">
-<h1>Interrelated Integration Testing</h1>
-<ul>
-  <li>devstack-gate<ul>
-    <li>boot fresh servers</li>
-    <li>run DevStack</li>
-    <li>run integration tests</li>
-  </ul></li>
-  <li>Gate proposed change against current state of other projects</li>
-</ul>
+<h1>Job Feedback</h1>
+<img src="images/gerrit-jenkins.png"/>
 </div>
 
-<div class="slide">
-<h1>Devstack-Gate Problems</h1>
-<ul>
-  <li>Tests are slow</li>
-  <li>Cloud API calls can fail</li>
-  <li>External services are unreliable</li>
-</ul>
-</div>
 
 <div class="slide">
-<h1>Devstack-Gate Solutions</h1>
+<h1>Jenkins</h1>
+
+<p> Types of jobs: <p>
 <ul>
-  <li>Create a new node</li>
-  <li>Pre-fetch all needed packages, repos</li>
-  <li>Snapshot to cloud image</li>
-  <li>Maintain a pool of cloud nodes</li>
-  <li>Slave can only be used for one test run</li>
-  <li>Python and shell scripts run as jobs</li>
+  <li> Gate tests
+    <ul><li> unit tests </li>
+        <li> integraton tests </li>
+        <li> code style </li>
+    </ul>
+  </li>
+  <li> Post-merge automation
+    <ul><li> docs </li>
+        <li> tarballs </li>
+        <li> pypi </li>
+    </ul>
+  </li>
+  <li> Jobs under development
+    <ul><li> experimental </li>
+        <li> silent </li>
+        <li> non-voting </li>
+    </ul>
+  </li>
+  <li> Periodic jobs
+    <ul><li> bitrot checks </li>
+        <li> image updates </li>
+        <li> very long tests </li>
+    </ul>
 </ul>
+
 </div>
 
 <div class="slide">
 <h1>Zuul</h1>
 <ul>
   <li>A general purpose trunk gating system</li>
-  <li>Interfaces with Gerrit and Jenkins</li>
+  <li>Interfaces with Gerrit and Jenkins, or other systems</li>
   <li>Flexible configuration allows for many kinds of project automation</li>
   <li>Allows parallel testing of serialized changes</li>
 </ul>
 </div>
 
 <div class="slide">
-<h1>Bottlenecking</h1>
+<h1>Speculative Execution</h1>
 <ul>
   <li>Serialize changes across all projects</li>
   <li>Speculative execution of tests</li>
@@ -777,65 +591,130 @@ $(document).ready(function() {
     });  /* dom modified */
 });  /* document ready */
 
+
 </script>
 </div>
 
 <div class="slide">
-<h1>Zuul Check Pipeline</h1>
+<h1>Check Pipeline</h1>
 <pre>
 pipelines:
   - name: check
-    manager: IndependentQueueManager
+    manager: IndependentPipelineManager
+    precedence: low
     trigger:
-      - event: patchset-created
+      gerrit:
+        - event: patchset-created
     success:
-      verified: 1
+      gerrit:
+        verified: 1
     failure:
-      verified: -1
+      gerrit:
+        verified: -1
 </pre>
 </div>
 
 <div class="slide">
-<h1>Zuul Gate Pipeline</h1>
+<h1>Gate Pipeline</h1>
 <pre>
 pipelines:
   - name: gate
     manager: DependentPipelineManager
+    precedence: high
     trigger:
-      - event: comment-added
-        approval:
-          - approved: 1
+      gerrit:
+        - event: comment-added
+          approval:
+            - approved: 1
     start:
-      verified: 0
+      gerrit:
+        verified: 0
     success:
-      verified: 2
-      submit: true
+      gerrit:
+        verified: 2
+        submit: true
     failure:
-      verified: -2
+      gerrit:
+        verified: -2
 </pre>
 </div>
 
 <div class="slide">
-<h1>Zuul Post-Merge Pipeline</h1>
+<h1>Post-Merge Pipeline</h1>
 <pre>
 pipelines:
   - name: post
-    manager: IndependentQueueManager
+    manager: IndependentPipelineManager
     trigger:
-      - event: ref-updated
-        ref: ^(?!refs/.*).*$
+      gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/).*$
 </pre>
 </div>
 
 <div class="slide">
-<h1>Zuul Release Pipeline</h1>
+<h1>Experimental Pipeline</h1>
+<pre>
+pipelines:
+  - name: experimental
+    precedence: low
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment_filter: (?i)^\s*check experimental\s*$
+    success:
+      gerrit:
+        force-message: true
+    failure:
+      gerrit:
+        force-message: true
+</pre>
+</div>
+
+<div class="slide">
+<h1>Silent Pipeline</h1>
+<pre>
+pipelines:
+  - name: silent
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: patchset-created
+</pre>
+</div>
+
+<div class="slide">
+<h1>Release Pipelines</h1>
 <pre>
 pipelines:
   - name: release
     manager: IndependentPipelineManager
+    precedence: high
     trigger:
-      - event: ref-updated
-        ref: ^refs/tags/([0-9]+\.)+[0-9]+$
+      gerrit:
+        - event: ref-updated
+          ref: ^refs/tags/([0-9]+\.)+[0-9]+$
+
+  - name: pre-release
+    manager: IndependentPipelineManager
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^refs/tags/([0-9]+\.)+[0-9]*(alpha|beta|candidate|rc|a|b|c|r|g)[0-9]*$
+</pre>
+</div>
+
+<div class="slide">
+<h1>Periodic Pipeline</h1>
+<pre>
+  - name: periodic
+    description: Jobs in this queue are triggered on a timer.
+    manager: IndependentPipelineManager
+    precedence: low
+    trigger:
+      timer:
+        - time: '0 6 * * *'
 </pre>
 </div>
 
@@ -846,82 +725,110 @@ projects:
   - name: openstack/nova
     check:
       - gate-nova-pep8
-      - gate-nova-python26
+      - gate-nova-docs
       - gate-nova-python27
-      - gate-tempest-devstack-vm
+      - gate-tempest-devstack-vm-full
     gate:
       - gate-nova-pep8
-      - gate-nova-python26
+      - gate-nova-docs
       - gate-nova-python27
-      - gate-tempest-devstack-vm
+      - gate-tempest-devstack-vm-full
+    experimental:
+      - gate-devstack-vm-cells
+    silent:
+      - gate-tempest-devstack-vm-large-ops
     post:
       - nova-branch-tarball
+      - nova-coverage
       - nova-docs
       - nova-upstream-translation-update
+    pre-release:
+      - nova-tarball
     release:
       - nova-tarball
       - nova-docs
+    periodic:
+      - nova-propose-translation-update
+      - periodic-nova-python27-stable-folsom
+      - periodic-nova-python27-stable-grizzly
 </pre>
 </div>
 
 <div class="slide">
-<h1>Templated Jobs</h1>
+<h1>Zuul Change Queues</h1>
+
+<p> Projects with shared jobs automatically get a shared queue: </p>
+<pre>
+projects:
+  - name: openstack/nova
+    gate:
+      - gate-nova-python27
+      - gate-tempest-devstack-vm
+
+  - name: openstack/glance
+    gate:
+      - gate-glance-python27
+      - gate-tempest-devstack-vm
+</pre>
+</div>
+
+<div class="slide">
+<h1>Status View</h1>
+
+<center>
+<img src="images/status.png"/>
+</center>
+
+</div>
+
+<div class="slide">
+<h1>Launcher: Gearman</h1>
+
 <ul>
-  <li>TONS of consistent projects</li>
-  <li>Manage everything through Git and code review</li>
-  <!-- TODO: link to jjb documentation instead --><li><a href="https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins_jobs">https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins_jobs</a></li>
-  <li>Manage jobs as YAML files in Git</li>
-  <li>Jobs updated via Jenkins API</li>
-  <li>groupings of jobs supported</li>
+<li> Workers register with Gearman </li>
+<li> Zuul submits build requests to Gearman </li>
+<li> Gearman distributes jobs to workers </li>
+<li> Meta-jobs: 
+  <ul>     
+    <li> stop job </li>
+    <li> set description </li>
+  </ul>
+</li>
 </ul>
 </div>
 
 <div class="slide">
-<h1>Example Job</h1>
-<pre>
-- job:
-  name: gate-nova-pep8
+<h1>Triggers / Reporters</h1>
 
-  builders:
-    - gerrit_git_prep
-    - pep8
-
-  publishers:
-    - console-log
-</pre>
-</div>
-
-<div class="slide">
-<h1>Example Template</h1>
-<pre>
-- project:
-    name: nova
-    github-org: openstack
-    tarball-site: tarballs.openstack.org
-    doc-publisher-site: docs.openstack.org
-
-    jobs:
-      - python-jobs
-      - python-folsom-bitrot-jobs
-      - python-grizzly-bitrot-jobs
-      - openstack-publish-jobs
-      - gate-{name}-pylint
-      - translation-jobs
-</pre>
-</div>
-
-<div class="slide">
-<h1>Scaling Hardware Needs</h1>
 <ul>
-  <li>Different vendors have different combinations of configurations</li>
-  <li><a
-  href="http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way">http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way</a></li><!-- TODO: update this URL -->
-  <li>Run their own Jenkins</li>
-  <li>Consume Gerrit event stream</li>
-  <li>Their Jenkins votes VRFY +1/-1</li>
-  <li>Our Zuul votes VRFY +2/-2</li>
-  <li>They can run their lab - we don't have to know anything about it</li>
+  <li>Gerrit trigger/reporter</li>
+  <li>Periodic trigger</li>
+  <li>SMTP reporter</li>
+  <li>Others in future</li>
 </ul>
+</div>
+
+<div class="slide">
+<h1>Development / Contributing</h1>
+
+<ul>
+<li>Launchpad: 
+  <a href="https://launchpad.net/zuul">https://launchpad.net/zuul</a>
+</li>
+<li>Git: 
+  <a href="https://git.openstack.org/cgit/openstack-infra/zuul">
+    https://git.openstack.org/cgit/openstack-infra/zuul</a>
+</li>
+<li>Docs:
+  <a href="http://ci.openstack.org/zuul/">http://ci.openstack.org/zuul/</a>
+<li>Freenode: #openstack-infra</li>
+<li>Mailing list:
+  <a href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra">
+    http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra
+  </a>
+</li>
+</ul>
+
 </div>
 
 <div class="slide">
@@ -930,7 +837,7 @@ projects:
 <p><img src="images/stack-o-pancakes-150x150.png"/>
 
 <p>
-These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>
+These slides available at: <a href="http://docs.openstack.org/infra/publications/zuul/">https://github.com/openstack-ci/publications</a>
 </p>
 
 </div>

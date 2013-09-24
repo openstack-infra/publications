@@ -47,6 +47,8 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     &lt;<a href="mailto:jeblair@openstack.org">jeblair@openstack.org</a>&gt;</div>
   <div class="smaller">Jeremy Stanley
     &lt;<a href="mailto:fungi@yuggoth.org">fungi@yuggoth.org</a>&gt;</div>
+  <div class="smaller">Clark Boylan
+    &lt;<a href="mailto:cboylan@sapwetik.org">cboylan@sapwetik.org</a>&gt;</div>
 </div>
 
 <div class="slide">
@@ -74,6 +76,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
       <li>horizon (dashboard)</li>
       <li class="gray">trove (databases)</li>
       <li class="gray">ironic (bare metal)</li>
+      <li class="gray">marconi (message queueing)</li>
     </ul></li>
   </ul></div>
   <div style="float:left;width:50%"><ul>
@@ -89,6 +92,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
       <li>python-openstackclient</li>
       <li class="gray">python-troveclient</li>
       <li class="gray">python-ironicclient</li>
+      <li class="gray">python-marconiclient</li>
     </ul></li>
   </ul></div>
   <div class="indent"><a href="https://wiki.openstack.org/wiki/Projects">https://wiki.openstack.org/wiki/Projects</a></div>
@@ -233,7 +237,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 <h1>Development Environment</h1>
   <ul>
   <li>Python<ul>
-    <li>CentOS (2.6), Ubuntu LTS (2.7), Fedora (3.3)</li>
+    <li>CentOS (2.6), Ubuntu LTS (2.7, 3.3, pypy)</li>
     <li>PEP-8 standards</li>
     <li>Oslo (common libraries)</li>
     <li>virtualenv/pip/tox</li>
@@ -417,6 +421,7 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
   <li>Maintain a pool of cloud nodes</li>
   <li>Slave can only be used for one test run</li>
   <li>Python and shell scripts run as jobs</li>
+  <li>Partition tests and run them in parallel</li>
 </ul>
 </div>
 
@@ -869,7 +874,7 @@ projects:
 <ul>
   <li>TONS of consistent projects</li>
   <li>Manage everything through Git and code review</li>
-  <!-- TODO: link to jjb documentation instead --><li><a href="https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins_jobs">https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins_jobs</a></li>
+  <li><a href="http://ci.openstack.org/jenkins-job-builder/">Jenkins Job Builder</a></li>
   <li>Manage jobs as YAML files in Git</li>
   <li>Jobs updated via Jenkins API</li>
   <li>groupings of jobs supported</li>

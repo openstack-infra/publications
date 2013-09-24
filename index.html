@@ -786,61 +786,27 @@ $(document).ready(function() {
 </div>
 
 <div class="slide">
-<h1>Zuul Check Pipeline</h1>
-<pre>
-pipelines:
-  - name: check
-    manager: IndependentQueueManager
-    trigger:
-      - event: patchset-created
-    success:
-      verified: 1
-    failure:
-      verified: -1
-</pre>
-</div>
-
-<div class="slide">
 <h1>Zuul Gate Pipeline</h1>
 <pre>
 pipelines:
   - name: gate
     manager: DependentPipelineManager
+    precedence: high
     trigger:
-      - event: comment-added
-        approval:
-          - approved: 1
+      gerrit:
+        - event: comment-added
+          approval:
+            - approved: 1
     start:
-      verified: 0
+      gerrit:
+        verified: 0
     success:
-      verified: 2
-      submit: true
+      gerrit:
+        verified: 2
+        submit: true
     failure:
-      verified: -2
-</pre>
-</div>
-
-<div class="slide">
-<h1>Zuul Post-Merge Pipeline</h1>
-<pre>
-pipelines:
-  - name: post
-    manager: IndependentQueueManager
-    trigger:
-      - event: ref-updated
-        ref: ^(?!refs/.*).*$
-</pre>
-</div>
-
-<div class="slide">
-<h1>Zuul Release Pipeline</h1>
-<pre>
-pipelines:
-  - name: release
-    manager: IndependentPipelineManager
-    trigger:
-      - event: ref-updated
-        ref: ^refs/tags/([0-9]+\.)+[0-9]+$
+      gerrit:
+        verified: -2
 </pre>
 </div>
 
@@ -882,22 +848,24 @@ projects:
 </div>
 
 <div class="slide">
-<h1>Example Job</h1>
+<h1>Example Job Template</h1>
 <pre>
-- job:
-  name: gate-nova-pep8
+- job-template:
+    name: 'gate-{name}-pep8'
 
-  builders:
-    - gerrit_git_prep
-    - pep8
+    builders:
+      - gerrit-git-prep
+      - pep8:
+          github-org: '{github-org}'
+          project: '{name}'
 
-  publishers:
-    - console-log
+    publishers:
+      - console-log
 </pre>
 </div>
 
 <div class="slide">
-<h1>Example Template</h1>
+<h1>Apply Template</h1>
 <pre>
 - project:
     name: nova
@@ -907,12 +875,23 @@ projects:
 
     jobs:
       - python-jobs
-      - python-folsom-bitrot-jobs
-      - python-grizzly-bitrot-jobs
-      - openstack-publish-jobs
-      - gate-{name}-pylint
+      - gate-{name}-pep8
       - translation-jobs
 </pre>
+</div>
+
+<div class="slide">
+<h1>Logs</h1>
+<ul>
+  <li>Massive amount of logs generated<ul>
+    <li>Terabytes of compressed logs per development cycle</li>
+  </ul></li>
+  <li>Filtered and normalized by LogStash</li>
+  <li>Recent logs indexed by ElasticSearch<ul>
+    <li>Searchable through Kibana and ElasticSearch API</li>
+  </ul></li>
+  <li>Driving automatic failure classification</li>
+</ul>
 </div>
 
 <div class="slide">

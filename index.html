@@ -495,6 +495,24 @@ function Change(paper, name, number, x, y, delay)
 	    1000).delay(500));
     }
 
+    this.move = function(x, y, delay)
+    {
+        var width = this.text.getBBox().width+16;
+        var height = this.text.getBBox().height+12;
+        this.x = x;
+        this.y = y;
+        this.left = x-width/2;
+        this.right = x+width/2;
+        this.top = y-height/2;
+        this.bottom = y+height/2;
+
+        this.text.animate(Raphael.animation(
+            {x: x, y: y}, 500, 'linear').delay(delay));
+        this.rect.animate(Raphael.animation(
+            {x: this.left, y: this.top},
+            500, 'linear').delay(delay));
+    }
+
     this.provisionalResult = function(success)
     {
 	if (success)
@@ -639,6 +657,20 @@ function TestSeries(paper, change, tests)
 	var remove = function () { set.remove(); };
 	this.set.animate({opacity: 0}, 2000, 'linear', remove);
     }
+
+    this.move = function (delay)
+    {
+        var old_x = this.x;
+        var old_y = this.y;
+        this.x = change.x - 20;
+        this.y = change.bottom + 6;
+        var dX = this.x - old_x;
+        var dY = this.y - old_y;
+        this.set.forEach(function (line) {
+            line.animate(Raphael.animation(
+                {transform: 't' + dX + ',' + dY}, 500, 'linear').delay(delay));
+        });
+    }
 }
 
 var zuul_simulation = {
@@ -709,51 +741,65 @@ var zuul_simulation = {
             change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 0]]);
         }
         if (this.state == 4) {
+            change4_test.hide();
+            dep43.hide();
+        }
+        if (this.state == 5) {
+            dep32.hide();
+            change3.move(180, 80, 200);
+            change3_test.move(change3, 200);
+            dep32 = new Dependency(this.paper, change3, change2, 1000);
+        }
+        if (this.state == 6) {
+            change4.hide();
+
+            change4 = new Change(this.paper, 'nova', '4', 40, 40, 1000);
+            dep42 = new Dependency(this.paper, change4, change2, 1000);
+        }
+        if (this.state == 7) {
+            change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 1]]);
+        }
+        if (this.state == 8) {
             change1_test.hide();
             change1.result(1);
         }
-        if (this.state == 5) {
+        if (this.state == 9) {
             change1.merge(480, 290);
             dep21.hide();
             setTimeout(function() { 
                 nova_line.attr({path: linePath(490, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
-        if (this.state == 6) {
+        if (this.state == 10) {
             change2_test.hide();
             change2.result(1);
         }
-        if (this.state == 7) {
+        if (this.state == 11) {
             change2.merge(450, 290);
             dep32.hide();
+            dep42.hide();
             setTimeout(function() { 
                 nova_line.attr({path: linePath(460, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
-        if (this.state == 8) {
+        if (this.state == 12) {
             change3_test.hide();
             change3.result(0);
         }
-        if (this.state == 9) {
-            change4.reset();
-            change4_test.hide();
+        if (this.state == 13) {
             change3.hide();
-            dep43.hide();
         }
-        if (this.state == 10) {
-            change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 1]]);
-        }
-        if (this.state == 11) {
+        if (this.state == 14) {
             change4_test.hide();
             change4.result(1);
         }
-        if (this.state == 12) {
+        if (this.state == 15) {
             change4.merge(420, 290);
             setTimeout(function() { 
                 nova_line.attr({path: linePath(430, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
-        if (this.state == 13) {
+        if (this.state == 16) {
             this.finished = true;
         }
     },

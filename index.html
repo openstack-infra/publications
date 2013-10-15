@@ -16,8 +16,6 @@
 <script src="scripts/slidy.js" charset="utf-8" type="text/javascript"></script>
 <script src="scripts/jquery-1.7.2.min.js" charset="utf-8" type="text/javascript">
 </script>
-<script src="scripts/jquery-watch.js" charset="utf-8" type="text/javascript">
-</script>
 <script src="scripts/raphael-min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
@@ -678,10 +676,12 @@ var zuul_simulation = {
     paper: null,
     state: 0,
     finished: false,
+    running: false,
 
     setup: function()
     {
         this.paper = Raphael(200, 200, 760, 400);
+        this.running = true;
         this.finished = false;
         this.state = 0;
     },
@@ -693,6 +693,7 @@ var zuul_simulation = {
             this.paper = null;
         }
         this.finished = true;
+        this.running = false;
     },
 
     next: function()
@@ -807,25 +808,32 @@ var zuul_simulation = {
 
 
 $(document).ready(function() {
-    $("#zuul").bind("DOMSubtreeModified", function() {
-        if ($(this).hasClass("hidden")) {
-            $("#zuul").unbind('click');
-            w3c_slidy.mouse_click_enabled = true;
-            zuul_simulation.teardown();
-        } else {
-            zuul_simulation.setup();
-            zuul_simulation.next();
-            w3c_slidy.mouse_click_enabled = false;
-            $("#zuul").bind('click', function() {
+    w3c_slidy.zuul_orig_show_slide = w3c_slidy.show_slide;
+    var show_slide = function (slide) {
+        w3c_slidy.zuul_orig_show_slide(slide);
+        if ($("#zuul")[0] === slide) {
+            if (!zuul_simulation.running) {
+                zuul_simulation.setup();
                 zuul_simulation.next();
+                w3c_slidy.mouse_click_enabled = false;
+                $("#zuul").bind('click', function() {
+                    zuul_simulation.next();
 
-                if (zuul_simulation.finished) {
-                    $("#zuul").unbind('click');
-                    w3c_slidy.mouse_click_enabled = true;
-                }
-            });
+                    if (zuul_simulation.finished) {
+                        $("#zuul").unbind('click');
+                        w3c_slidy.mouse_click_enabled = true;
+                    }
+                });
+           }
+        } else {
+            if (zuul_simulation.running) {
+                $("#zuul").unbind('click');
+                w3c_slidy.mouse_click_enabled = true;
+                zuul_simulation.teardown();
+            }
         }
-    });  /* dom modified */
+    };
+    w3c_slidy.show_slide = show_slide;
 });  /* document ready */
 
 </script>

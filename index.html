@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Scaling OpenStack Development: Continuous Integration Overview</title>
+<title>Multiple Jenkins Masters with Gearman Jenkins Plugin</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -38,25 +38,41 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Scaling OpenStack Development<br />
-  <span class="smaller">Continuous Integration Overview</span></h1>
+  <h1>Multiple Jenkins Masters<br />
+  <span class="smaller">with Jenkins Gearman Plugin</span></h1>
   <hr />
-  <div class="smaller">Monty Taylor
-    &lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;</div>
-  <div class="smaller">James E. Blair
-    &lt;<a href="mailto:jeblair@openstack.org">jeblair@openstack.org</a>&gt;</div>
-  <div class="smaller">Jeremy Stanley
-    &lt;<a href="mailto:fungi@yuggoth.org">fungi@yuggoth.org</a>&gt;</div>
+  <div class="smaller">Khai Do
+    &lt;<a href="mailto:zaro0508@gmail.com">zaro0508@gmail.com</a>&gt;</div>
+</div>
+
+<div class="slide">
+  <h1>Gearman Plugin</h1>
+  <div style="float:left;width:50%"><ul>
+    <li>Openstack Infrastructure<li>
+    <li>Motivation<li>
+    <li>How It Works<li>
+    <li>Demo<li>
+    <li>In Production<li>
+  </div>
+</div>
+
+<div class="slide">
+<h1>Gearman</h1>
+
+<center>
+<img src="images/GearmanOverview.gif"/>
+</center>
+<h3>
+Gearman is a distributed framework that farms out work to machines that are suited to do the work
+</h3>
 </div>
 
 <div class="slide">
 <h1>OpenStack</h1>
-
-<p>Is open source software for building private and public clouds.</p>
-
 <center>
 <img src="images/openstack-software-diagram.png"/>
 </center>
+<h3>Openstack is open source software for building private and public clouds</h3>
 </div>
 
 <div class="slide">
@@ -72,8 +88,8 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
       <li>heat (orchestration)</li>
       <li>ceilometer (measurement)</li>
       <li>horizon (dashboard)</li>
-      <li class="gray">trove (databases)</li>
-      <li class="gray">ironic (bare metal)</li>
+      <li>trove (databases)</li>
+      <li>ironic (bare metal)</li>
     </ul></li>
   </ul></div>
   <div style="float:left;width:50%"><ul>
@@ -87,56 +103,11 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
       <li>python-heatclient</li>
       <li>python-ceilometerclient</li>
       <li>python-openstackclient</li>
-      <li class="gray">python-troveclient</li>
-      <li class="gray">python-ironicclient</li>
+      <li>python-troveclient</li>
+      <li>python-ironicclient</li>
     </ul></li>
   </ul></div>
   <div class="indent"><a href="https://wiki.openstack.org/wiki/Projects">https://wiki.openstack.org/wiki/Projects</a></div>
-</div>
-
-<div class="slide">
-  <h1>Programs/Horizontal Efforts</h1>
-  <div style="float:left;width:50%"><ul>
-    <li>Documentation<ul>
-      <li>installation guides</li>
-      <li>operations manuals</li>
-      <li>API references</li>
-      <li>howtos and tutorials</li>
-    </ul></li>
-    <li>Infrastructure<ul>
-      <li>continuous integration systems</li>
-      <li>developer community resources</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:50%"><ul>
-    <li>Oslo<ul>
-      <li>common libraries</li>
-      <li>copied code incubation</li>
-    </ul></li>
-    <li>Quality Assurance<ul>
-      <li>integration testing</li>
-      <li>upgrade testing</li>
-    </ul></li>
-    <li>Release Management</li>
-    <li>Translation/Internationalization</li>
-    <li>Vulnerability Management</li>
-  </ul></div>
-</div>
-
-<div class="slide">
-  <h1>Release Management</h1>
-  <ul>
-    <li>Time Based Releases</li>
-    <li>Six Month Cadence<ul>
-      <li>Similar to Ubuntu and Fedora Release Schedules</li>
-    </ul>
-    <li>Design summits each cycle</li>
-    <li>Continuously Open Trunk<ul>
-      <li>Develop directly on master</li>
-    </ul>
-    <li>Intra-Cycle Milestone Releases</li>
-    <li>Post-Release Stable Branches</li>
-  </ul>
 </div>
 
 <div class="slide">
@@ -148,109 +119,54 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Nonprofit organizations</li>
     <li>National and local governments</li>
     <li>Number, quality, and area of contributions can change daily</li>
+    <li><font color="red">~700 active contributors</font></li>
   </ul>
 </div>
 
 <div class="slide">
-  <h1>Consistent Tooling</h1>
-  <ul>
-    <li>Minimize meta-development</li>
-    <li>Process divergence == wasted developer time</li>
-    <li>Lowers onboarding time</li>
-    <li>Consolidate tool development</li>
-    <li>Minimize project-specific weird build crud</li>
-  </ul>
-</div>
+<h1>Jenkins Jobs (per day)</h1>
 
-<div class="slide">
-  <h1>Developer Infrastructure</h1>
-  <small>
-  <div style="float:left;width:33%"><ul>
-    <li>Code review and VCS<ul>
-      <li>Gerrit</li>
-      <li>Git</li>
-      <li>git-review</li>
-      <li>reviewday</li>
-    </ul></li>
-    <li>Test/build automation<ul>
-      <li>devstack-gate</li>
-      <li>Jenkins</li>
-      <li>JJB</li>
-      <li>Zuul</li>
-    </ul></li>
-    <li>Repository mirrors<ul>
-      <li>Apache</li>
-      <li>Cgit</li>
-      <li>GitHub</li>
-      <li>PyPI packages</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:33%"><ul>
-    <li>Job logs, artifacts<ul>
-      <li>logs site</li>
-      <li>Logstash</li>
-    </ul></li>
-    <li>Documentation/publication<ul>
-      <li>Sphinx</li>
-      <li>Wiki</li>
-    </ul></li>
-    <li>Releases/pre-releases<ul>
-      <li>PyPI uploads</li>
-      <li>tarballs</li>
-    </ul></li>
-    <li>IRC<ul>
-      <li>eavesdrop</li>
-      <li>gerritbot</li>
-      <li>meetbot</li>
-      <li>statusbot</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:33%"><ul>
-    <li>Project blogs<ul>
-      <li>Foundation</li>
-      <li>Planet</li>
-    </ul></li>
-    <li>Collaboration<ul>
-      <li>Mailing lists</li>
-      <li>Lodgeit paste</li>
-      <li>Etherpad</li>
-    </ul></li>
-    <li>Authentication<ul>
-      <li>CLA</li>
-      <li>membership</li>
-      <li>Launchpad SSO</li>
-    </ul></li>
-    <li>Feature/bug tracking<ul>
-      <li>LP blueprints</li>
-      <li>LP bugs</li>
-    </ul></li>
-    <!-- TODO: add transifex? -->
-  </ul></div>
-  </small>
-</div>
-
-<div class="slide">
-<h1>Development Environment</h1>
-  <ul>
-  <li>Python<ul>
-    <li>CentOS (2.6), Ubuntu LTS (2.7), Fedora (3.3)</li>
-    <li>PEP-8 standards</li>
-    <li>Oslo (common libraries)</li>
-    <li>virtualenv/pip/tox</li>
-  </ul></li>
-  <li>Freenode IRC (#openstack-dev, #openstack-meeting)</li>
-  <li>DevStack</li>
-  <li>Tests run on all newly submitted changes</li>
-  <li>Code merges are gated on tests</li>
-  </ul>
-</div>
-
-<div class="slide">
-<h1>Project Gating</h1>
-  <img style="float:right; margin-right:24pt" src="images/jobs-launched.png"/>
+<center>
+<img style="float:center; margin-right:24pt" src="images/jobs_per_day_-7days_oct1st.png"/>
   <!--
-  http://graphite.openstack.org/render/?from=00%3A00_20130601&fgcolor=000000&title=Jobs%20Launched%20%28per%20Day%29&_t=0.7862690862083328&height=300&bgcolor=ffffff&width=400&showTarget=alias%28summarize%28sumSeries%28stats_counts.zuul.job.*%29%2C%271h%27%29%2C%27All%20Jobs%27%29&_salt=1373041766.855&target=alias%28summarize%28sumSeries%28stats_counts.zuul.job.*%29%2C%271d%27%29%2C%27All%20Jobs%27%29&until=23%3A59_20130630
+  http://graphite.openstack.org/render/?from=-7days&height=480&until=now&width=1000&bgcolor=ffffff&fgcolor=000000&target=alias%28summarize%28sumSeries%28stats_counts.zuul.pipeline.*.all_jobs%29,%271d%27%29,%27All%20Jobs%27%29&title=Zuul%20Jobs%20Launched%20%28per%20Day%29&_t=0.5028505692646073  
   -->
+</center>
+</div>
+
+<div class="slide">
+<h1>Jenkins Slaves</h1>
+
+<center>
+<img style="float:center; margin-right:24pt" src="images/nodes_inuse_per_day_-7days_oct1st.png"/>
+  <!--
+  graphite.openstack.org/render/?from=-7d&height=480&until=now&width=1000&bgcolor=ffffff&fgcolor=000000&areaMode=stacked&target=color(alias(sumSeries(stats.gauges.nodepool.target.*.*.*.used), 'In Use'), '6464ff')&title=Test Nodes&_t=0.5728074144568939#1380649152056
+  -->
+</center>
+</div>
+
+<div class="slide">
+  <h1>Openstack CI Tools</h1>
+  <div><ul>
+    <li>Code review and VCS<ul>
+      <li>Git (SCM)</li>
+      <li>Gerrit (Code Review)</li>
+    </ul></li>
+    <li>Test/Build automation<ul>
+      <li>Jenkins (CI)</li>
+      <li>Jenkins Job Builder (CI project creator)</li>
+      <li>Zuul (CI gate keeper)</li>
+      <li>Gearman (CI gate keeper)</li>
+      <li>Nodepool (Cloud VM manager)</li>
+      <li>Devstack (Cloud Test VMs)</li>
+      <li>LogStash (Build/Test log indexer)</li>
+    </ul></li>
+  </ul></div>
+</div>
+
+<div class="slide">
+<h1>Zuul for Preemptive CI</h1>
+  <h2><a href="http://www.youtube.com/watch?v=5wwKjdvPxa8?autoplay=1&rel=1&modestbranding=1&showsearch=0">James Blair @JUC 2012</a></h2>
   <ul>
   <li>Ensures Code Quality</li>
   <li>Protects developers<ul>
@@ -263,182 +179,6 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Process is automated</li>
   </ul></ul>
   </ul>
-</div>
-
-
-<div class="slide">
-<h1>Everything Is Automated</h1>
-
-<center>
-<img src="images/status.png"/>
-</center>
-</div>
-
-</div>
-
-<div class="slide">
-<h1>Process Flow</h1>
-<center>
-<img src="images/contribution-path.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Gerrit</h1>
-<ul>
-<li>Developed by Google for Android</li>
-<li>Stand-alone patch review system</li>
-<li>Integration points: hooks, JSON queries, event-stream</li>
-<li>Extensible review categories, default: Verified, Code-Review</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Gerrit</h1>
-<center>
-<img style="margin-top:2em" src="images/gerrit.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Gerrit Diff View</h1>
-<center>
-<img style="margin-top:2em" src="images/gerrit-diff.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Bug Integration - Launchpad</h1>
-<center>
-<img style="margin-top:2em" src="images/lp-bug.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Approved Reviews</h1>
-<center>
-<img style="margin-top:2em"src="images/gerrit-approved.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Git Review</h1>
-<ul>
-<li>External Git subcommand</li>
-<li>Developers can easily incorporate code review into git workflow</li>
-<li>Zero-configuration</li>
-<li>Can be used for any project, being adopted by other projects</li>
-</ul>
-<pre>
-corvus@shiprock:~/git/neutron$ git commit -a
-[new-versionpy ddf1dce] Base version.py on glance.
- 3 files changed, 28 insertions(+), 107 deletions(-)
- delete mode 100644 version.py
-
-corvus@shiprock:~/git/neutron$ git review
-remote: Resolving deltas:   0% (0/3)
-remote: 
-remote: New Changes:
-remote:   https://review.openstack.org/3072
-remote: 
-To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
- * [new branch]      HEAD -> refs/for/master/bug/916018
-</pre>
-</div>
-
-<div class="slide">
-<h1>Types of Tests</h1>
-<ul>
-<li>Unit tests<ul>
-  <li>Should be run in virtual environments, may run in operating systems</li>
-  <li>Fairly quick and easy for a developer to run</li>
-</ul></li>
-<li>Integration tests<ul>
-  <li>May be able to run on virtual servers, should run on real servers</li>
-  <li>Difficult and time-consuming for a developer to run</li>
-</ul></li>
-</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Specific Challenges/Solutions</h1>
-<ul>
-  <li>Testing effect of merging change</li>
-  <li>Using cloud builders</li>
-  <li>Large numbers of similar projects</li>
-  <li>Disparate hardware configurations</li>
-</ul>
-
-</div>
-
-<div class="slide">
-<h1>Gerrit Git Prep</h1>
-<ul>
-<li>Test the result of the change, not the change</li>
-<li>openstack-infra/config:modules/jenkins/files/slave_scripts/gerrit-git-prep.sh</li>
-<li>For each gerrit change:
-<ul>
-  <li>grabs target branch</li>
-  <li>cleans tree</li>
-  <li>merges change to be tested</li>
-</ul>
-</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Interrelated Integration Testing</h1>
-<ul>
-  <li>devstack-gate<ul>
-    <li>boot fresh servers</li>
-    <li>run DevStack</li>
-    <li>run integration tests</li>
-  </ul></li>
-  <li>Gate proposed change against current state of other projects</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Devstack-Gate Problems</h1>
-<ul>
-  <li>Tests are slow</li>
-  <li>Cloud API calls can fail</li>
-  <li>External services are unreliable</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Devstack-Gate Solutions</h1>
-<ul>
-  <li>Create a new node</li>
-  <li>Pre-fetch all needed packages, repos</li>
-  <li>Snapshot to cloud image</li>
-  <li>Maintain a pool of cloud nodes</li>
-  <li>Slave can only be used for one test run</li>
-  <li>Python and shell scripts run as jobs</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Zuul</h1>
-<ul>
-  <li>A general purpose trunk gating system</li>
-  <li>Interfaces with Gerrit and Jenkins</li>
-  <li>Flexible configuration allows for many kinds of project automation</li>
-  <li>Allows parallel testing of serialized changes</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Bottlenecking</h1>
-<ul>
-  <li>Serialize changes across all projects</li>
-  <li>Speculative execution of tests</li>
-  <li>Run in parallel in order triggered</li>
-  <li>Assume success</li>
-  <li>Start over on failure</li>
-</ul>
 </div>
 
 <div class="slide" id="zuul">
@@ -490,6 +230,24 @@ function Change(paper, name, number, x, y, delay)
 	    1000).delay(500));
     }
 
+    this.move = function(x, y, delay)
+    {
+        var width = this.text.getBBox().width+16;
+        var height = this.text.getBBox().height+12;
+        this.x = x;
+        this.y = y;
+        this.left = x-width/2;
+        this.right = x+width/2;
+        this.top = y-height/2;
+        this.bottom = y+height/2;
+
+        this.text.animate(Raphael.animation(
+            {x: x, y: y}, 500, 'linear').delay(delay));
+        this.rect.animate(Raphael.animation(
+            {x: this.left, y: this.top},
+            500, 'linear').delay(delay));
+    }
+
     this.provisionalResult = function(success)
     {
 	if (success)
@@ -527,7 +285,7 @@ function Dependency(paper, source, target, delay)
     this.set = paper.set();
     this.source = source;
     this.target = target;
-    
+
     startx = this.source.right + 8;
     starty = this.source.y;
     tipx = this.target.left - 8;
@@ -578,11 +336,11 @@ function TestSeries(paper, change, tests)
 	    height = len;
 	}
     }
-    
+
     this.width = (1+10*tests.length)
     this.height = offset + height + 10;
     this.set = paper.set();
-    
+
     startpath = "M" + this.x + "," + this.y;
     line = paper.path(startpath+"l0," + offset);
     this.set.push(line);
@@ -606,7 +364,7 @@ function TestSeries(paper, change, tests)
 	curx = curx + 10;
 	line = paper.path("M" + curx + "," + cury + "l0," + len);
 	this.set.push(line);
-	line = paper.path("M" + curx + "," + cury + "m0," + len + 
+	line = paper.path("M" + curx + "," + cury + "m0," + len +
 			  "l0," + (this.height-offset-len));
 	this.set.push(line);
 	line.attr("stroke-dasharray", "-");
@@ -634,6 +392,20 @@ function TestSeries(paper, change, tests)
 	var remove = function () { set.remove(); };
 	this.set.animate({opacity: 0}, 2000, 'linear', remove);
     }
+
+    this.move = function (delay)
+    {
+        var old_x = this.x;
+        var old_y = this.y;
+        this.x = change.x - 20;
+        this.y = change.bottom + 6;
+        var dX = this.x - old_x;
+        var dY = this.y - old_y;
+        this.set.forEach(function (line) {
+            line.animate(Raphael.animation(
+                {transform: 't' + dX + ',' + dY}, 500, 'linear').delay(delay));
+        });
+    }
 }
 
 var zuul_simulation = {
@@ -641,10 +413,12 @@ var zuul_simulation = {
     paper: null,
     state: 0,
     finished: false,
+    running: false,
 
     setup: function()
     {
         this.paper = Raphael(200, 200, 760, 400);
+        this.running = true;
         this.finished = false;
         this.state = 0;
     },
@@ -656,6 +430,7 @@ var zuul_simulation = {
             this.paper = null;
         }
         this.finished = true;
+        this.running = false;
     },
 
     next: function()
@@ -671,7 +446,7 @@ var zuul_simulation = {
             nova_label.attr({x:this.paper.width-(nova_label.getBBox().width/2)-10});
             nova_end = [(this.paper.width-nova_label.getBBox().width-16), 300];
             nova_line = this.paper.path(linePath(520, 300, nova_end[0], nova_end[1]))
-                                        
+
             nova_line.attr({"stroke-width": 2, fill: "#000", stroke: "#000"});
             nova_head = this.paper.circle(520, 300, 9);
             nova_head.attr({fill: "#5069c9", stroke:"#5069c9"});
@@ -704,51 +479,65 @@ var zuul_simulation = {
             change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 0]]);
         }
         if (this.state == 4) {
+            change4_test.hide();
+            dep43.hide();
+        }
+        if (this.state == 5) {
+            dep32.hide();
+            change3.move(180, 80, 200);
+            change3_test.move(change3, 200);
+            dep32 = new Dependency(this.paper, change3, change2, 1000);
+        }
+        if (this.state == 6) {
+            change4.hide();
+
+            change4 = new Change(this.paper, 'nova', '4', 40, 40, 1000);
+            dep42 = new Dependency(this.paper, change4, change2, 1000);
+        }
+        if (this.state == 7) {
+            change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 1]]);
+        }
+        if (this.state == 8) {
             change1_test.hide();
             change1.result(1);
         }
-        if (this.state == 5) {
+        if (this.state == 9) {
             change1.merge(480, 290);
             dep21.hide();
-            setTimeout(function() { 
+            setTimeout(function() {
                 nova_line.attr({path: linePath(490, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
-        if (this.state == 6) {
+        if (this.state == 10) {
             change2_test.hide();
             change2.result(1);
         }
-        if (this.state == 7) {
+        if (this.state == 11) {
             change2.merge(450, 290);
             dep32.hide();
-            setTimeout(function() { 
+            dep42.hide();
+            setTimeout(function() {
                 nova_line.attr({path: linePath(460, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
-        if (this.state == 8) {
+        if (this.state == 12) {
             change3_test.hide();
             change3.result(0);
         }
-        if (this.state == 9) {
-            change4.reset();
-            change4_test.hide();
+        if (this.state == 13) {
             change3.hide();
-            dep43.hide();
         }
-        if (this.state == 10) {
-            change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 1]]);
-        }
-        if (this.state == 11) {
+        if (this.state == 14) {
             change4_test.hide();
             change4.result(1);
         }
-        if (this.state == 12) {
+        if (this.state == 15) {
             change4.merge(420, 290);
-            setTimeout(function() { 
+            setTimeout(function() {
                 nova_line.attr({path: linePath(430, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
-        if (this.state == 13) {
+        if (this.state == 16) {
             this.finished = true;
         }
     },
@@ -756,172 +545,125 @@ var zuul_simulation = {
 
 
 $(document).ready(function() {
-    $("#zuul").bind("DOMSubtreeModified", function() {
-        if ($(this).hasClass("hidden")) {
-            $("#zuul").unbind('click');
-            w3c_slidy.mouse_click_enabled = true;
-            zuul_simulation.teardown();
-        } else {
-            zuul_simulation.setup();
-            zuul_simulation.next();
-            w3c_slidy.mouse_click_enabled = false;
-            $("#zuul").bind('click', function() {
+    w3c_slidy.zuul_orig_show_slide = w3c_slidy.show_slide;
+    var show_slide = function (slide) {
+        w3c_slidy.zuul_orig_show_slide(slide);
+        if ($("#zuul")[0] === slide) {
+            if (!zuul_simulation.running) {
+                zuul_simulation.setup();
                 zuul_simulation.next();
+                w3c_slidy.mouse_click_enabled = false;
+                $("#zuul").bind('click', function() {
+                    zuul_simulation.next();
 
-                if (zuul_simulation.finished) {
-                    $("#zuul").unbind('click');
-                    w3c_slidy.mouse_click_enabled = true;
-                }
-            });
+                    if (zuul_simulation.finished) {
+                        $("#zuul").unbind('click');
+                        w3c_slidy.mouse_click_enabled = true;
+                    }
+                });
+           }
+        } else {
+            if (zuul_simulation.running) {
+                $("#zuul").unbind('click');
+                w3c_slidy.mouse_click_enabled = true;
+                zuul_simulation.teardown();
+            }
         }
-    });  /* dom modified */
+    };
+    w3c_slidy.show_slide = show_slide;
 });  /* document ready */
 
 </script>
 </div>
 
 <div class="slide">
-<h1>Zuul Check Pipeline</h1>
-<pre>
-pipelines:
-  - name: check
-    manager: IndependentQueueManager
-    trigger:
-      - event: patchset-created
-    success:
-      verified: 1
-    failure:
-      verified: -1
-</pre>
+<h1>Architecture (Before)</h1>
+
+<center>
+<img src="images/infra-before.png"/>
+</center>
 </div>
 
 <div class="slide">
-<h1>Zuul Gate Pipeline</h1>
-<pre>
-pipelines:
-  - name: gate
-    manager: DependentPipelineManager
-    trigger:
-      - event: comment-added
-        approval:
-          - approved: 1
-    start:
-      verified: 0
-    success:
-      verified: 2
-      submit: true
-    failure:
-      verified: -2
-</pre>
+<h1>Architecture (Before)</h1>
+
+<center>
+<img src="images/infra-problems.png"/>
+</center>
+</div>
+
+<h1>Architecture (Now)</h1>
+
+<center>
+<img src="images/infra-now.png"/>
+</center>
+</div>
+
+<!--
+<div class="slide">
+<h1>Gearman</h1>
+
+<center>
+<img src="images/GearmanOverview.gif"/>
+</center>
+<h3>
+Gearman is a distributed framework that farms out work to machines that are suited to do the work
+</h3>
+</div>
+-->
+
+<div class="slide">
+<h1>Gearman Workflow</h1>
+<center>
+<img src="images/gearman-flow1.png"/>
+</center>
 </div>
 
 <div class="slide">
-<h1>Zuul Post-Merge Pipeline</h1>
-<pre>
-pipelines:
-  - name: post
-    manager: IndependentQueueManager
-    trigger:
-      - event: ref-updated
-        ref: ^(?!refs/.*).*$
-</pre>
+<h1>Gearman-Jenkins Integration</h1>
+
+<center>
+<img src="images/gearman-flow2.png"/>
+</center>
 </div>
 
 <div class="slide">
-<h1>Zuul Release Pipeline</h1>
-<pre>
-pipelines:
-  - name: release
-    manager: IndependentPipelineManager
-    trigger:
-      - event: ref-updated
-        ref: ^refs/tags/([0-9]+\.)+[0-9]+$
-</pre>
+<h1>Gearman-Jenkins Integration</h1>
+
+<center>
+<img src="images/gearman-flow3.png"/>
+</center>
 </div>
 
 <div class="slide">
-<h1>Zuul Project Configuration</h1>
-<pre>
-projects:
-  - name: openstack/nova
-    check:
-      - gate-nova-pep8
-      - gate-nova-python26
-      - gate-nova-python27
-      - gate-tempest-devstack-vm
-    gate:
-      - gate-nova-pep8
-      - gate-nova-python26
-      - gate-nova-python27
-      - gate-tempest-devstack-vm
-    post:
-      - nova-branch-tarball
-      - nova-docs
-      - nova-upstream-translation-update
-    release:
-      - nova-tarball
-      - nova-docs
-</pre>
+<h1>Gearman Plugin Demo</h1>
+</div>
+
+<!--
+<div class="slide">
+<h1>Gearman Functions</h1>
+<center>
+<img src="images/gearman-flow4.png"/>
+</center>
+</div>
+-->
+
+<div class="slide">
+<h1>Gearman Plugin in Production</h1>
+  <ul>
+  <li>Jenkins Masters<ul>
+      <li><a href="http://jenkins01.openstack.org">Jenkins01</a></li>
+      <li><a href="http://jenkins02.openstack.org">Jenkins02</a></li>
+      <li><a href="http://jenkins03.openstack.org">Jenkins03</a></li>
+  </ul>
 </div>
 
 <div class="slide">
-<h1>Templated Jobs</h1>
-<ul>
-  <li>TONS of consistent projects</li>
-  <li>Manage everything through Git and code review</li>
-  <!-- TODO: link to jjb documentation instead --><li><a href="https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins_jobs">https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins_jobs</a></li>
-  <li>Manage jobs as YAML files in Git</li>
-  <li>Jobs updated via Jenkins API</li>
-  <li>groupings of jobs supported</li>
-</ul>
-</div>
+<h1>Everything Is Automated</h1>
 
-<div class="slide">
-<h1>Example Job</h1>
-<pre>
-- job:
-  name: gate-nova-pep8
-
-  builders:
-    - gerrit_git_prep
-    - pep8
-
-  publishers:
-    - console-log
-</pre>
-</div>
-
-<div class="slide">
-<h1>Example Template</h1>
-<pre>
-- project:
-    name: nova
-    github-org: openstack
-    tarball-site: tarballs.openstack.org
-    doc-publisher-site: docs.openstack.org
-
-    jobs:
-      - python-jobs
-      - python-folsom-bitrot-jobs
-      - python-grizzly-bitrot-jobs
-      - openstack-publish-jobs
-      - gate-{name}-pylint
-      - translation-jobs
-</pre>
-</div>
-
-<div class="slide">
-<h1>Scaling Hardware Needs</h1>
-<ul>
-  <li>Different vendors have different combinations of configurations</li>
-  <li><a
-  href="http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way">http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way</a></li><!-- TODO: update this URL -->
-  <li>Run their own Jenkins</li>
-  <li>Consume Gerrit event stream</li>
-  <li>Their Jenkins votes VRFY +1/-1</li>
-  <li>Our Zuul votes VRFY +2/-2</li>
-  <li>They can run their lab - we don't have to know anything about it</li>
-</ul>
+<center>
+<img src="images/status1.png"/>
+</center>
 </div>
 
 <div class="slide">

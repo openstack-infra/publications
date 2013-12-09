@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Scaling OpenStack Development: Continuous Integration Overview</title>
+<title>OpenStack Infrastructure: An Introduction to StackForge</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -36,8 +36,8 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Scaling OpenStack Development<br />
-  <span class="smaller">Continuous Integration Overview</span></h1>
+  <h1>OpenStack Infrastructure<br />
+  <span class="smaller">An Introduction to StackForge</span></h1>
   <hr />
   <div class="smaller">Monty Taylor
     &lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;</div>
@@ -94,51 +94,6 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     </ul></li>
   </ul></div>
   <div class="indent"><a href="https://wiki.openstack.org/wiki/Projects">https://wiki.openstack.org/wiki/Projects</a></div>
-</div>
-
-<div class="slide">
-  <h1>Programs/Horizontal Efforts</h1>
-  <div style="float:left;width:50%"><ul>
-    <li>Documentation<ul>
-      <li>installation guides</li>
-      <li>operations manuals</li>
-      <li>API references</li>
-      <li>howtos and tutorials</li>
-    </ul></li>
-    <li>Infrastructure<ul>
-      <li>continuous integration systems</li>
-      <li>developer community resources</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:50%"><ul>
-    <li>Oslo<ul>
-      <li>common libraries</li>
-      <li>copied code incubation</li>
-    </ul></li>
-    <li>Quality Assurance<ul>
-      <li>integration testing</li>
-      <li>upgrade testing</li>
-    </ul></li>
-    <li>Release Management</li>
-    <li>Translation/Internationalization</li>
-    <li>Vulnerability Management</li>
-  </ul></div>
-</div>
-
-<div class="slide">
-  <h1>Release Management</h1>
-  <ul>
-    <li>Time Based Releases</li>
-    <li>Six Month Cadence<ul>
-      <li>Similar to Ubuntu and Fedora Release Schedules</li>
-    </ul>
-    <li>Design summits each cycle</li>
-    <li>Continuously Open Trunk<ul>
-      <li>Develop directly on master</li>
-    </ul>
-    <li>Intra-Cycle Milestone Releases</li>
-    <li>Post-Release Stable Branches</li>
-  </ul>
 </div>
 
 <div class="slide">
@@ -237,7 +192,6 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <li>Python<ul>
     <li>CentOS (2.6), Ubuntu LTS (2.7, 3.3, pypy)</li>
     <li>PEP-8 standards</li>
-    <li>Oslo (common libraries)</li>
     <li>virtualenv/pip/tox</li>
   </ul></li>
   <li>Freenode IRC (#openstack-dev, #openstack-meeting)</li>
@@ -303,27 +257,6 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-<h1>Gerrit Diff View</h1>
-<center>
-<img style="margin-top:2em" src="images/gerrit-diff.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Bug Integration - Launchpad</h1>
-<center>
-<img style="margin-top:2em" src="images/lp-bug.png"/>
-</center>
-</div>
-
-<div class="slide">
-<h1>Approved Reviews</h1>
-<center>
-<img style="margin-top:2em"src="images/gerrit-approved.png"/>
-</center>
-</div>
-
-<div class="slide">
 <h1>Git Review</h1>
 <ul>
 <li>External Git subcommand</li>
@@ -346,47 +279,6 @@ remote:
 To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
  * [new branch]      HEAD -> refs/for/master/bug/916018
 </pre>
-</div>
-
-<div class="slide">
-<h1>Types of Tests</h1>
-<ul>
-<li>Unit tests<ul>
-  <li>Should be run in virtual environments, may run in operating systems</li>
-  <li>Fairly quick and easy for a developer to run</li>
-</ul></li>
-<li>Integration tests<ul>
-  <li>May be able to run on virtual servers, should run on real servers</li>
-  <li>Difficult and time-consuming for a developer to run</li>
-</ul></li>
-</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Specific Challenges/Solutions</h1>
-<ul>
-  <li>Testing effect of merging change</li>
-  <li>Using cloud builders</li>
-  <li>Large numbers of similar projects</li>
-  <li>Disparate hardware configurations</li>
-</ul>
-
-</div>
-
-<div class="slide">
-<h1>Gerrit Git Prep</h1>
-<ul>
-<li>Test the result of the change, not the change</li>
-<li>openstack-infra/config:modules/jenkins/files/slave_scripts/gerrit-git-prep.sh</li>
-<li>For each gerrit change:
-<ul>
-  <li>grabs target branch</li>
-  <li>cleans tree</li>
-  <li>merges change to be tested</li>
-</ul>
-</li>
-</ul>
 </div>
 
 <div class="slide">
@@ -840,125 +732,234 @@ $(document).ready(function() {
 </div>
 
 <div class="slide">
-<h1>Zuul Gate Pipeline</h1>
-<pre>
-pipelines:
-  - name: gate
-    manager: DependentPipelineManager
-    precedence: high
-    trigger:
-      gerrit:
-        - event: comment-added
-          approval:
-            - approved: 1
-    start:
-      gerrit:
-        verified: 0
-    success:
-      gerrit:
-        verified: 2
-        submit: true
-    failure:
-      gerrit:
-        verified: -2
-</pre>
-</div>
-
-<div class="slide">
-<h1>Zuul Project Configuration</h1>
-<pre>
-projects:
-  - name: openstack/nova
-    check:
-      - gate-nova-pep8
-      - gate-nova-python26
-      - gate-nova-python27
-      - gate-tempest-devstack-vm
-    gate:
-      - gate-nova-pep8
-      - gate-nova-python26
-      - gate-nova-python27
-      - gate-tempest-devstack-vm
-    post:
-      - nova-branch-tarball
-      - nova-docs
-      - nova-upstream-translation-update
-    release:
-      - nova-tarball
-      - nova-docs
-</pre>
-</div>
-
-<div class="slide">
-<h1>Templated Jobs</h1>
+<h1>StackForge</h1>
 <ul>
-  <li>TONS of consistent projects</li>
-  <li>Manage everything through Git and code review</li>
-  <li><a href="http://ci.openstack.org/jenkins-job-builder/">Jenkins Job Builder</a></li>
-  <li>Manage jobs as YAML files in Git</li>
-  <li>Jobs updated via Jenkins API</li>
-  <li>groupings of jobs supported</li>
+<li>Organization of non-official repos in the OpenStack Infra Systems</li>
+<li>Self-service</li>
+<li>Access to all of the advanced dev/test and CI features of OpenStack</li>
 </ul>
 </div>
 
 <div class="slide">
-<h1>Example Job Template</h1>
+<h1>Adding your project</h1>
+<ul>
+  <li>It's a git commit!</li>
+</ul>
 <pre>
+# git clone git://git.openstack.org/openstack-infra/config
+# cd config
+# git review -s
+</pre>
+</div>
+
+<div class="slide">
+<h1>Four main files</h1>
+<ul>
+  <li>modules/openstack_project/templates/review.projects.yaml.erb</li>
+  <li>modules/openstack_project/files/gerrit/acls/stackforge/$project.config</li>
+  <li>modules/openstack_project/files/jenkins_job_builder/config/projects.yaml</li>
+  <li>modules/openstack_project/files/zuul/layout.yaml</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>review.projects.yaml.erb</h1>
+<ul>
+  <li>Projects registry</li>
+  <pre>
+  - project: stackforge/wsme
+    description: Web Service Made Easy (WSME)
+    upstream: git://github.com/ryanpetrello/wsme.git
+  </pre>
+  <li>project: stackforge/$project</li>
+  <li>description: short description of project</li>
+  <li>upstream: from where do we do initial clone - only used at the beginning</li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h1>stackforge/$project.config</h1>
+<ul>
+  <pre>
+  [access "refs/heads/*"]
+        label-Code-Review = -2..+2 group wsme-core
+        label-Approved = +0..+1 group wsme-core
+        workInProgress = group wsme-core
+  [access "refs/tags/*"]
+        create = group wsme-ptl
+        pushTag = group wsme-ptl
+  [project]
+        state = active
+  [receive]
+        requireChangeId = true
+        requireContributorAgreement = false
+  [submit]
+        mergeContent = true
+  </pre>
+  <li>Groups are created by being referenced</li>
+  <li>Put the user name of the initial group member in the commit message</li>
+  <li>Core group - who can approve code</li>
+  <li>PTL group - who can push release tags</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>config/projects.yaml<</h1>
+<ul>
+  <li>What jobs exist for your project</li>
+  <pre>
+    - project:
+        name: stevedore
+        github-org: stackforge
+        node: precise
+        rtfd-id: 4157
+        tarball-site: tarballs.openstack.org
+
+        jobs:
+          - python-jobs
+          - pypi-jobs
+          - hook-{name}-rtfd
+  </pre>
+</ul>
+</div>
+
+<div class="slide">
+<h1>layout.yaml</h1>
+<ul>
+  <li>When to run what job</li>
+  <pre>
+  - name: stackforge/stevedore
+    check:
+      - gate-stevedore-pep8
+      - gate-stevedore-python26
+      - gate-stevedore-python27
+      - gate-stevedore-python33
+    gate:
+      - gate-stevedore-pep8
+      - gate-stevedore-python26
+      - gate-stevedore-python27
+      - gate-stevedore-python33
+    post:
+      - stevedore-branch-tarball
+    pre-release:
+      - stevedore-tarball
+      - hook-stevedore-rtfd
+    release:
+      - stevedore-tarball:
+        - stevedore-pypi-upload:
+          - post-mirror-python26
+          - post-mirror-python27
+          - post-mirror-python33
+      - hook-stevedore-rtfd
+  </pre>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Pipelines</h1>
+<ul>
+  <li>check: On Upload</li>
+  <li>gate: On Approval</li>
+  <li>post: On Landing</li>
+  <li>pre-release: On Tag with letters (PEP440)</li>
+  <li>release: On Tag with only numbers and dots</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Commit and submit</h1>
+<ul>
+  <pre>
+# git commit -a -m"Added $project to StackForge"
+# git review
+  </pre>
+  <li>Wait for infra-core to approve</li>
+  <li>Approval is for syntax/sanity</li>
+  <li>Core team is busy sometimes</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Tag Based Releases</h1>
+<ul>
+  <li>Release artifacts are created and uploaded based on signed git tag</li>
+  <li>Must be signed - otherwise it's ignored</li>
+<pre>
+# git tag -s 1.2.0
+# git push gerrit 1.2.0
+</pre>
+  <li>In-repo versioning support in PBR</li>
+  <li><a href="http://docs.openstack.org/developer/pbr/semver.html">
+      http://docs.openstack.org/developer/pbr/semver.htm</a></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>devstack integration</h1>
+<ul>
+  <li>modules/openstack_project/files/jenkins_job_builder/config/</li>
+</ul>
+  <small><pre>
 - job-template:
-    name: 'gate-{name}-pep8'
+    name: '{pipeline}-requirements-integration-dsvm'
+    node: '{node}'
+
+    wrappers:
+      - timeout:
+          timeout: 120
+          fail: true
+      - timestamps
 
     builders:
-      - gerrit-git-prep
-      - pep8:
-          github-org: '{github-org}'
-          project: '{name}'
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_REQS_INTEGRATION=1
+          function gate_hook {{
+              bash $GATE_SCRIPT_DIR/devstack-vm-gate.sh && \
+              bash -xe $BASE/new/pbr/tools/integration.sh $PROJECTS
+          }}
+          export -f gate_hook
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+      - link-logs
 
     publishers:
+      - devstack-logs
       - console-log
-</pre>
+</pre></small>
 </div>
 
 <div class="slide">
-<h1>Apply Template</h1>
+<h1>Not just python</h1>
 <pre>
 - project:
-    name: nova
-    github-org: openstack
+    name: gearman-plugin
+    maven-group-id: org.jenkins-ci.plugins
+    github-org: openstack-infra
+    node: precise
     tarball-site: tarballs.openstack.org
-    doc-publisher-site: docs.openstack.org
 
     jobs:
-      - python-jobs
-      - gate-{name}-pep8
-      - translation-jobs
+      - jenkins-plugin-jobs
 </pre>
 </div>
 
 <div class="slide">
-<h1>Logs</h1>
-<ul>
-  <li>Massive amount of logs generated<ul>
-    <li>Terabytes of compressed logs per development cycle</li>
-  </ul></li>
-  <li>Filtered and normalized by LogStash</li>
-  <li>Recent logs indexed by ElasticSearch<ul>
-    <li>Searchable through Kibana and ElasticSearch API</li>
-  </ul></li>
-  <li>Driving automatic failure classification</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Scaling Hardware Needs</h1>
+<h1>Extra Special Needs</h1>
 <ul>
   <li>Different vendors have different combinations of configurations</li>
   <li><a
-  href="http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way">http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way</a></li><!-- TODO: update this URL -->
+  href="http://ci.openstack.org/third_party.html">http://ci.openstack.org/third_party.html</a></li>
   <li>Run their own Jenkins</li>
   <li>Consume Gerrit event stream</li>
   <li>Their Jenkins votes VRFY +1/-1</li>
   <li>Our Zuul votes VRFY +2/-2</li>
-  <li>They can run their lab - we don't have to know anything about it</li>
+  <li>You can run their lab - we don't have to know anything about it</li>
 </ul>
 </div>
 

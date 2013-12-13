@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Publication Title CHANGE ME</title>
+<title>Code Review for Systems Administrators</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -33,27 +33,175 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Publication Title CHANGE ME<br />
-  <span class="smaller">Publication SubTitle CHANGE ME</span></h1>
+  <h1>Code Review for Systems Administrators</h1><br />
   <hr />
-  <div class="smaller">Your Name CHANGE ME
-    &lt;<a href="mailto:changeme@example.com">changeme@example.com</a>&gt;</div>
+  <div class="smaller">Elizabeth Krumbach Joseph
+    &lt;<a href="mailto:lyz@princessleia.com">lyz@princessleia.com</a>&gt;, HP</div>
 </div>
 
 <div class="slide">
-  <h1>OpenStack</h1>
+<h1>OpenStack Infrastructure Team</h1>
 
-  <p>This is the first slide. CHANGE ME and add many more.</p>
+<p>Our job is to make sure the OpenStack developers can do <em>their</em> job.</p>
 
-  <center>
-    <img src="images/openstack-software-diagram.png"/>
-  </center>
 </div>
 
 <div class="slide">
-  <h1>Thanks!</h1>
+  <h1>OpenStack Code Review (and CI) Challenges</h1>
+  <ul>
+    <li>Lots of individual projects</li>
+    <li>All projects must work together</li>
+    <li>Changes should never break the master</li>
+    <li>Code should be syntactically clean</li>
+    <li>Testing should be completely automated</li>
+  </li>
+</div>
 
-  <p><img src="images/stack-o-pancakes-150x150.png"/>
+<div class="slide">
+  <h1>What we're using</h1>
+
+  <ul>
+    <li>Launchpad</li>
+    <li>Git</li>
+    <li>Gerrit</li>
+    <li>Zuul*</li>
+    <li>Jenkins (with <em>jenkins-job-builder</em>*, <em>devstack-gate</em>*)</li>
+  </ul>
+
+  <p><small>* Started by the OpenStack Infrastructure team</small></p>
+
+  <div align="center"><img src="images/launchpad-logo-and-name.png"><img src="images/diffy-w200.png"> <img src="images/jenkins_logo.png"></div>
+
+</div>
+
+<div class="slide">
+  <h1>Workflow</h1>
+
+  <div align="center"><img src="images/os-ci-workflow.png"></div>
+
+</div>
+
+
+<div class="slide">
+  <h1>What we use it for</h1>
+
+  <ul>
+    <li>All core OpenStack projects</li>
+    <li>StackForge projects</li>
+    <li>Documentation</li>
+    <li><strong>Systems Administration!</strong></li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>What we do</h1>
+
+  <div align="center"><img src="images/ci_team_infrastructure_draft.png"/></div>
+
+</div>
+
+<div class="slide">
+  <h1>What we do (redux)</h1>
+
+  <ul>
+    <li>Continuous Integration systems</li>
+    <li>Cacti</li>
+    <li>Logstash</li>
+    <li>IRC Bots</li>
+    <li>Etherpad</li>
+    <li>Paste</li>
+    <li>Planet</li>
+    <li>Puppet Dashboard</li>
+    <li>Mailing Lists</li>
+    <li>Various smaller web services</li>
+    <li>Wiki</li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>Everything we do is in public</h1>
+
+  <ul>
+    <li>Anyone on the internet can look at our changes</li>
+    <li>Anyone can sign up for a code review account</li>
+    <li>Anyone can write code reviews</li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>What Systems Adminstrators Check</h1>
+
+  <ul>
+    <li>flake8 (pep 8 and pyflakes)</li>
+    <li>puppet parser validate</li>
+    <li>puppet-lint</li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>Peer Review</h1>
+
+  <ul>
+    <li>Multiple eyes on changes prior to merging</li>
+    <li>Good infrastructure for developing new solutions <small>(particularly for a distributed team)</small></li>
+    <li>No special process to go through for commit access</li>
+    <li>Trains us to be collaborative by default</li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>Automated deployment!</h1>
+
+  <ul>
+    <li>Change gets checked in</li>
+    <li>...<em>Either</em> puppet master gets updated and applies change</li>
+    <li>...<em>Or</em> vcsrepo module in puppet pulls in latest version of project</li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>Can you really manage via git commits?</h1>
+
+  <ul>
+    <li>Cacti to keep an eye on server usage</li>
+    <li>Puppet dashboard so you can watch your changes get applied <small>(or not!)</small></li>
+    <li>Thorough, specific documentation at <a href="http://ci.openstack.org">http://ci.openstack.org</a></li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>Limitations</h1>
+
+  <ul>
+    <li>Sometimes you just need to log into a server</li>
+    <li>More difficult for complicated migrations, upgrades</li>
+    <li>Passwords need to be more privately managed</li>
+  </ul>
+
+</div>
+
+<div class="slide">
+  <h1>Questions</h1>
+
+  <h2>Contact</h2>
+
+  <ul>
+    <li>Elizabeth Krumbach Joseph &lt;<a href="mailto:lyz@princessleia.com">lyz@princessleia.com</a>&gt;</li>
+    <li>@pleia2 on Twitter</li>
+  </ul>
+
+  <h2>Openstack CI Resources</h2>
+
+  <ul>
+    <li><a href="http://ci.openstack.org">http://ci.openstack.org</a></li>
+  </ul>
 
   <p>
     These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>

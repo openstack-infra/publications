@@ -1,31 +1,22 @@
-Template Branch for new OpenStack Infra Publications
-====================================================
+Code Review for Systems Administrators
+======================================
 
-Creating new OpenStack Infra Publications is easy and you have started
-in the right place.
+The OpenStack project uses a public code review system and automated series of
+unit and integration tests before merging to confirm that code submitted is
+adhering to project standards and doesn't cause problems for other software in
+the stack.
 
-  1. Clone publications, create and checkout template tracking branch::
+The OpenStack Infrastructure team not only manages this system using open
+source tools like Gerrit and Jenkins for review and testing, but also uses the
+system themselves for reviewing and testing changes being made to systems
+running the infrastructure for the project. Puppet configuration files, Python
+scripts and more are subjected to automated syntax tests and then
+collaboratively reviewed in public by community and core team members alike
+before approval.
 
-       git clone https://git.openstack.org/openstack-infra/publications
-       cd publications
-       git review -s
-       git checkout -b template origin/template
-
-  2. Create a new branch based on this template branch.
-     ``git checkout -b $BRANCH_NAME``.
-  3. Edit ``.gitreview`` and change the defaultbranch value to
-     ``$BRANCH_NAME``.
-  4. Create ``$BRANCH_NAME`` in Gerrit. It should be based on the
-     template branch as well to avoid any potential merge conflicts in
-     your first commit. Not everyone has the ability to do this in
-     Gerrit. If you don't, ask an openstack infra core to do it for you.
-  5. Now we get to do the fun stuff. Edit index.html editing lines with
-     ``CHANGEME`` or ``changeme`` in them. You can also add new slides
-     if you like but that isn't necessary in this bootstrapping change.
-     You can follow up with new slides in subsequent changes.
-  6. Edit this file, ``README.rst``. The title of this document will
-     be the name used on the root publications index so be sure to
-     update the title. You should also add an Abstract section and
-     general talk info.
-  7. At this point you are ready to push your new changes back up to
-     Gerrit. ``git commit -a && git review``
+This process has allowed the team to have a considerably open approach to
+systems administration within the project infrastructure. It has also made it
+much easier to work on effective solutions through code and configuration
+sharing during the review process. With recent improvements to documentation it
+has allowed also for easier on-boarding of new and casual contributors looking
+to get involved with assisting with infrastructure work.

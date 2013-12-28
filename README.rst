@@ -1,31 +1,21 @@
-Template Branch for new OpenStack Infra Publications
-====================================================
+Processing CI Log Events
+========================
 
-Creating new OpenStack Infra Publications is easy and you have started
-in the right place.
+Abstract
+--------
 
-  1. Clone publications, create and checkout template tracking branch::
+The OpenStack Continuous Integration systems run several thousand tests
+during the course of a normal day capturing more than a billion log
+events per week. This is a giant treasure trove of information that can
+give us CI system performance data, failure frequency, and detect bugs
+if the logs are stored in a queryable manner. Using Gearman, Logstash,
+and ElasticSearch as building blocks we have built a searchable index of
+our test log data. This index provides OpenStack developers with quick
+access to why their patches failed to pass tests, trend analysis on
+infrequent non deterministic failures, it can flag anomalous log events,
+and much much more. Suddenly the mountains of test logs are useful again.
 
-       git clone https://git.openstack.org/openstack-infra/publications
-       cd publications
-       git review -s
-       git checkout -b template origin/template
-
-  2. Create a new branch based on this template branch.
-     ``git checkout -b $BRANCH_NAME``.
-  3. Edit ``.gitreview`` and change the defaultbranch value to
-     ``$BRANCH_NAME``.
-  4. Create ``$BRANCH_NAME`` in Gerrit. It should be based on the
-     template branch as well to avoid any potential merge conflicts in
-     your first commit. Not everyone has the ability to do this in
-     Gerrit. If you don't, ask an openstack infra core to do it for you.
-  5. Now we get to do the fun stuff. Edit index.html editing lines with
-     ``CHANGEME`` or ``changeme`` in them. You can also add new slides
-     if you like but that isn't necessary in this bootstrapping change.
-     You can follow up with new slides in subsequent changes.
-  6. Edit this file, ``README.rst``. The title of this document will
-     be the name used on the root publications index so be sure to
-     update the title. You should also add an Abstract section and
-     general talk info.
-  7. At this point you are ready to push your new changes back up to
-     Gerrit. ``git commit -a && git review``
+This talk will describe the log processing architecture, what we did to
+make it handle over a billion events a week in near real time, and the
+neat things we have built around it (including automatic bug house
+keeping, trend analysis, and anomaly detection with CRM114).

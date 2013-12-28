@@ -2,4 +2,4 @@
 host=review.openstack.org
 port=29418
 project=openstack-infra/publications.git
-defaultbranch=template
+defaultbranch=processing-ci-log-events

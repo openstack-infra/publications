@@ -3,13 +3,13 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Publication Title CHANGE ME</title>
+<title>Processing CI Log Events</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
-<meta name="duration" content="60" />
+<meta name="duration" content="45" />
 <meta name="font-size-adjustment" content="0" />
 <link rel="stylesheet" href="styles/slidy.css" type="text/css" />
 <link rel="stylesheet" href="styles/openstack.css" type="text/css" />
@@ -33,17 +33,17 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Publication Title CHANGE ME<br />
-  <span class="smaller">Publication SubTitle CHANGE ME</span></h1>
+  <h1>Processing CI Log Events<br />
+  <span class="smaller">For Great Good!</span></h1>
   <hr />
-  <div class="smaller">Your Name CHANGE ME
-    &lt;<a href="mailto:changeme@example.com">changeme@example.com</a>&gt;</div>
+  <div class="smaller">Clark Boylan
+    &lt;<a href="mailto:cboylan@sapwetik.org">cboylan@sapwetik.org</a>&gt;</div>
 </div>
 
 <div class="slide">
   <h1>OpenStack</h1>
 
-  <p>This is the first slide. CHANGE ME and add many more.</p>
+  <p>Is open source software for building private and public clouds.</p>
 
   <center>
     <img src="images/openstack-software-diagram.png"/>
@@ -51,9 +51,385 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
+  <h1>Projects</h1>
+  <div style="float:left;width:50%"><ul>
+    <li>Servers<ul>
+      <li>nova (compute)</li>
+      <li>swift (object storage)</li>
+      <li>glance (image service)</li>
+      <li>keystone (identity service)</li>
+      <li>neutron (network service)</li>
+      <li>cinder (volume service)</li>
+      <li>heat (orchestration)</li>
+      <li>ceilometer (measurement)</li>
+      <li>horizon (dashboard)</li>
+      <li class="gray">trove (databases)</li>
+      <li class="gray">ironic (bare metal)</li>
+      <li class="gray">marconi (message queueing)</li>
+    </ul></li>
+  </ul></div>
+  <div style="float:left;width:50%"><ul>
+    <li>Client libraries<ul>
+      <li>python-novaclient</li>
+      <li>python-swiftclient</li>
+      <li>python-glanceclient</li>
+      <li>python-keystoneclient</li>
+      <li>python-neutronclient</li>
+      <li>python-cinderclient</li>
+      <li>python-heatclient</li>
+      <li>python-ceilometerclient</li>
+      <li>python-openstackclient</li>
+      <li class="gray">python-troveclient</li>
+      <li class="gray">python-ironicclient</li>
+      <li class="gray">python-marconiclient</li>
+    </ul></li>
+  </ul></div>
+  <div class="indent"><a href="https://wiki.openstack.org/wiki/Projects">https://wiki.openstack.org/wiki/Projects</a></div>
+</div>
+
+<div class="slide">
+  <h1>Architecture</h1>
+  <center>
+    <img style="margin-top:2em; max-height:600px; max-widt:800px;" src="images/openstack-logical-arch-folsom.jpg"/>
+  </center>
+</div>
+
+<div class="slide">
+<h1>CI Environment</h1>
+  <ul>
+    <li>Tests run on all proposed patches<ul>
+      <li>Static Analysis</li>
+      <li>Unittests</li>
+      <li>Integration Tests</li>
+    </ul></li>
+    <li>Code merges are gated on tests<ul>
+      <li>Rerun all tests</li>
+      <li>Merge only if tests pass again</li>
+    </ul></li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Project Gating</h1>
+  <img style="float:right; margin-right:24pt" src="images/jobs-launched.png"/>
+  <!--
+  http://graphite.openstack.org/render/?from=00%3A00_20130601&fgcolor=000000&title=Jobs%20Launched%20%28per%20Day%29&_t=0.7862690862083328&height=300&bgcolor=ffffff&width=400&showTarget=alias%28summarize%28sumSeries%28stats_counts.zuul.job.*%29%2C%271h%27%29%2C%27All%20Jobs%27%29&_salt=1373041766.855&target=alias%28summarize%28sumSeries%28stats_counts.zuul.job.*%29%2C%271d%27%29%2C%27All%20Jobs%27%29&until=23%3A59_20130630
+  -->
+  <ul>
+    <li>Ensures Code Quality</li>
+    <li>Protects developers<ul>
+      <li>Devs always start from working code</li>
+    </ul></li>
+    <li>Protects tree<ul>
+      <li>Bad code doesn't land</li>
+    </ul></li>
+    <li>Tests run continuously<ul>
+      <li>Large result dataset</li>
+      <li>Significant number of test artifacts</li>
+    </ul></li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Test Results</h1>
+  <ul>
+    <li>Binary Result States<ul>
+      <li>Success</li>
+      <li>Failure</li>
+    </ul></li>
+    <li>Large amount of log data collected<ul>
+      <li>Integration tests collect 366MB (uncompressed)</li>
+      <li>Can be used to determine more than two states</li>
+    </ul></li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Log Archive</h1>
+  <ul>
+    <li>Logs on disk</li>
+    <li>Fronted by Apache + mod_autoindex</li>
+    <li>Not indexed otherwise</li>
+    <li>A lot of data, little information</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Failures Happen</h1>
+  <ul>
+    <li>Often not the fault of newly submitted code</li>
+    <li>The 1% failure<ul>
+      <li>Race Conditions</li>
+      <li>Underlying Hardware</li>
+    </ul></li>
+    <li>Dealt with via 'recheck' review comments</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Recheck List</h1>
+  <ul>
+    <li>Manually track bug:failure relationships</li>
+    <li>High human overhead</li>
+    <li>Incomplete data</li>
+    <li>Prone to errors</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Recheck List</h1>
+  <center>
+    <img style="margin-top:2em;" src="images/rechecks.png"/>
+  </center>
+</div>
+
+<div class="slide">
+<h1>Need Something Different</h1>
+  <ul>
+    <li>Logs need to be accessible<ul>
+      <li>Friendly UI</li>
+      <li>REST API</li>
+      <li>Query Language</li>
+    </ul></li>
+    <li>Data Pipeline<ul>
+      <li>Flatten</li>
+      <li>Transform</li>
+      <li>Filter</li>
+      <li>Annotate</li>
+      <li>Realtime</li>
+    </ul></li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Need Something Different</h1>
+  <ul>
+    <li>Many Options<ul>
+      <li>Fluentd</li>
+      <li>Hadoop</li>
+      <li>Splunk</li>
+      <li>Graylog</li>
+      <li>Reimann</li>
+      <li>Jenkins</li>
+      <li>Logstash</li>
+      <li>and more</li>
+    </ul></li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Logstash, Kibana, ElasticSearch</h1>
+  <ul>
+    <li>Open Source (Apache License v2)</li>
+    <li>Simple UI</li>
+    <li>REST API</li>
+    <li>Lucene query language</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Logstash, Kibana, ElasticSearch</h1>
+  <ul>
+    <li>Flexible data processing pipeline</li>
+    <li>Flatten disparate events into common schema</li>
+    <li>Combine related events</li>
+    <li>Filter noise</li>
+    <li>Annotate events with additional information</li>
+    <li>Near realtime (small delay)</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Complications</h1>
+  <ul>
+    <li>Collecting logs from untrusted Jenkins slaves</li>
+    <li>Redis</li>
+    <li>Impossible to index all logs</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Design</h1>
+  <ul>
+    <li>Jenkins ZeroMQ Event Publisher</li>
+    <li>Gearman, process logs in batches one job per file</li>
+    <li>Filter extensively</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Design</h1>
+  <center>
+    <img style="margin-top:2em;" src="images/logstash-diagram.png"/>
+  </center>
+</div>
+
+<div class="slide">
+<h1>What it gives us</h1>
+  <ul>
+    <li>1,293,256,221 log events indexed</li>
+    <li>72,621 jobs with indexed logs</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>ElasticRecheck</h1>
+  <ul>
+    <li>Using bug fingerprints discover occurences of bugs</li>
+    <li>Automates previous manual bug:failure relationship discovery</li>
+    <li>Very accurate</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>ElasticRecheck</h1>
+  <center>
+    <img style="margin-top:2em;" src="images/elastic-recheck.png"/>
+  </center>
+</div>
+
+<div class="slide">
+<h1>ElasticRecheck</h1>
+  <center>
+    <img style="margin-top:2em;" src="images/elastic-recheck-comment.png"/>
+  </center>
+</div>
+
+<div class="slide">
+<h1>ElasticRecheck</h1>
+  <ul>
+    <li>Highly beneficial to Havana's release process</li>
+    <li>Identified many specific race conditions</li>
+    <li>Allowed for prioritization of work and confirmation that bugs were fixed</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>CRM114</h1>
+  <ul>
+    <li>Difficult to find fingerprints (causes) for failures</li>
+    <li>Better to have computers do that too</li>
+    <li>Run log events through a spam filter<ul>
+      <li>Classify events as most like Success or Failure</li>
+      <li>The CRM114 Discriminator</li>
+    </ul></li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>CRM114</h1>
+  <ul>
+    <li>Orthogonal Sparse Bigram Classifier</li>
+    <li>Variation on Markovian Classifier<ul>
+      <li>Constructs unique word pairs with a five word window</li>
+      <li>Lighweight and Fast</li>
+    </ul></li>
+    <li>Probability phrase is in class determined using Bayesian Chain Rule</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>CRM114</h1>
+  <ul>
+    <li>Train on Everything</li>
+    <li>Jenkins preclassifies results for us, can learn against the proper set</li>
+    <li>Logs for all jobs are similar, looking for items that do not belong</li>
+    <li>Probabilistic Diffing</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Results</h1>
+  <!--
+  Found with error_pr: -12.0434
+  http://logs.openstack.org/99/62599/2/check/check-tempest-dsvm-neutron-isolated/7b122b7/logs/screen-q-svc.txt.gz?level=ERROR#_2013-12-27_23_37_02_388
+  -->
+  <ul>
+    <li>error_pr = log<sub>10</sub>(Prob in Class) - log<sub>10</sub>(Prob not in Class)<ul>
+      <li>Negated on logs from failed jobs</li>
+    </ul></li>
+    <li>Positive error_pr: Success, &gt 10: strong correlation</li>
+    <li>Negative error_pr: Failure, &lt -10: strong correlation</li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Results</h1>
+  <ul>
+    <li>Query ElasticSearch for 'error_pr:[-1000.0 TO -10.0]'</li>
+    <li>Capable of classifying errors that result in failure<ul>
+      <li>2013-12-27 23:37:02.388 7620 ERROR neutron.api.rpc.agentnotifiers.dhcp_rpc_agent_api [req-9ca21083-ae6a-4978-9e07-fd188e1fa1fe bfcaa008905b41c4aaed19d54659f5b1 a7ba0994a0884e8485f6087108652f61] No DHCP agents are associated with network '65364310-6c0d-4d00-a7f4-602ae16f0cba'. Unable to send notification for 'subnet_create_end' with payload: {'subnet': {'name': u'tempest.scenario.manager-tempest-180461968-subnet', 'enable_dhcp': True, 'network_id': u'65364310-6c0d-4d00-a7f4-602ae16f0cba', 'tenant_id': u'52ed4d85ff514e7e9f598314ee69055b', 'dns_nameservers': [], 'allocation_pools': [{'start': '10.100.0.2', 'end': '10.100.0.14'}], 'host_routes': [], 'ip_version': 4, 'gateway_ip': '10.100.0.1', 'cidr': u'10.100.0.0/28', 'id': 'f7aa9538-a53a-4eef-abe2-ff3736e98a0f'}}</li>
+      <li>error_pr: -12.0434</li>
+    </ul></li>
+  </ul>
+</div>
+
+<div class="slide">
+<h1>Simple</h1>
+  <pre>
+# Apache License Version 2
+window
+isolate (:prefix:) /:*:_arg2:/
+isolate (:target:) /:*:_arg3:/
+learn [:_nl:] &ltosb unique microgroom> (:*:prefix:/SUCCESS.css)
+learn [:_nl:] &ltosb unique microgroom> (:*:prefix:/FAILURE.css)
+{
+  window &ltbychar> /\n/ /\n/
+  {
+    isolate (:stats:)
+    isolate (:result:)
+    isolate (:prob:)
+    isolate (:pr:)
+    {
+      {
+        match (:timestamp:) /^[-.0-9 |:]+/
+        alter (:timestamp:) //
+      }
+      learn &ltosb unique microgroom> (:*:prefix:/:*:target:.css)
+      classify &ltosb unique microgroom> \
+      (:*:prefix:/SUCCESS.css :*:prefix:/FAILURE.css) (:stats:)
+      {
+        match [:stats:] &ltnomultiline> \
+        /^Best match to .*\/([A-Za-z]+).css\) prob: ([-.0-9]+)  pR: ([-.0-9]+)/ \
+        ( :: :result: :prob: :pr: )
+        {
+          {
+            match [:result:] /FAILURE/
+            alter (:result:) /-/
+          } alius {
+            alter (:result:) //
+          }
+        }
+        output /:*:result::*:pr:\n/
+      }
+    }
+  }
+  liaf
+}
+  </pre>
+</div>
+
+<div class="slide">
+<h1>The Future</h1>
+  <ul>
+    <li>Classifying log events is still very new</li>
+    <li>Different training methods or classifiers may have better results</li>
+    <li>Skynet</li>
+  </ul>
+</div>
+
+<div class="slide">
   <h1>Thanks!</h1>
 
-  <p><img src="images/stack-o-pancakes-150x150.png"/>
+  <ul>
+    <li>Questions?</li>
+    <li>Links:<ul>
+      <li><a href="https://git.openstack.org/cgit/openstack-infra/config/tree/modules/log_processor">Log Processor Pipeline</a></li>
+      <li><a href="https://git.openstack.org/cgit/openstack-infra/config/tree/modules/openstack_project/templates/logstash/indexer.conf.erb">Logstash Configs</a></li>
+      <li><a href="http://docs.openstack.org/infra/elastic-recheck/readme.html">ElasticRecheck</a></li>
+      <li><a href="https://git.openstack.org/cgit/openstack-infra/config/tree/modules/log_processor/files/classify-log.crm">CRM 114</a></li>
+    </ul></li>
+  </ul>
 
   <p>
     These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>

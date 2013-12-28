@@ -154,6 +154,11 @@ img.withBorder {
   padding: 4px;
 }
 
+pre {
+ font-size: 75%;
+ font-weight: normal;
+ line-height: 100%;
+}
 li pre { margin-left: 0; }
 
 @media print { pre { font-size: 60% } }

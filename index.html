@@ -3,31 +3,283 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>OpenStack and Linux Distros</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="40" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript">
+</script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
 
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>OpenStack and Linux Distros</h1>
+<p>
+Monty Taylor
+&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;<br />
+
+</div>
+
+<div class="slide">
+<h1>Whoami</h1>
 <ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
+  <li>OpenStack Infrastructure Team Founder</li>
+  <li>Foundation Board Member</li>
+  <li>Technical Committee Member</li>
+  <li>HP Cloud Services</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Disclaimer</h1>
+<ul>
+  <li>Any views expressed in this talk are my own</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Overview</h1>
+<ul>
+  <li>History</li>
+  <li>Lessons Learned</li>
+  <li>Upstreams</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>OpenStack is cloud Software</h1>
+<ul>
+  <li>Rackspace and NASA</li>
+  <li>ex-Ubuntu and ex-Drizzle</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Modeled after Ubuntu</h1>
+<ul>
+  <li>6 month cadence</li>
+  <li>tied to ubuntu release cadence</li>
+  <li>Design Summits</li>
+  <li>versioning scheme</li>
+  <li>bzr/launchpad</li>
+  <li>Gated Trunk from Drizzle</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Gating on Packaged Depends</h1>
+<ul>
+  <li>"All project depends must be in Ubuntu"</li>
+  <li>Carried a depends PPA in Launchpad</li>
+  <li>Build slave ran "apt-get build-dep nova"</li>
+  <li>Ensured we wouldn't screw up Ubuntu</li>
+  <li>PPA for Nova and Swift</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Pain Points</h1>
+<ul>
+  <li>Adding new depends == editing debian packaging</li>
+  <li>Duplication - depends already in tree</li>
+  <li>Carry backport patched depends (libvirt, eventlet)</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Time Passes</h1>
+<ul>
+  <li>This lasted for a year</li>
+  <li>Ubuntu Dropped Eucalyptus for OpenStack</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Foreshaddowing</h1>
+<ul>
+  <li>Stopped using packages on jenkins slaves</li>
+  <li>Depends use PyPI and virtualenv</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>distro/upstream disconnect</h1>
+<ul>
+  <li>Upstream cares about latest upstream on all stable OS releases</li>
+  <li>Distro cares about stable upstream on latest/pre-release OS</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Inciting Incident</h1>
+<ul>
+  <li>Project moved to git</li>
+  <li>Started adding install-based integration testing</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Integration testing</h1>
+<ul>
+  <li>Create package(s)</li>
+  <li>Spin up new machine</li>
+  <li>apt-get install packages</li>
+  <li>Test results</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Barriers</h1>
+<ul>
+  <li>Using PPA - async</li>
+  <li>Packaging branches in bzr</li>
+  <li>Multi-release packaging patches</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>The pitch</h1>
+<ul>
+  <li>Move packaging branches to gerrit</li>
+  <li>Spin up our own apt repo</li>
+  <li>Build packages synchronously</li>
+  <li>Support multi-version releases</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>A Phone Call</h1>
+<ul>
+  <li>"Ubuntu just called us and screamed for an hour"</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>UDS Essex</h1>
+<ul>
+  <li>Ubuntu and Redhat requested we stop making packages</li>
+  <li>Rackspace released devstack</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Lessons Learned</h1>
+<ul>
+  <li>Be The Best Upstream First</li>
+  <li>Make actual releases</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Interesting developments</h1>
+<ul>
+  <li>RedHat has shown up with tons of devs</li>
+  <li>Ubuntu does CI testing of OpenStack on their own</li>
+  <li>We've dropped debian-based pre-versioning</li>
+  <li>We're adding RHEL testing support with RedHat's help</li>
+  <li>Talk to lifeless about diskimage-builder and TripleO</li>
 
 </ul>
+</div>
+
+<div class="slide">
+<h1>The Upstream Viewpoint</h1>
+<ul>
+  <li>Upstreams care about latest upstream version on stable distro</li>
+  <li>So do users</li>
+
+</ul>
+</div>
+
+<div class="slide">
+<h1>Ubuntu Cloud Archive</h1>
+<ul>
+  <li>Canonical/Ubuntu providing an APT repo that has backported OpenStack</li>
+  <li>Those pesky matrixes of support really are hard!</li>
+
+</ul>
+</div>
+
+<div class="slide">
+<h1>Each App is a Distro</h1>
+<ul>
+  <li>OpenStack release are de facto distros</li>
+  <li>Each depenednet library is a part of OpenStack</li>
+  <li>Upstream releases of libraries also need testing</li>
+
+</ul>
+</div>
+
+<div class="slide">
+<h1>Language packaging centric views</h1>
+<ul>
+  <li>Python - PyPI/pip</li>
+  <li>Java - maven</li>
+  <li>Ruby - gem</li>
+  <li>Perl - CPAN</li>
+
+</ul>
+</div>
+
+<div class="slide">
+<h1>Images</h1>
+<ul>
+  <li>TripleO team is investigating images-as-app-delivery</li>
+  <li>EC2 VAR ecosystem has been doing this for years</li>
+  <li>What does this mean for distros?</li>
+
+</ul>
+</div>
+
+<div class="slide">
+<h1>Distro as core</h1>
+<ul>
+  <li>What if the Distro was only there for core things?</li>
+  <li>What if Distro packaging focused on C/C++?</li>
+  <li>What if Distro packaging played nice with python/perl/java/ruby?</li>
+  <li>What if apps on distros ran in their own container/VM?</li>
+
+</ul>
+</div>
+ 
+<div class="slide">
+<h1>Thanks!</h1>
+
+<p>All repos are at: <a href="https://github.com/openstack-infra">https://github.com/openstack-infra</a></p>
+
+<p>
+These slides available at: <a href="https://openstack-ci.github.com/publications">https://openstack-ci.github.com/publications</a>
+</p>
+
+</div>
+
 </body>
+</html>

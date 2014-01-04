@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
-<meta name="duration" content="60" />
+<meta name="duration" content="30" />
 <meta name="font-size-adjustment" content="0" />
 <link rel="stylesheet" href="styles/slidy.css" type="text/css" />
 <link rel="stylesheet" href="styles/openstack.css" type="text/css" />
@@ -241,6 +241,16 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Anyone can write and propose changes</li>
     <li>http://git.openstack.org/cgit/openstack-infra/config/tree/</li>
   </ul>
+
+  <h2>Learn More at LCA</h2>
+  <p>
+    <a href="http://linux.conf.au/schedule/30121/view_talk?day=wednesday">
+      Systems Administration in the Open by Elizabeth Krumbach Joseph
+    </a><br/>
+    Wednesday 10:40 &nbsp;&nbsp;&nbsp;&nbsp;
+    GGGL:GENTILLI Gentilli Lecture Theatre
+  </p>
+
 </div>
 
 <div class="slide">
@@ -436,13 +446,22 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
 </div>
 
 <div class="slide">
-<h1>Zuul</h1>
-<ul>
-  <li>A general purpose trunk gating system</li>
-  <li>Interfaces with Gerrit and Jenkins</li>
-  <li>Flexible configuration allows for many kinds of project automation</li>
-  <li>Allows parallel testing of serialized changes</li>
-</ul>
+  <h1>Zuul</h1>
+  <ul>
+    <li>A general purpose trunk gating system</li>
+    <li>Interfaces with Gerrit and Jenkins</li>
+    <li>Flexible configuration allows for many kinds of project automation</li>
+    <li>Allows parallel testing of serialized changes</li>
+  </ul>
+
+  <h2>Learn More at LCA</h2>
+  <p>
+    <a href="http://linux.conf.au/schedule/30168/view_talk?day=friday">
+      How OpenStack Improves Code Quality with Project Gating and Zuul by James Blair
+    </a><br/>
+    Friday 10:40 &nbsp;&nbsp;&nbsp;&nbsp;
+    GGGL:WEBB Webb Lecture Theatre 
+  </p>
 </div>
 
 <div class="slide">
@@ -962,32 +981,50 @@ projects:
 </div>
 
 <div class="slide">
-<h1>Logs</h1>
-<img style="float:right; margin-right:24pt" src="images/logstash-diagram-small.png"/>
-<ul style="width: 20em">
-  <li>Massive amount of logs generated<ul>
-    <li>Terabytes of compressed logs per development cycle</li>
-  </ul></li>
-  <li>Filtered and normalized by LogStash</li>
-  <li>Recent logs indexed by ElasticSearch<ul>
-    <li>Searchable through Kibana and ElasticSearch API</li>
-  </ul></li>
-  <li>Driving automatic failure classification</li>
-</ul>
+  <h1>Logs</h1>
+  <img style="float:right; margin-right:24pt" src="images/logstash-diagram-small.png"/>
+  <ul style="width: 20em">
+    <li>Massive amount of logs generated<ul>
+	<li>Terabytes of compressed logs per development cycle</li>
+    </ul></li>
+    <li>Filtered and normalized by LogStash</li>
+    <li>Recent logs indexed by ElasticSearch<ul>
+	<li>Searchable through Kibana and ElasticSearch API</li>
+    </ul></li>
+    <li>Driving automatic failure classification</li>
+  </ul>
+
+  <h2>Learn More at LCA</h2>
+  <p>
+    <a href="http://linux.conf.au/schedule/30081/view_talk?day=friday">
+      Processing Continuous Integration Log Events for Great Good by Clark Boylan
+    </a><br/>
+    Wednesday 13:20 &nbsp;&nbsp;&nbsp;&nbsp;
+    GGGL:WEBB Webb Lecture Theatre 
+  </p>
 </div>
 
 <div class="slide">
-<h1>Scaling Hardware Needs</h1>
-<ul>
-  <li>Different vendors have different combinations of configurations</li>
-  <li><a
-  href="http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way">http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way</a></li><!-- TODO: update this URL -->
-  <li>Run their own Jenkins</li>
-  <li>Consume Gerrit event stream</li>
-  <li>Their Jenkins votes VRFY +1/-1</li>
-  <li>Our Zuul votes VRFY +2/-2</li>
-  <li>They can run their lab - we don't have to know anything about it</li>
-</ul>
+  <h1>Third Party Testing</h1>
+  <ul>
+    <li>Different vendors have different combinations of configurations</li>
+    <li><a
+	   href="http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way">http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way</a></li><!-- TODO: update this URL -->
+    <li>Run their own Jenkins</li>
+    <li>Consume Gerrit event stream</li>
+    <li>Their Jenkins votes VRFY +1/-1</li>
+    <li>Our Zuul votes VRFY +2/-2</li>
+    <li>They can run their lab - we don't have to know anything about it</li>
+  </ul>
+
+  <h2>Learn More at LCA</h2>
+  <p>
+    <a href="http://linux.conf.au/schedule/30010/view_talk?day=wednesday">
+      Continuous Integration for your database migrations by Michael Still
+    </a><br/>
+    Wednesday 15:40 &nbsp;&nbsp;&nbsp;&nbsp;
+    GGGL:WEBB Webb Lecture Theatre 
+  </p>
 </div>
 
 <div class="slide">

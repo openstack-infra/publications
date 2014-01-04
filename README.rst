@@ -59,6 +59,10 @@ automate software development efforts at such a scale.
     * Developer Infrastructure:
         - both a scaling challenge and solution
         - vast array of systems used for development efforts
+    * System Administration is in Git:
+        - anyone can contribute to admininstration of project systems
+        - auditable, self-documenting
+        - makes it easy for others to build similar systems
     * Developer Environment
         - operating systems and python versions supported (and how that
           impacts testing)

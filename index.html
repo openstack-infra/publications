@@ -3,31 +3,372 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>OpenStack Continuous Integration Testing with Cloud Servers</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="45" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript"></script>
+<script src="scripts/jquery-1.7.2.min.js" charset="utf-8" type="text/javascript">
+</script>
+<script src="scripts/jquery-watch.js" charset="utf-8" type="text/javascript">
+</script>
+<script src="scripts/raphael-min.js" type="text/javascript" charset="utf-8"></script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
+
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>OpenStack Continuous Integration Testing on Cloud Servers</h1>
+<p>
+James E. Blair
+&lt;<a href="mailto:corvus@inaugust.com">corvus@inaugust.com</a>&gt;<br />
+
+</div>
+
+<div class="slide">
+<h1>OpenStack</h1>
+
+<p>Is open source software for building private and public clouds.</p>
+
+<center>
+<img src="images/openstack-software-diagram.png"/>
+</center>
 
 <ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
+  <li><a href="http://openstack.org">http://openstack.org</a></li>
+</div>
 
+<div class="slide">
+<h1>Projects</h1>
+<small>
+<ul>
+<li>nova (compute)</li>
+<li>swift (object storge)</li>
+<li>glance (image service)</li>
+<li>keystone (identity service)</li>
+<li>quantum (network service)</li>
+<li>horizon (dashboard)</li>
+<li>cinder (volume service)</li>
+<li>ceilometer (instrumentation)</li>
+<li>python-novaclient</li>
+<li>python-swiftclient</li>
+<li>python-glanceclient</li>
+<li>python-keystoneclient</li>
+<li>python-quantumclient</li>
+<li>python-cinderclient</li>
+<li>python-openstackclient</li>
 </ul>
+</small>
+</div>
+
+
+<div class="slide">
+<h1>Contributors</h1>
+<ul>
+<li>Individual Contributors</li>
+<li>Commercial Entities</li>
+<li>Number, quality, and area of contributions can change daily</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Gated Trunk</h1>
+<ul>
+<li>Ensures Code Quality</li>
+<li>Protects developers<ul>
+  <li>Devs always start from working code</li>
+</ul><li>Protects tree<ul>
+  <li>Bad code doesn't land</li>
+</ul><li>Egalitarian<ul>
+  <li>Process is the same for everyone</li>
+  <li>Process is transparent</li>
+  <li>Process is automated</li>
+</ul></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Everything Is Automated</h1>
+
+<img src="images/jenkins-gate.png" />
+
+</div>
+
+<div class="slide">
+<h1>Gerrit</h1>
+<ul>
+<li>Developed by Google for Android</li>
+<li>Stand-alone patch review system</li>
+<li>Integration points: hooks, JSON queries, event-stream</li>
+<li>Extensible review categories, default: Verified, Code-Review</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Process Flow</h1>
+<ul>
+<li>Code is written and locally tested in a virtualenv</li>
+<li>Code is submitted for code review to gerrit</li>
+<li>Code is run through patch-uploaded automated checks</li>
+<li>Code is peer-reviewed</li>
+<li>Code is accepted or rejected by core team</li>
+<li>Code is run through pre-merge automated checks</li>
+<li>Code is merged or rejected</li>
+<li>Code is run through post-merge analysis</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Jenkins</h1>
+
+<p> Types of jobs: <p>
+<ul>
+  <li> Check / Gate
+    <ul><li> unit tests </li></ul>
+    <ul><li> integraton tests </li></ul>
+    <ul><li> code style </li></ul>
+  </li>
+  <li> Post
+    <ul><li> docs </li></ul>
+    <ul><li> tarballs </li></ul>
+    <ul><li> pypi </li></ul>
+  </li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Types of Tests</h1>
+
+<ul>
+<li> Unit tests </li>
+<li> Integration tests 
+  <ul> 
+    <li> May be able to run on virtual servers, should run on real servers </li>
+    <li> Difficult or impossible for a developer to run </li>
+  </ul>
+</li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Specific Challenges/Solutions</h1>
+
+<ul>
+  <li>Testing effect of merging change</li>
+  <li>Using cloud builders</li>
+  <li>Large numbers of similar projects</li>
+  <li>Disparate hardware configurations</li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Gerrit Git Prep</h1>
+<ul>
+<li>Test the result of the change, not the change</li>
+<li>https://github.com/openstack/openstack-ci-puppet/blob/master/modules/jenkins_slave/files/slave_scripts/gerrit-git-prep.sh</li>
+<li>For each gerrit change:
+<ul>
+  <li>grabs target branch</li>
+  <li>cleans tree</li>
+  <li>merges change to be tested</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Interrelated Integration Testing</h1>
+<ul>
+  <li>Devstack-gate
+    <ul>
+    <li>Spin up fresh node</li>
+    <li>Run devstack</li>
+    <li>Run integration tests</li>
+    </ul>
+  <li>Gate proposed change against current state of other projects</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Devstack-Gate Problems</h1>
+<ul>
+  <li>Tests are slow</li>
+  <li>Clouds are unreliable</li>
+  <li>Github is unreliable</li>
+  <li>Pypi is unreliable</li>
+  <li>Distro mirrors are unreliable</li>
+  <li><b><em>ALL NETWORK ACCESS IS FAILURE</em></b></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Devstack-Gate Solutions</h1>
+<ul>
+  <li>Create a new node</li>
+  <li>Pre-fetch all needed packages, repos</li>
+  <li>Snapshot to cloud image</li>
+  <li>Maintain a pool of cloud nodes</li>
+  <li>Slave can only be used for one test run</li>
+  <li>Set of python and shell scripts triggered by jenkins</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Alternate Caching Idea</h1>
+<ul>
+  <li>Create a volume</li>
+  <li>Pre-fetch all needed packages, repos</li>
+  <li>Attatch to test node</li>
+  <li>Detach when complete</li>
+  <li>Re-use on next test node</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Providers</h1>
+
+<ul>
+  <li>OpenStack tests currently run on 2 zones from 2 providers each</li>
+  <li>Maintain up to date images for each base OS</li>
+  <li>Set min/max targets for number of servers from each zone</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Launching Nodes</h1>
+
+<ul>
+  <li>Periodically check if new nodes need to be launched</li>
+  <li>Launch them, wait for them to come on-line</li>
+  <li>Timeout waiting after 10 minutes</li>
+  <li>Test that the node really works (ssh connectivity)</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Node Pooling</h1>
+
+<ul>
+  <li>Add to Jenkins as a slave (avoid exhaustion errors)</li>
+  <li>Give the node a label (e.g., devstack-precise)</li>
+  <li>Keep a database of which nodes in which state
+    <ul>
+      <li>New</li>
+      <li>Ready</li>
+      <li>Used</li>
+      <li>Error</li>
+      <li>Delete</li>
+    </ul></li>
+  <li>TODO: periodically test that new nodes are still viable</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Devstack Nodes</h1>
+
+<center>
+<img src="images/devstack-nodes.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Use</h1>
+
+<ul>
+  <li>Mark node as used in the database (inprogress job)</li>
+  <li>Change the label to prevent re-use by Jenkins (e.g., devstack-used)</li>
+  <li>Run the tests</li>
+  <li>Test timeout</li>
+  <li>Mark node for deletion in database (complete job)</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Deletion</h1>
+
+<ul>
+  <li>Identify all nodes that are in deleted or error state</li>
+  <li>If node exists: delete it</li>
+  <li>If node no longer exists: remove from database</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Devstack Jobs</h1>
+
+<center>
+<img src="images/devstack-jobs.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Jclouds-Plugin</h1>
+<ul>
+  <li>EC2 plugin useless to us (sorry)</li>
+  <li>Adrian Cole and Cloudsoft wrote jclouds-plugin</li>
+  <li>Provisions on any provider via jclouds</li>
+  <li>Image pre-creation and pooling features</li>
+  <li>Single use slaves</li>
+  <li>Slave provisioning as build step</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Jclouds Configuration</h1>
+
+<center>
+<img src="images/jclouds-config.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Jclouds Configuration</h1>
+
+<center>
+<img src="images/jclouds-instance.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Thanks!</h1>
+
+<p><img src="images/stack-o-pancakes-150x150.png"/>
+
+<p>
+These slides available at: <a href="https://github.com/openstack-ci/publications">https://github.com/openstack-ci/publications</a>
+</p>
+
+</div>
+
 </body>
+</html>

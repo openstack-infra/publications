@@ -3,31 +3,150 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>OpenStack Distributed QA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="15" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript">
+</script>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
+
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>OpenStack Distributed QA</h1>
+
+<p>James E. Blair
+&lt;<a href="mailto:corvus@inaugust.com">corvus@inaugust.com</a>&gt;<br />
+Monty Taylor
+&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;<br />
+<br />
+</div>
+
+<div class="slide">
+<h1>OpenStack's Gated Trunk</h1>
+
+<img src="images/jenkins-gate.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Types of Tests</h1>
+
 
 <ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
-
+<li> Unit tests </li>
+<li> Functional tests 
+  <ul> 
+    <li> Can be run on real or virtual servers </li>
+    <li> Easy for developers to run </li>
+  </ul>
+</li>
+<li> Integration tests 
+  <ul> 
+    <li> May be able to run on virtual servers, should run on real servers </li>
+    <li> Difficult or impossible for a developer to run </li>
+  </ul>
+</li>
 </ul>
+
+</div>
+
+<div class="slide">
+<h1>Test Process</h1>
+
+<p>Each test:</p>
+  <ul>
+  <li> PXE boot </li>
+  <li> Install Ubuntu </li>
+  <li> Install OpenStack </li>
+  <li> Run test suite </li>
+  </ul>
+
+</div>
+
+<div class="slide">
+<h1>Test Process Improved</h1>
+
+<p>One time (Orchestra driven):</p>
+  <ul>
+  <li> PXE boot </li>
+  <li> Install Ubuntu </li>
+  <li> Install OpenStack dependencies </li>
+  <li> Snapshot LVM volume </li>
+  </ul>
+<p>Each test:</p>
+  <ul>
+  <li> Kexec boot into LVM snapshot
+  <li> Install OpenStack </li>
+  <li> Run test suite </li>
+  </ul>
+
+</div>
+
+<div class="slide">
+<h1>OpenStack Projects</h1>
+
+<center>
+<img src="images/lp-os-projects.png"/>
+</center>
+
+</div>
+
+
+<div class="slide">
+<h1>Testing as a Service [TaaS]</h1>
+
+<ul>
+<li> Common Interface: Jenkins </li>
+<li> Inputs: commits to openstack projects </li>
+<li> Outputs: test results </li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Troubleshooting Test Jobs</h1>
+
+<img src="images/jenkins-deploy.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Focus for Next Cycle</h1>
+
+<ul>
+<li> Add more trunk gating jobs </li>
+<li> Collaborate with vendors on distributed testing </li>
+</div>
+
+
 </body>
+</html>

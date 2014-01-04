@@ -3,31 +3,189 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>Scaling an Open Source Community</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="20" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript"></script>
+<script src="scripts/jquery-1.7.2.min.js" charset="utf-8" type="text/javascript">
+</script>
+<script src="scripts/jquery-watch.js" charset="utf-8" type="text/javascript">
+</script>
+<script src="scripts/raphael-min.js" type="text/javascript" charset="utf-8"></script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
 
-<ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
+<div class="footer">
+    <a href="http://openstack-ci.github.com/publications/growing-openstack">
+      http://openstack-ci.github.com/publications/growing-openstack
+    </a>
+</div>
 
-</ul>
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" />
+ <br clear="all" />
+<h1>Growing an Open Source Community:<br />
+How we grew the OpenStack Project</h1>
+<h3>
+Monty Taylor
+&lt;<a href="mailto:monty.taylor@hp.com">monty.taylor@hp.com</a>&gt;</h3>
+
+</div>
+
+<div class="slide">
+<img class="center" src="images/openstack-software-diagram.png"/>
+</div>
+
+<div class="slide center">
+Linux of the Cloud
+</div>
+
+<div class="slide center">
+Quick Reminder
+</div>
+
+<div class="slide">
+<img class="center" src="images/openstack-software-diagram.png"/>
+</div>
+
+<div class="slide center">
+'Differentiation'
+</div>
+
+<div class="slide center">
+AIX, Ultrix, HPUX, Solaris, Irix
+</div>
+
+<div class="slide center">
+Linux
+</div>
+
+<div class="slide center">
+Everyone can Participate
+</div>
+
+<div class="slide center">
+Rackspace Cloud
+</div>
+
+<div class="slide">
+<img class="center" src="images/openstack-software-diagram.png"/>
+</div>
+
+<div class="slide center">
+3110 Changesets
+</div>
+
+<div class="slide center">
+291 Developers
+</div>
+
+<div class="slide center">
+132 Companies
+</div>
+
+<div class="slide center">
+Open Source, Design, Development and Community
+</div>
+
+<div class="slide center">
+Liberté, égalité, fraternité
+</div>
+
+<div class="slide center">
+Fraternity/Community
+</div>
+
+<div class="slide center">
+Freedom
+</div>
+
+<div class="slide center">
+Apache 2 License
+</div>
+
+<div class="slide center">
+Egalitarian Process
+</div>
+
+<div class="slide center">
+Everyone can Participate
+</div>
+
+<div class="slide center">
+Open Design Summits in Person
+</div>
+
+<div class="slide center">
+Open Meetings on IRC
+</div>
+
+<div class="slide center">
+Public Source Code Repositories
+</div>
+
+<div class="slide center">
+Meritocracy
+</div>
+
+<div class="slide center">
+Code Review
+</div>
+
+<div class="slide center">
+Code Standards
+</div>
+
+<div class="slide center">
+Consistent technology
+</div>
+
+<div class="slide center">
+Automated Testing
+</div>
+
+<div class="slide center">
+Automated Everything
+</div>
+
+<div class="slide center">
+Constant Vigilence
+</div>
+
+<div class="slide center">
+Remember AIX and Irix and HPUX and Solaris?
+</div>
+
+<div class="slide">
+<img class="last"
+     src="graphics/openstack-cloud-software-vertical-large.png" />
+</div>
+
 </body>
+</html>

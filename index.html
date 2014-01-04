@@ -3,31 +3,794 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>Trunk Gating with Jenkins, Gerrit, and Zuul</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="45" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript"></script>
+<script src="scripts/jquery-1.7.2.min.js" charset="utf-8" type="text/javascript">
+</script>
+<script src="scripts/jquery-watch.js" charset="utf-8" type="text/javascript">
+</script>
+<script src="scripts/raphael-min.js" type="text/javascript" charset="utf-8"></script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
+
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>Trunk Gating with Jenkins, Gerrit, and Zuul</h1>
+<p>
+James E. Blair
+&lt;<a href="mailto:jeblair@openstack.org">jeblair@openstack.org</a>&gt;<br />
+
+</div>
+
+<div class="slide">
+<h1>About this Presentation</h1>
 
 <ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
-
+<li> The OpenStack development process </li>
+<li> Project Gating: Preemptive CI </li>
+<li> Zuul: a system to implement gating with Jenkins </li>
+<li> Using the Jenkins API to integrate Jenkins into any system </li>
 </ul>
+</div>
+
+<div class="slide">
+<h1>OpenStack</h1>
+
+<p>Is open source software for building private and public clouds.</p>
+
+<center>
+<img src="images/openstack-software-diagram.png"/>
+</center>
+
+<ul>
+  <li><a href="http://openstack.org">http://openstack.org</a></li>
+</div>
+
+<div class="slide">
+<h1>Projects</h1>
+<small>
+<ul>
+<li>nova (compute)</li>
+<li>swift (object storge)</li>
+<li>glance (image service)</li>
+<li>keystone (identity service)</li>
+<li>quantum (network service)</li>
+<li>horizon (dashboard)</li>
+<li>cinder (volume service)</li>
+<li>python-novaclient</li>
+<li>python-swiftclient</li>
+<li>python-glanceclient</li>
+<li>python-keystoneclient</li>
+<li>python-quantumclient</li>
+<li>python-cinderclient</li>
+<li>python-openstackclient</li>
+</ul>
+</small>
+</div>
+
+
+<div class="slide">
+<h1>Contributors</h1>
+<ul>
+<li>Individual Contributors</li>
+<li>Commercial Entities</li>
+<li>Number, quality, and area of contributions can change daily</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Vision</h1>
+<ul>
+<li>Consistent Tooling</li>
+<li>Consistent Process</li>
+<li>Consistent Product</li>
+<li>Multiplier Effect</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Consistent Tooling</h1>
+<ul>
+<li>Minimize meta-development</li>
+<li>Process divergence == wasted developer time</li>
+<li>Lowers onboarding time</li>
+<li>Consolidate tool development</li>
+<li>Minimize project-specific weird build crud</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Gated Trunk</h1>
+<ul>
+<li>Ensures Code Quality</li>
+<li>Protects developers<ul>
+  <li>Devs always start from working code</li>
+</ul><li>Protects tree<ul>
+  <li>Bad code doesn't land</li>
+</ul><li>Egalitarian<ul>
+  <li>Process is the same for everyone</li>
+  <li>Process is transparent</li>
+  <li>Process is automated</li>
+</ul></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Everything Is Automated</h1>
+
+<img src="images/jenkins-gate.png" />
+
+</div>
+
+<div class="slide">
+<h1>Process Flow</h1>
+<ul>
+<li>Code is written and locally tested in a virtualenv</li>
+<li>Code is submitted for code review to gerrit</li>
+<li>Code is run through patch-uploaded automated checks</li>
+<li>Code is peer-reviewed</li>
+<li>Code is accepted or rejected by core team</li>
+<li>Code is run through pre-merge automated checks</li>
+<li>Code is merged or rejected</li>
+<li>Code is run through post-merge analysis</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Gerrit</h1>
+<ul>
+<li>Developed by Google for Android</li>
+<li>Stand-alone patch review system</li>
+<li>Integration points: hooks, JSON queries, event-stream</li>
+<li>Extensible review categories, default: Verified, Code-Review</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>States of a Patch</h1>
+<ul>
+  <li>Code Submitted</li>
+  <li>Code Verified</li>
+  <li>Code Reviewed</li>
+  <li>Code Accepted</li>
+  <li>Code Merged</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Types of Gerrit Triggers</h1>
+<ul>
+<li> Patchset uploaded </li>
+<li> Change merged </li>
+<li> Comment added (review state) </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Jenkins Feedback</h1>
+<img src="images/gerrit-jenkins.png"/>
+</div>
+
+
+<div class="slide">
+<h1>Jenkins</h1>
+
+<p> Types of jobs: <p>
+<ul>
+  <li> Check / Gate
+    <ul><li> unit tests </li></ul>
+    <ul><li> integraton tests </li></ul>
+    <ul><li> code style </li></ul>
+  </li>
+  <li> Post
+    <ul><li> docs </li></ul>
+    <ul><li> tarballs </li></ul>
+    <ul><li> pypi </li></ul>
+  </li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Zuul</h1>
+<ul>
+  <li>A general purpose trunk gating system</li>
+  <li>Interfaces with Gerrit and Jenkins</li>
+  <li>Flexible configuration allows for many kinds of project automation</li>
+  <li>Allows parallel testing of serialized changes</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Speculative Execution</h1>
+<ul>
+  <li>Serialize changes across all projects</li>
+  <li>Speculative execution of tests</li>
+  <li>Run in parallel in order triggered</li>
+  <li>Assume success</li>
+  <li>Start over on failure</li>
+</ul>
+</div>
+
+<div class="slide" id="zuul">
+<h1>Zuul Simulation</h1>
+<script>
+var green = "#00bb44";
+var red   = "#bb0000";
+
+var light_green = "#8dbb9e";
+var light_red   = "#bb7777";
+
+function Change(paper, name, number, x, y, delay)
+{
+    this.set = paper.set();
+    this.x = x;
+    this.y = y;
+    this.text = paper.text(x, y, name+'\n#'+number);
+    this.set.push(this.text);
+    this.text.attr({"font-size": 16});
+    width = this.text.getBBox().width+16;
+    height = this.text.getBBox().height+12;
+
+    this.left = x-width/2;
+    this.right = x+width/2;
+    this.top = y-height/2;
+    this.bottom = y+height/2;
+
+    this.rect = paper.rect(this.left, this.top, width, height, 2);
+    this.set.push(this.rect);
+    this.rect.attr({fill: "#ccc", stroke: "#bbb"});
+    this.rect.toBack();
+
+    this.set.attr({opacity: 0});
+    this.set.animate(Raphael.animation({opacity: 1}, 500, 'linear').delay(delay));
+
+    this.hide = function ()
+    {
+	var set = this.set;
+	var remove = function () { set.remove(); };
+	this.set.animate({opacity: 0}, 1000, 'linear', remove);
+    }
+
+    this.merge = function(x, y)
+    {
+	this.set.toFront();
+	this.text.animate(Raphael.animation({opacity: 0}, 500, 'linear'));
+	this.rect.animate(Raphael.animation(
+	    {width: 18, height: 18, r: 9, x: x, y: y, stroke: green},
+	    1000).delay(500));
+    }
+
+    this.provisionalResult = function(success)
+    {
+	if (success)
+	{
+	    color = light_green;
+	} else {
+	    color = light_red;
+	}
+	this.rect.animate({fill: color}, 500);
+    }
+
+    this.result = function(success)
+    {
+	if (success)
+	{
+	    color = green;
+	} else {
+	    color = red;
+	}
+	this.rect.animate({fill: color}, 500);
+    }
+
+    this.reset = function(success)
+    {
+	this.rect.animate({fill: "#ccc"}, 500);
+    }
+}
+
+function linePath(x1, y1, x2, y2) {
+    return "M"+x1+","+y1+"L"+x2+","+y2;
+}
+
+function Dependency(paper, source, target, delay)
+{
+    this.set = paper.set();
+    this.source = source;
+    this.target = target;
+    
+    startx = this.source.right + 8;
+    starty = this.source.y;
+    tipx = this.target.left - 8;
+    tipy = this.target.y;
+
+    path =        "M" + (startx) + "," + starty;
+    path = path + "L" + (tipx-15) + "," + tipy;
+    this.line = paper.path(path);
+    this.set.push(this.line);
+    this.line.attr("stroke-width", "2");
+    this.line.attr("fill", "#000");
+    this.line.attr("stroke", "#000");
+
+    path =        "M" + (tipx - 20) + "," + (tipy - 10);
+    path = path + "L" + (tipx)      + "," + (tipy);
+    path = path + "L" + (tipx - 20) + "," + (tipy + 10);
+    path = path + "Q" + (tipx - 12) + "," + (tipy);
+    path = path + "," + (tipx - 20) + "," + (tipy - 10);
+    path = path + "Z";
+    this.arrow = paper.path(path);
+    this.set.push(this.arrow);
+    this.arrow.attr("fill", "#000");
+    this.arrow.attr("stroke", "#000");
+
+    this.set.attr({opacity: 0});
+    this.set.animate(Raphael.animation({opacity: 1}, 500, 'linear').delay(delay));
+
+    this.hide = function ()
+    {
+	var set = this.set;
+	var remove = function () { set.remove(); };
+	this.set.animate({opacity: 0}, 1000, 'linear', remove);
+    }
+}
+
+function TestSeries(paper, change, tests)
+{
+    this.x = change.x - 20;
+    this.y = change.bottom + 6;
+    offset = 40; // the "merge" test length
+
+    height = 0;
+    for (test in tests)
+    {
+	len = tests[test][0];
+	if (len > height)
+	{
+	    height = len;
+	}
+    }
+    
+    this.width = (1+10*tests.length)
+    this.height = offset + height + 10;
+    this.set = paper.set();
+    
+    startpath = "M" + this.x + "," + this.y;
+    line = paper.path(startpath+"l0," + offset);
+    this.set.push(line);
+
+    startpath = "M" + this.x + "," + (this.y + offset);
+    line = paper.path(startpath+"l0," + (this.height - offset));
+    this.set.push(line);
+    line.attr("stroke-dasharray", "-");
+    line.attr("stroke", green);
+
+    line = paper.path(startpath + "l" + (1+10*tests.length) + ",0");
+    this.set.push(line);
+
+    var global_success = true;
+    curx = this.x;
+    cury = this.y + offset;
+    for (var test in tests)
+    {
+	len = tests[test][0];
+	success = tests[test][1];
+	curx = curx + 10;
+	line = paper.path("M" + curx + "," + cury + "l0," + len);
+	this.set.push(line);
+	line = paper.path("M" + curx + "," + cury + "m0," + len + 
+			  "l0," + (this.height-offset-len));
+	this.set.push(line);
+	line.attr("stroke-dasharray", "-");
+	if (success) {
+	    line.attr("stroke", green);
+	} else {
+	    line.attr("stroke", red);
+	    global_success = false;
+	}
+    }
+
+    var complete = function ()
+    {
+	change.provisionalResult(global_success);
+    }
+
+    this.rect = paper.rect(this.x-2, this.y-2, this.width+4, this.height+2);
+    this.rect.attr({fill: "#fff", stroke: "#fff"})
+    this.rect.animate({y: this.y+this.height+2, height: 0}, 36*this.height,  //36
+		      'linear', complete);
+
+    this.hide = function ()
+    {
+	var set = this.set;
+	var remove = function () { set.remove(); };
+	this.set.animate({opacity: 0}, 2000, 'linear', remove);
+    }
+}
+
+var zuul_simulation = {
+
+    paper: null,
+    state: 0,
+    finished: false,
+
+    setup: function()
+    {
+        this.paper = Raphael(200, 200, 760, 400);
+        this.finished = false;
+        this.state = 0;
+    },
+
+    teardown: function()
+    {
+        if (this.paper != null) {
+            this.paper.remove();
+            this.paper = null;
+        }
+        this.finished = true;
+    },
+
+    next: function()
+    {
+        this.state = this.state + 1;
+        if (this.state == 1)
+        {
+            head_label = this.paper.text(520, 385, "HEAD");
+            head_label.attr({"font-size": 16});
+
+            nova_label = this.paper.text(520, 300, "nova");
+            nova_label.attr({"font-size": 16});
+            nova_label.attr({x:this.paper.width-(nova_label.getBBox().width/2)-10});
+            nova_end = [(this.paper.width-nova_label.getBBox().width-16), 300];
+            nova_line = this.paper.path(linePath(520, 300, nova_end[0], nova_end[1]))
+                                        
+            nova_line.attr({"stroke-width": 2, fill: "#000", stroke: "#000"});
+            nova_head = this.paper.circle(520, 300, 9);
+            nova_head.attr({fill: "#5069c9", stroke:"#5069c9"});
+
+            keystone_label = this.paper.text(520, 360, "keystone");
+            keystone_label.attr({"font-size": 16});
+            keystone_label.attr({x:this.paper.width-(keystone_label.getBBox().width/2)-10});
+            keystone_end = [(this.paper.width-keystone_label.getBBox().width-16), 360];
+            keystone_line = this.paper.path(linePath(520, 360, keystone_end[0], keystone_end[1]));
+            keystone_line.attr({"stroke-width": 2, fill: "#000", stroke: "#000"});
+            keystone_head = this.paper.circle(520, 360, 9);
+            keystone_head.attr({fill: "#eead5f", stroke:"#eead5f"});
+        }
+        if (this.state == 2)
+        {
+            change1 = new Change(this.paper, 'nova', '1', 480, 40, 0);
+            change2 = new Change(this.paper, 'nova', '2', 340, 40, 1000);
+            dep21 = new Dependency(this.paper, change2, change1, 1800);
+
+            change3 = new Change(this.paper, 'keystone', '3', 180, 40, 2000);
+            dep32 = new Dependency(this.paper, change3, change2, 2800);
+
+            change4 = new Change(this.paper, 'nova', '4', 40, 40, 3000);
+            dep43 = new Dependency(this.paper, change4, change3, 3800);
+        }
+        if (this.state == 3) {
+            change1_test = new TestSeries(this.paper, change1, [[80, 1], [60, 1], [95, 1]]);
+            change2_test = new TestSeries(this.paper, change2, [[80, 1], [60, 1], [90, 1]]);
+            change3_test = new TestSeries(this.paper, change3, [[50, 1], [30, 0]]);
+            change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 0]]);
+        }
+        if (this.state == 4) {
+            change1_test.hide();
+            change1.result(1);
+        }
+        if (this.state == 5) {
+            change1.merge(480, 290);
+            dep21.hide();
+            setTimeout(function() { 
+                nova_line.attr({path: linePath(490, 300, nova_end[0], nova_end[1])})
+            } , 2000);
+        }
+        if (this.state == 6) {
+            change2_test.hide();
+            change2.result(1);
+        }
+        if (this.state == 7) {
+            change2.merge(450, 290);
+            dep32.hide();
+            setTimeout(function() { 
+                nova_line.attr({path: linePath(460, 300, nova_end[0], nova_end[1])})
+            } , 2000);
+        }
+        if (this.state == 8) {
+            change3_test.hide();
+            change3.result(0);
+        }
+        if (this.state == 9) {
+            change4.reset();
+            change4_test.hide();
+            change3.hide();
+            dep43.hide();
+        }
+        if (this.state == 10) {
+            change4_test = new TestSeries(this.paper, change4, [[80, 1], [60, 1], [85, 1]]);
+        }
+        if (this.state == 11) {
+            change4_test.hide();
+            change4.result(1);
+        }
+        if (this.state == 12) {
+            change4.merge(420, 290);
+            setTimeout(function() { 
+                nova_line.attr({path: linePath(430, 300, nova_end[0], nova_end[1])})
+            } , 2000);
+        }
+        if (this.state == 13) {
+            this.finished = true;
+        }
+    },
+};  /* zuul_simulation */
+
+
+$(document).ready(function() {
+    $("#zuul").bind("DOMSubtreeModified", function() {
+        if ($(this).hasClass("hidden")) {
+            $("#zuul").unbind('click');
+            w3c_slidy.mouse_click_enabled = true;
+            zuul_simulation.teardown();
+        } else {
+            zuul_simulation.setup();
+            zuul_simulation.next();
+            w3c_slidy.mouse_click_enabled = false;
+            $("#zuul").bind('click', function() {
+                zuul_simulation.next();
+
+                if (zuul_simulation.finished) {
+                    $("#zuul").unbind('click');
+                    w3c_slidy.mouse_click_enabled = true;
+                }
+            });
+        }
+    });  /* dom modified */
+});  /* document ready */
+
+
+</script>
+</div>
+
+<div class="slide">
+<h1>Zuul Check Pipeline</h1>
+<pre>
+pipelines:
+  - name: check
+    manager: IndependentPipelineManager
+    trigger:
+      - event: patchset-created
+    success:
+      verified: 1
+    failure:
+      verified: -1
+</pre>
+</div>
+
+<div class="slide">
+<h1>Zuul Gate Pipeline</h1>
+<pre>
+pipelines:
+  - name: gate
+    manager: DependentPipelineManager
+    trigger:
+      - event: comment-added
+        approval:
+          - approved: 1
+    start:
+      verified: 0
+    success:
+      verified: 2
+      submit: true
+    failure:
+      verified: -2
+</pre>
+</div>
+
+<div class="slide">
+<h1>Zuul Post-Merge Pipeline</h1>
+<pre>
+pipelines:
+  - name: post
+    manager: IndependentPipelineManager
+    trigger:
+      - event: ref-updated
+        ref: ^(?!refs/).*$
+</pre>
+</div>
+
+<div class="slide">
+<h1>Other Pipelines We've Created</h1>
+<pre>
+pipelines:
+  - name: silent
+    manager: IndependentPipelineManager
+    trigger:
+      - event: patchset-created
+
+  - name: publish
+    manager: IndependentPipelineManager
+    trigger:
+      - event: ref-updated
+        ref: ^refs/tags/.*$
+</pre>
+</div>
+
+<div class="slide">
+<h1>Zuul Project Configuration</h1>
+<pre>
+projects:
+  - name: openstack/nova
+    check:
+      - gate-nova-merge:
+        - gate-nova-pep8
+        - gate-nova-python26
+        - gate-nova-python27
+        - gate-tempest-devstack-vm
+    gate:
+      - gate-nova-merge:
+        - gate-nova-pep8
+        - gate-nova-python26
+        - gate-nova-python27
+        - gate-tempest-devstack-vm
+    post:
+      - nova-tarball
+      - nova-docs
+</pre>
+</div>
+
+<div class="slide">
+<h1>Zuul Change Queues</h1>
+
+<p> Projects with shared jobs automatically get a shared queue: </p>
+<pre>
+projects:
+  - name: openstack/nova
+    gate:
+      - gate-nova-merge:
+        - gate-nova-python27
+        - gate-tempest-devstack-vm
+
+  - name: openstack/glance
+    gate:
+      - gate-glance-merge:
+        - gate-glance-python27
+        - gate-tempest-devstack-vm
+</pre>
+</div>
+
+<div class="slide">
+<h1>Status View</h1>
+
+<center>
+<img src="images/status.png"/>
+</center>
+
+</div>
+
+<div class="slide">
+<h1>Jenkins API</h1>
+
+<ul>
+<li> Job and view lists </li>
+<li> Job configuration </li>
+<li> Build jobs </li>
+<li> Build descriptions </li>
+<li> Cancel builds </li>
+<li> Inspect and cancel queue </li>
+<li> Node configuration </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Jenkins API: Launching</h1>
+
+<p>
+The python library <a href="http://packages.python.org/python-jenkins/">jenkins</a> allows for easy interaction:
+</p>
+
+<pre>
+from jenkins import Jenkins
+jenkins = Jenkins('servername', 'username', 'apikey')
+jenkins.build_job(job.name, parameters=params)
+</pre>
+
+<p>
+Abstracts simple GET/POST transactions.
+</p>
+
+</div>
+
+<div class="slide">
+<h1>Jenkins API: Notifications</h1>
+
+<p>
+Notification plugin provides for HTTP endpoints.
+</p>
+
+<pre>
+class JenkinsCallback(threading.Thread):
+    def run(self):
+        httpserver.serve(self.app, host='0.0.0.0', port='8001')
+
+    def app(self, environ, start_response):
+        request = Request(environ)
+        start_response('200 OK', [('content-type', 'text/html')])
+        if request.path == '/jenkins_endpoint':
+            data = json.loads(request.body)
+            build = data.get('build')
+            phase = build.get('phase')
+            status = build.get('status')
+            url = build.get('full_url')
+            number = build.get('number')
+            params = build.get('parameters')
+        return ['OK']
+</pre>
+</div>
+
+<div class="slide">
+<h1>Development / Contributing</h1>
+
+<ul>
+<li>Launchpad: 
+  <a href="https://launchpad.net/zuul">https://launchpad.net/zuul</a>
+</li>
+<li>GitHub: 
+  <a href="https://github.com/openstack-ci/zuul">
+    https://github.com/openstack-ci/zuul</a>
+</li>
+<li>Docs:
+  <a href="http://ci.openstack.org/zuul/">http://ci.openstack.org/zuul/</a>
+<li>Freenode: #openstack-infra</li>
+<li>Mailing list:
+  <a href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra">
+    http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra
+  </a>
+</li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Thanks!</h1>
+
+<p><img src="images/stack-o-pancakes-150x150.png"/>
+
+<p>
+These slides available at: <a href="https://github.com/openstack-ci/publications">https://github.com/openstack-ci/publications</a>
+</p>
+
+</div>
+
 </body>
+</html>

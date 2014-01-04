@@ -3,31 +3,465 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>Scaling OpenStack Development with Git, Gerrit, and Jenkins</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="40" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript">
+</script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
+
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>Scaling OpenStack Development with Git, Gerrit, and Jenkins</h1>
+Monty Taylor
+&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;<br />
+James E. Blair
+&lt;<a href="mailto:corvus@inaugust.com">corvus@inaugust.com</a>&gt;<br />
+
+</div>
+
+<div class="slide">
+<h1>Systems</h1>
+<ul>
+  <li>https://jenkins.openstack.org</li>
+  <li>https://review.openstack.org</li>
+  <li>http://ci.openstack.org (docs)</li>
+  <li>https://jenkins.stackforge.org</li>
+</div>
+
+<div class="slide">
+<h1>Projects</h1>
+<small>
+<ul>
+<li>nova (compute)</li>
+<li>swift (object storge)</li>
+<li>glance (image service)</li>
+<li>keystone (identity service)</li>
+<li>quantum (network service)</li>
+<li>horizon (dashboard)</li>
+<li>cinder (volume service)</li>
+<li>python-novaclient</li>
+<li>python-swiftclient</li>
+<li>python-glanceclient</li>
+<li>python-keystoneclient</li>
+<li>python-quantumclient</li>
+<li>python-cinderclient</li>
+<li>python-openstackclient</li>
+</ul>
+</small>
+</div>
+
+
+<div class="slide">
+<h1>Contributors</h1>
+<ul>
+<li>Individual Contributors</li>
+<li>Commercial Entities</li>
+<li>Number, quality, and area of contributions can change daily</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Release Management</h1>
+<ul>
+<li>Time Based Releases</li>
+<li>Six Month Cadence<ul>
+  <li>Tied to Ubuntu Releases</li>
+</ul><li>Design summits each cycle</li>
+<li>Continuously Open Trunk<ul>
+  <li>Develop directly on master</li>
+</ul><li>One Month Milestone Releases</li>
+<li>Post-release Stable Branches</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Vision</h1>
+<ul>
+<li>Consistent Tooling</li>
+<li>Consistent Process</li>
+<li>Consistent Product</li>
+<li>Multiplier Effect</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Consistent Tooling</h1>
+<ul>
+<li>Minimize meta-development</li>
+<li>Process divergence == wasted developer time</li>
+<li>Lowers onboarding time</li>
+<li>Consolidate tool development</li>
+<li>Minimize project-specific weird build crud</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Development Infrastructure Systems</h1>
+<ul>
+<li>Gerrit (code review, git) <a href="http://review.openstack.org">http://review.openstack.org</a></li>
+<li>Jenkins (CI, automation) <a href="http://jenkins.openstack.org">http://jenkins.openstack.org</a><ul>
+  <li>pre-approval testing</li>
+  <li>pre-merge testing</li>
+  <li>post-merge testing</li>
+  <li>post-merge artifact management</li>
+</ul>
+<li>Launchpad (bugs, blueprints, releases, translations, SSO) <a href="http://launchpad.net/openstack">http://launchpad.net/openstack</a></li>
+<li>Documentation servers</li>
+<li>IRC bots</li>
+<li>planet.openstack.org</li>
+<li>Repository mirrors</li>
+<li>Etherpad</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Environment</h1>
+<ul>
+<li>Ubuntu</li>
+<li>Python<ul>
+  <li>pep8 standards</li>
+  <li>openstack.common</li>
+</ul><li>virtualenv/pip</li>
+<li>IRC (#openstack-dev, #openstack-meeting)</li>
+<li>devstack</li>
+<li>gated trunk based on master</li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h1>Gated Trunk</h1>
+<ul>
+<li>Ensures Code Quality</li>
+<li>Protects developers<ul>
+  <li>Devs always start from working code</li>
+</ul><li>Protects tree<ul>
+  <li>Bad code doesn't land</li>
+</ul><li>Egalitarian<ul>
+  <li>Process is the same for everyone</li>
+  <li>Process is transparent</li>
+  <li>Process is automated</li>
+</ul></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Everything Is Automated</h1>
+
+<img src="images/jenkins-gate.png" />
+
+</div>
+
+<div class="slide">
+<h1>Process Flow</h1>
+<ul>
+<li>Code is written and locally tested in a virtualenv</li>
+<li>Code is submitted for code review to gerrit</li>
+<li>Code is run through patch-uploaded automated checks</li>
+<li>Code is peer-reviewed</li>
+<li>Code is accepted or rejected by core team</li>
+<li>Code is run through pre-merge automated checks</li>
+<li>Code is merged or rejected</li>
+<li>Code is run through post-merge automated checks</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Gerrit</h1>
+<ul>
+<li>Developed by Google for Android</li>
+<li>Stand-alone patch review system</li>
+<li>Integration points: hooks, JSON queries, event-stream</li>
+<li>Extensible review categories, default: Verified, Code-Review</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Pre-merge Check</h1>
+<img src="images/gerrit-jenkins.png"/>
+</div>
+
+<div class="slide">
+<h1>States of a Patch</h1>
+<ul>
+  <li>Code Submitted</li>
+  <li>Code Verified</li>
+  <li>Code Reviewed</li>
+  <li>Code Accepted</li>
+  <li>Code Landed</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Approved Reviews</h1>
+<img src="images/gerrit-approved.png"/>
+</div>
+
+<div class="slide">
+<h1>Types of Jenkins Gerrit Triggers</h1>
+<ul>
+<li> Patchset uploaded </li>
+<li> Change merged </li>
+<li> Comment added (review state) </li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h1>Git Review</h1>
+<ul>
+<li>External Git subcommand</li>
+<li>Developers can easily incorporate code review into git workflow</li>
+<li>Zero-configuration</li>
+<li>Can be used for any project, being adopted by other projects</li>
+</ul>
+
+<pre>
+corvus@shiprock:~/rs/github/quantum$ git commit -a
+[new-versionpy ddf1dce] Base version.py on glance.
+ 3 files changed, 28 insertions(+), 107 deletions(-)
+ delete mode 100644 version.py
+
+corvus@shiprock:~/rs/github/quantum$ git review
+remote: Resolving deltas:   0% (0/3)
+remote: 
+remote: New Changes:
+remote:   https://review.openstack.org/3072
+remote: 
+To ssh://corvus@review.openstack.org:29418/openstack/quantum.git
+ * [new branch]      HEAD -> refs/for/master/bug/916018
+</pre>
+
+</div>
+
+<div class="slide">
+<h1>Types of Tests</h1>
+
 
 <ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
-
+<li> Unit tests </li>
+<li> Integration tests 
+  <ul> 
+    <li> May be able to run on virtual servers, should run on real servers </li>
+    <li> Difficult or impossible for a developer to run </li>
+  </ul>
+</li>
 </ul>
+
+</div>
+
+<div class="slide">
+<h1>Specific Challenges/Solutions</h1>
+
+<ul>
+  <li>Testing effect of merging change</li>
+  <li>Using cloud builders</li>
+  <li>Large numbers of similar projects</li>
+  <li>Disparate hardware configurations</li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>gerrit git prep</h1>
+<ul>
+<li>test the result of the change, not the change</li>
+<li>https://github.com/openstack/openstack-ci-puppet/blob/master/modules/jenkins_slave/files/slave_scripts/gerrit-git-prep.sh</li>
+<li>For each gerrit change:
+<ul>
+  <li>grabs target branch</li>
+  <li>cleans tree</li>
+  <li>merges change to be tested</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Interrelated integration testing</h1>
+<ul>
+  <li>devstack-gate
+    <ul>
+    <li>spin up fresh node</li>
+    <li>run devstack</li>
+    <li>run integration tests</li>
+    </ul>
+  <li>Gate proposed change against current state of other projects</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>bottlenecking</h1>
+<ul>
+  <li>Serialize branches across all projects</li>
+  <li>optimistic branch prediction</li>
+  <li>Run in parallel in order triggered</li>
+  <li>Assume success</li>
+  <li>Start over on failure</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>devstack-gate problems</h1>
+<ul>
+  <li>Clouds suck</li>
+  <li>github sucks</li>
+  <li>pypi sucks</li>
+  <li>Ubuntu sucks</li>
+  <li><b><em>ALL NETWORK ACCESS IS FAILURE</em></b></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>devstack-gate solutions</h1>
+<ul>
+  <li>Create a new node</li>
+  <li>pre-fetch all needed packages, repos</li>
+  <li>snapshot to cloud image</li>
+  <li>maintain a pool of cloud nodes</li>
+  <li>slave can only be used for one test run</li>
+  <li>set of python and shell scripts triggered by jenkins</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>jclouds-plugin</h1>
+<ul>
+  <li>ec2 plugin useless to me (sorry)</li>
+  <li>Adrian Cole and Cloudsoft wrote jclouds-plugin</li>
+  <li>Provisions on any provider via jclouds</li>
+  <li>Image pre-creation and pooling features</li>
+  <li>single use slaves</li>
+  <li>Slave provisioning as build step</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Templated jobs</h1>
+<ul>
+  <li>TONS of consistent projects</li>
+  <li>Manage everything through git and code review</li>
+  <li>https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins_jobs</li>
+  <li>Manage jobs as yaml files in git</li>
+  <li>Jobs updated via Jenkins API</li>
+  <li>groupings of jobs supported "nova: python_jobs"</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Simple example</h1>
+<pre>
+project:
+  template: 'python_jobs'
+
+values:
+  name: 'python-novaclient'
+  site: 'openstack'
+  disabled: 'false'
+</pre>
+</div>
+
+<div class="slide">
+<h1>complex example</h1>
+<small><pre>
+---
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-ceilometer-merge'
+  site: 'stackforge'
+  project: 'ceilometer'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'stackforge/ceilometer'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+</pre></small>
+
+</div>
+
+
+<div class="slide">
+<h1>Scaling hardware needs</h1>
+<ul>
+  <li>Different vendors have different combinations of configurations</li>
+  <li><a
+  href="http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way">http://ci.openstack.org/third_party.html#the-jenkins-gerrit-trigger-plugin-way</a></li>
+  <li>Run their own jenkins</li>
+  <li>Consume gerrit event stream</li>
+  <li>their jenkins votes VRFY +1/-1</li>
+  <li>Our jenkins votes VRFY +2/-2</li>
+  <li>The can run their lab - I don't have to know anything about it</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Thanks!</h1>
+
+<p><img src="images/stack-o-pancakes-150x150.png"/>
+
+<p>
+These slides available at: <a href="https://github.com/openstack-ci/publications">https://github.com/openstack-ci/publications</a>
+</p>
+
+</div>
+
 </body>
+</html>

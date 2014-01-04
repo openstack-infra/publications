@@ -3,31 +3,532 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>Collaboratively managing the OpenStack project with Puppet</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="60" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript"></script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
+
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>Collaboratively managing the OpenStack project with Puppet</h1>
+<p>
+Monty Taylor
+&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;<br />
+
+</div>
+
+<div class="slide">
+<h1>Whoami</h1>
+<ul>
+ <li> One of the OpenStack Founders </li>
+ <li> Core team of OpenStack CI systems </li>
+ <li> OpenStack Foundation Board </li>
+ <li> OpenStack Technical Committee </li>
+ <li> Manager of OpenStack Automation at HP </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>About this Presentation</h1>
 
 <ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
-
+<li> Running OpenStack's CI systems </li>
+<li> <em>NOT</em> about installing OpenStack </li>
+<li> Challenges we've faced doing things in the open </li>
+<li> Probably some rants and swearing in violation of something </li>
 </ul>
+</div>
+
+<div class="slide">
+<h1>Design Assumptions</h1>
+<ul>
+ <li> Everything Open </li>
+ <li> Everything Reusable </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Shameless Plug</h1>
+<ul>
+ <li> I'm hiring </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>OpenStack</h1>
+
+<p>Is open source software for building private and public clouds.</p>
+
+<center>
+<img src="images/openstack-software-diagram.png"/>
+</center>
+
+<ul>
+  <li><a href="http://openstack.org">http://openstack.org</a></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Projects</h1>
+<small>
+<ul>
+<li>nova (compute)</li>
+<li>swift (object storge)</li>
+<li>glance (image service)</li>
+<li>keystone (identity service)</li>
+<li>quantum (network service)</li>
+<li>horizon (dashboard)</li>
+<li>cinder (volume service)</li>
+<li>python-novaclient</li>
+<li>python-swiftclient</li>
+<li>python-glanceclient</li>
+<li>python-keystoneclient</li>
+<li>python-quantumclient</li>
+<li>python-cinderclient</li>
+<li>python-openstackclient</li>
+</ul>
+</small>
+</div>
+
+
+<div class="slide">
+<h1>Servers</h1>
+
+<center>
+<img src="images/server-list.png"/>
+</center>
+
+</div>
+
+
+<div class="slide">
+<h1>Back in the Day...</h1>
+<small>
+<ul>
+<li>nova (compute)</li>
+<li>swift (object storge)</li>
+<li>jenkins.openstack.org</li>
+<li>wiki.openstack.org</li>
+</ul>
+</small>
+</div>
+
+<div class="slide">
+<h1>Typical First Steps</h1>
+<ul>
+<li>jenkins.openstack.org had one admin - me</li>
+<li>wiki was managed by someone else</li>
+<li>Everything installed by hand</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Complexity Rises</h1>
+<ul>
+ <li> Soren, Jay, Eric and Thierry get root </li>
+ <li> Added a couple of build slaves </li>
+ <li> I get annoyed </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Investigation</h1>
+<ul>
+ <li> Chef </li>
+ <li> Puppet </li>
+ <li> Manage users and packages </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Small Infrastructure</h1>
+<ul>
+ <li> puppet apply ftw </li>
+ <li> creating users not so much </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS CREATING USERS SO MUCH WORK??? </p></center>
+ <small><pre>
+class user::virtual {
+  define localuser ($realname,$sshkeys='',$shell="/bin/bash") {
+    group { $title:
+      ensure =&gt; 'present'
+    }
+
+    user { $title:
+      ensure  =&gt; "present",
+      comment =&gt; $realname,
+      home    =&gt; "/home/$title",
+      shell   =&gt; $shell,
+      gid     =&gt; $title,
+      groups  =&gt; ['sudo','admin'],
+      membership =&gt; 'minimum',
+      managehome =&gt; true,  # creates the home directory (does not actually manage it)
+      require =&gt; Group[$title],
+    }
+    
+    file { "${title}_sshdir":
+      name =&gt; "/home/$title/.ssh",
+      owner =&gt; $title,
+      group =&gt; $title,
+      mode =&gt; 700,
+      ensure =&gt; 'directory',
+      require =&gt; User[$title],
+    }
+  </pre></small>
+</div>
+
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS CREATING USERS SO MUCH WORK??? </p></center>
+ <small><pre>
+    file { "${title}_keys":
+      name =&gt; "/home/$title/.ssh/authorized_keys",
+      owner =&gt; $title,
+      group =&gt; $title,
+      mode =&gt; 400,
+      content =&gt; $sshkeys,
+      ensure =&gt; 'present',
+      require =&gt; File["${title}_sshdir"],
+    }
+  }
+}
+  </pre></small>
+</div>
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS CREATING USERS SO MUCH WORK??? </p></center>
+ <small><pre>
+  @user::virtual::localuser { 'mordred':
+    realname =&gt; 'Monty Taylor',
+    sshkeys  =&gt; "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAyxfIpVCvZyM8BIy7r7WOSIG6Scxq4afean1Pc/bej5ZWHXCu1QnhGbI7rW3sWciEhi375ILejfODl2TkBpfdJe/DL205lLkTxAa+FUqcZ5Ymwe+jBgCH5XayzyhRPFFLn07IfA/BDAjGPqFLvq6dCEHVNJIui6oEW7OUf6a3376YF55r9bw/8Ct00F9N7zrISeSSeZXbNR+dEqcsBEKBqvZGcLtM4jzDzNXw1ITPPMGaoEIIszLpkkJcy8u/13GIrbAwNrB2wjl6Mzj+N9nTsB4rFtxRXp31ZbytCH5G9CL/mFard7yi8NLVEJPZJvAifNVhooxGN06uAiTFE8EsuQ== mtaylor@qualinost\n",
+  }
+  </pre></small>
+</div>
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS CREATING USERS SO MUCH WORK??? </p></center>
+ <small><pre>
+    realize (
+      User::Virtual::Localuser['mordred'],
+      User::Virtual::Localuser['corvus'],
+      User::Virtual::Localuser['soren'],
+      User::Virtual::Localuser['linuxjedi'],
+      User::Virtual::Localuser['devananda'],
+      User::Virtual::Localuser['clarkb'],
+    )
+  </pre></small>
+</div>
+
+<div class="slide">
+<h1>Shameless Plug</h1>
+<ul>
+ <li> I'm hiring </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>First (weird) choice</h1>
+<ul>
+ <li> I hate typing </li>
+ <li> Launchpad API script to generate a manifest </li>
+ <li> Launching nodes was so much easier! </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Usage Pattern 0</h1>
+<ul>
+ <li> puppet apply by hand at machine create </li>
+ <li> problem: totally manual operation </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Once you have that ... </h1>
+<ul>
+ <li> Jim Blair started ... told me I was crazy </li>
+ <li> We started making clases and modules </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Usage Pattern 1</h1>
+<ul>
+ <li> manifest/modules in public git / gerrit </li>
+ <li> puppet apply in cron </li>
+ <li> problem: where does secret stuff go </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Secrets Solution 0</h1>
+<p> Copy secret files to machine by hand, then reference </p>
+<pre>
+  file { '/usr/local/jenkins_jobs/jenkins_jobs.ini':
+    owner =&gt; 'root',
+    group =&gt; 'root',
+    mode =&gt; 440,
+    ensure =&gt; 'present',
+    source =&gt; 'file:///root/secret-files/jenkins_jobs.ini',
+    replace =&gt; 'true',
+    require =&gt; File['/usr/local/jenkins_jobs']
+  }
+</pre>
+</div>
+
+<div class="slide">
+<h1>Copying Files</h1>
+<ul>
+ <li> This sucks for all the reasons you'd expect </li>
+ <li> Defeats reusability </li>
+ <li> <em>ENTIRE FILE</em> becomes secret </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS INSTALLING PACKAGES FAIL??? </p></center>
+ <small><pre>
+class jenkins_jobs {
+    package { 'python-yaml':
+        ensure =&gt; present;
+    }
+    ...
+}
+
+class zuul {
+    package { 'python-yaml':
+        ensure =&gt; present;
+    }
+    ...
+}
+
+node "jenkins.openstack.org" {
+    include zuul
+    include jenkins_jobs
+}
+ </pre></small>
+</div>
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS INSTALLING PACKAGES FAIL??? </p></center>
+ <small><pre>
+ # A lot of things need yaml, be conservative requiring this package to avoid
+ # conflicts with other modules.
+ if ! defined(Package['python-yaml']) {
+   package { 'python-yaml':
+     ensure =&gt; "present",
+ }
+
+ </pre></small>
+ <p>Perhaps package commands should be fundamental units, and should create an idempotent package installation set. You know, kinda like how apt and yum already work?</p>
+</div>
+
+<div class="slide">
+<h1>Shameless Plug</h1>
+<ul>
+ <li> I'm hiring </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1> And then there were more </h1>
+<p> Now we have ...
+<ul>
+ <li> 5 or 6 servers </li>
+ <li> 10 static build slaves </li>
+ <li> Additional dynamic jenkins slaves for every build </li>
+ <li> So about 200 servers a day managed by puppet </li>
+ <li> Chatted with wikipedia about sharing work </li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h1>Usage Pattern 2</h1>
+<ul>
+ <li> classes with secrets parameterized </li>
+ <li> puppetmaster + heira </li>
+ <li> git pull on master in cron </li>
+ <li> start using forge modules </li>
+ <li> puppet dashboard for monitoring </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>heira</h1>
+<pre>
+node 'wiki.openstack.org' {
+  class { 'openstack_project::wiki':
+    mysql_root_password =&gt; hiera('wiki_db_password'),
+    sysadmins           =&gt; hiera('sysadmins'),
+  }  
+}
+</pre>
+</div>
+
+<div class="slide">
+<h1>forge modules</h1>
+<ul>
+ <li> Started splitting out our modules for upload </li>
+ <li> Started using modules from forge </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS INSTALLING PACKAGES FAIL??? </p></center>
+ <small><pre>
+# Array of modules to be installed key:value is module:version.
+ declare -A MODULES
+ MODULES["openstackci-dashboard"]="0.0.4"
+ MODULES["openstackci-vcsrepo"]="0.0.6"
+ MODULES["puppetlabs-apache"]="0.0.4"
+ MODULES["puppetlabs-apt"]="0.0.4"
+ MODULES["puppetlabs-mysql"]="0.5.0"
+ MODULES["saz-memcached"]="2.0.2"
+
+for MOD in ${!MODULES[*]} ; do
+  # If the module at the current version does not exist upgrade or install it.
+  if ! echo $MODULE_LIST | grep "$MOD.*${MODULES[$MOD]}" &gt;dev/null 2&gt;&amp;1
+  then
+    # Attempt module upgrade. If that fails try installing the module.
+    if ! puppet module upgrade $MOD --version ${MODULES[$MOD]} &gt;dev/null 2&gt;&amp;1
+    then
+      # This will get run in cron, so silence non-error output
+      puppet module install $MOD --version ${MODULES[$MOD]} &gt;dev/null
+    fi
+  fi
+done
+ </small></pre>
+</div>
+
+<div class="slide">
+<h1>RANT</h1>
+ <center><p> WHY IS INSTALLING PACKAGES FAIL??? </p></center>
+ <ul>
+   <li> puppet module install should be idempotent </li>
+   <li> puppet module install should work in a git dir - OR </li>
+   <li> source-level clone of a module repo into modules tree should work </li>
+ </ul>
+</div>
+
+<div class="slide">
+<h1>Shameless Plug</h1>
+<ul>
+ <li> I'm hiring </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>dashboard</h1>
+<pre>
+node 'puppet-dashboard.openstack.org' {
+  class { 'openstack_project::dashboard':
+    password =&gt; hiera('dashboard_password'),
+    mysql_password =&gt; hiera('dashboard_mysql_password'),
+    sysadmins =&gt; hiera('sysadmins'),
+  }
+}
+</pre>
+<ul>
+ <li> http://puppet-dashboard.openstack.org:3000/ </li>
+ <li> Why does this not support SSL submission by default? </li>
+ <li> Notice oneiric.slave.openstack.org and precise.slave.openstack.org </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>build slaves</h1>
+<ul>
+ <li> Hundreds of them, created and destroyed daily </li>
+ <li> Essentially the same </li>
+ <li> All share a cert </li>
+ <li> Dashboard finds this confusing - I don't care </li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>What next?/Usage Pattern 3</h1>
+<ul>
+ <li> Add unittesting to our modules (oops) </li>
+ <li> More importantly - add real testing to our manifest </li>
+ <li><ul>
+   <li> Make manifest that installs all of our modules single server </li>
+   <li> Per-commit pre-merge, spin up machine, run manifest, test </li>
+ </ul></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Development / Contributing</h1>
+
+<ul>
+<li>GitHub: 
+  <a href="https://github.com/openstack/openstack-ci-puppet">
+    https://github.com/openstack/openstack-ci-puppet</a>
+</li>
+<li>Docs:
+  <a href="http://ci.openstack.org/">http://ci.openstack.org/</a>
+<li>Freenode: #openstack-infra</li>
+<li>Mailing list:
+  <a href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra">
+    http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra
+  </a>
+ <li> I'm hiring </li>
+</li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Thanks!</h1>
+
+<p><img src="images/stack-o-pancakes-150x150.png"/>
+
+<p>
+These slides available at: <a href="https://github.com/openstack-ci/publications">https://github.com/openstack-ci/publications</a>
+</p>
+
+</div>
+
 </body>
+</html>

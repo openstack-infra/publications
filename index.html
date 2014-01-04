@@ -3,31 +3,368 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>OpenStack CI Slides</title>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>OpenStack Project Continuous Integration and Launchpad</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="openstack.css" type="text/css" />
+<meta name="copyright" content=
+"Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
+<meta name="duration" content="15" />
+<meta name="font-size-adjustment" content="0" />
+<link rel="stylesheet" href="styles/slidy.css" type="text/css" />
+<link rel="stylesheet" href="styles/openstack.css" type="text/css" />
+<script src="scripts/slidy.js" charset="utf-8" type="text/javascript">
+</script>
+<style>
+div.slide ul {
+font-size: 120%
+}
+</style>
 </head>
 <body>
-<h1>OpenStack CI Slides</h1>
+<div class="background"><img alt="" id="head-icon"
+src="graphics/open-stack-cloud-computing-logo-2.png" /></div>
+
+<div class="slide cover title">
+  <!-- hidden style graphics to ensure they are saved with other content -->
+  <img class="hidden" src="graphics/bullet.png" alt="" />
+  <img class="hidden" src="graphics/fold.gif" alt="" />
+  <img class="hidden" src="graphics/unfold.gif" alt="" />
+  <img class="hidden" src="graphics/fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/unfold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-fold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
+  <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
+
+<img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo"
+ class="cover" /><br clear="all" />
+<h1>How OpenStack Integrates Launchpad and Continuous Integration</h1>
+<p> How OpenStack Moved from BZR to Git and Still Uses Launchpad</p>
+<p>
+Monty Taylor
+&lt;<a href="mailto:mordred@inaugust.com">mordred@inaugust.com</a>&gt;<br />
+James E. Blair
+&lt;<a href="mailto:corvus@inaugust.com">corvus@inaugust.com</a>&gt;<br />
+
+</div>
+
+<!--
+I'm Monty Taylor and this is Jim Blair. We're with OpenStack and run the
+core developer infrastructure for the project, including the Code Review
+and Continuous Integration systems, which is what we're here to talk to you
+about today.
+
+OpenStack's developer infrastructure has a lineage that is mostly based on
+what we used in Drizzle, with some things we learned from the bzr/launchpad
+teams, and then a bunch of taking the next step. The key parts are that we
+manage the project on Launchpad using just about all of the features that
+are there- bugs, complete with use of release series and milestones,
+blueprints, ppas, translations. Drizzle was one of the first people who
+weren't Ubuntu to use blueprints extensively - OpenStack continues the
+trend.
+
+One of the biggest philosophical points we took from Drizzle was having a
+consistent and automated developer infrastructure. Trunk should never break-
+code should be clean, and this should be enforced by computers. In OpenStack
+we started using tarmac to further automate the processing of approved merge
+requests and only letting code be merged if it passes tests (we call this
+trunk gating) and it served us well for our first two releases. 
+
+Then we had a revolt in OpenStack because a indeterminate amount of people
+hated bzr, and a possibly intersecting set of people who found launchpad's
+code reviews insufficient. (speed and lack of in-line review comments were
+the two biggest consistent complaints) So we were tasked with replacing code
+hosting and code reviews with something else (the main suggestion being
+github, which we did investigate)
+
+As we looked at the situation, we knew several things:
+ - launchpad had no git support, so staying with Launchpad and just moving
+   code to git was a non-starter
+ - we wanted to stay on Launchpad for bugs and blueprints, as the features
+   contained within them do not have an analogue on other systems
+ - we wanted to keep a system where we gated trunk.
+
+Long story short - github was an unusable choice for our workflow for two
+reasons:
+ 1) It had no workflow concept of a pull request being "approved" or
+ "rejected" - only textual votes in the comments.
+ 2) The folks at github were unwilling to add that state concept, and github
+ is not open source, so we couldn't do it ourselves
+
+Gerrit, from google and used for Android development, on the other hand, did
+have the workflow elements that we needed (and a few new ones we're going to
+point out) So we moved forward with gerrit, and then started doing work to
+integrate it with Launchpad ... and we're pretty happy with the results
+(honestly, happier than I expected to be)
+
+-----
+
+First of all, we wanted bug integration just like we had with Launchpad
+before. So we wrote a gerrit-side hook which examines the commit message for
+references to bugs (similar to closing bugs in debian/changelog files) and
+we have it send a gpg-signed email to the bug with information about the
+code review instance in gerrit, and commands to operate the appropriate
+state-changes needed on the bug. We've currently decided that a bug will
+transition to In Progress when a new review mentioning the bug is pushed,
+and when that review is accepted and merged, will transition to Fix
+Committed. 
+
+Next, something I've always wanted with launchpad was the same kind of
+integration with blueprints - so we added that too - this time using
+launchpad API. When a commit message mentions a blueprint, we add a set of
+text to the whiteboard listing links to the work in progress.
+
+We configured our gerrit to use launchpad openid for SSO, and we have a
+script which pulls launchpad user and team information for all teams that
+are members of ~openstack - so we're able to keep a single point of ACL
+information.
+
+Gerrit has a workflow state that launchad doesn't, which is a verified
+state. So a review can be voted on, it can be approved or rejected, and it
+can be verified or not. Only a review that is both approved and verified
+gets merged.
+
+Possibly most important is the Jenkins trigger plugin, which actually
+listens actively to the even stream from gerrit, so instead of polling an
+API to see if there are any interesting things to do - the Jenkins gerrit
+plugin takes action immediately. It's also intelligent enough to know that
+if there are three jobs that are all tied to the same gerrit event, that
+they all need to pass in order for the calling event to be considered
+successful. This makes for excellent jenkins-level parallelism.
+
+-----
+
+Why are we telling you about this?
+
+Launchpad is awesome, but there are some integration points that would make
+our lives either easier, or the overall meta system more complete.
+
+Also, people are using git a lot these days - and I think we've got a good
+model for how those people can use launchpad.
+
+In order for us to have been able to build an equivilantly strong and
+resilient system using pure bzr/launchpad, we would have needed three
+things:
+ - subscribably event triggers. We do a lot of things- and we have seen java
+   thread starvation just from having a bazillion things polling
+   launchpad/bzr all the time
+ - verified status in merge requests. I didn't know I needed this until I
+   had it, but it makes perfect sense. The state of the code being verified
+   as working is different information from the patch being accepted as
+   approved. It also allows an automated system to track where the state of
+   a thing is right now
+ - non-python language bindings for lp api (and I don't mean go - I
+   specifically mean java) Jenkins is deeply pluggable, but that's all
+   meaningless if you can't call the API from it. Hell - you should see the
+   github plugin for jenkins - it's pretty baller. (oh, and the launchpad
+   wadl blows up all of the java wadl reading/generation tools)
+
+In order to build our current system without gerrit:
+ - first class git support in launchpad
+
+Other nice things:
+ - Foreign merge props. Launchpad was ground-breaking in its thoughts that
+   it would integrate with whatever upstream was doing dev in, and this can
+   be seen in the support for upstream bug trackers. Understanding that
+   upstream might be using a system for code review and being able to follow
+   that might be nice (start with gerrit and github here)
+ - mirrored branches - currently there is a delay in launchpad git branch
+   mirroring, and you can also only mirror master. Additionally, an upstream
+   branch is associated with a person/team, so if jim here decides to create
+   a mirrored branch of openstack/nova from github, I become unable to
+   create one of those in the ~openstack project. oops.
+ - codee branch/review integration with blueprints (without having to click
+   a bunch)
+ - blueprint external metadata links (we're having to hack whiteboard
+   messages right now)
+
+-->
+<div class="slide">
+<h1>Infrastructure Lineage</h1>
+<ul class="incremental">
+  <li><img src="images/489px-MySQL.svg.png" /></li>
+  <li><img src="images/Drizzle-med.png" /></li>
+  <li><img src="images/OpenStackLogo_wTag.png" /></li>
+</li>
+</div>
+
+<div class="slide">
+<h1>OpenStack Gated Trunk</h1>
+
+<img src="images/jenkins-gate.png" />
+
+</div>
+
+<div class="slide">
+<h1>Git Revolt</h1>
 
 <ul>
- <li><a href="uds-p-qa/index.html">Ubuntu Developer Summit Precise:
-   Automated QA</a></li>
- <li><a href="uds-p-launchpad/index.html">Ubuntu Developer Summit Precise:
-   Launchpad Integration</a></li>
- <li><a href="lcb-bare-metal/index.html">Linux Conf Brazil: Bare Metal
- Deployment and Testing</a></li>
- <li><a href="lca/index.html">Linux Conf Australia 2012</a></li>
- <li><a href="tutorial/index.html">devstack Tutorial</a></li>
- <li><a href="ci-roadmap-folsom/index.html">CI and Developer Infrastructure Roadmap for Folsom</a></li>
- <li><a href="jenkins/index.html">Jenkins Conference 2012, New York</a></li>
- <li><a href="overview/index.html">Scaling OpenStack Development with Git, Gerrit, and Jenkins</a></li>
- <li><a href="zuul/index.html">Trunk Gating with Jenkins, Gerrit, and Zuul</a></li>
- <li><a href="puppetconf/index.html">Collaboratively managing the OpenStack project with Puppet</a></li>
- <li><a href="cloud-testing/index.html">OpenStack Continuous Integration Testing with Cloud Servers</a></li>
- <li><a href="growing-openstack/index.html">Growing an Open Source Community</a></li>
- <li><a href="lca2013-ci/index.html">Linux Conf Australia 2013: OpenStack CI</a></li>
- <li><a href="lca2013-distros/index.html">Linux Conf Australia 2013: OpenStack and Distros</a></li>
-
+  <li>Developers wanted to use git</li>
+  <li>Launchpad had no git support</li>
+  <li>Github has no approval state</li>
 </ul>
+</div>
+
+<div class="slide">
+<h1>Enter Gerrit</h1>
+
+<ul>
+  <li><a href="http://review.openstack.org">http://review.openstack.org</a></li>
+  <li><a href="http://jenkins.openstack.org">http://jenkins.openstack.org</a></li>
+  <li><a href="http://launchpad.net/openstack">http://launchpad.net/openstack</a></li>
+  <li><a href="http://github.com/openstack">http://github.com/openstack</a></li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h1>Bug Integration - Gerrit</h1>
+
+<img src="images/gerrit-bug.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Bug Integration - Launchpad</h1>
+
+<img src="images/lp-bug.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Blueprints - Gerrit</h1>
+
+<img src="images/gerrit-bp.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Blueprints - Launchpad</h1>
+
+<img src="images/lp-bp.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Blueprints - Gerrit Topics</h1>
+
+<img src="images/gerrit-bp-topic.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Launchpad SSO Integration</h1>
+
+<img src="images/gerrit-sso.png"/>
+
+</div>
+
+
+<div class="slide">
+<h1>Gerrit Jenkins Integration</h1>
+
+<img src="images/gerrit-jenkins.png"/>
+
+</div>
+
+<div class="slide">
+<h1>Gerrit Verification State</h1>
+
+<img src="images/gerrit-verify.png"/>
+
+</div>
+
+<div class="slide">
+<h1>To Build This Using Launchpad</h1>
+<ul class="incremental">
+  <li>Subscribable event triggers</li>
+  <li>Verification status in merge requests</li>
+  <li>Launchpad API language bindings</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>While We're at It</h1>
+<ul class="incremental">
+  <li>Foreign merge props</li>
+  <li>Mirrored branches</li>
+  <li>Branch/merge proposal integration with blueprints</li>
+  <li>Globally unique blueprint IDs</li>
+  <li>Structured Information in blueprints</li>
+  <li>Branch link fields supporting arbitrary urls</li>
+  <li>First class git support</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Thanks!</h1>
+
+<p><img src="images/stack-o-pancakes-150x150.png"/>
+
+</div>
+
+<!--
+I'm going to give you a 30 second history for those of you who don't know me
+or how the project got to where it is today. In 2008, Chad Miller and I
+convinced MySQL to move from Bitkeeper to bzr/launchpad. It was a move that
+was (ironically) just about code hosting, as bugs were done in the MySQL bug
+tracker and MySQL used a system called WorkLog for what blueprints are used
+for. Shortly after Brian Aker forked MySQL to start Drizzle, and as we were
+setting that up, we decided to stay with bzr, which made the decision to
+locate all of our infrastructure on Launchpad. We became one of the first
+set of people who weren't Ubuntu itself to actually use blueprint
+extensively, and used just about every feature of launchpad.
+
+Last year, when we started OpenStack, the team at Rackspace who were in
+charge of putting the project together were three of us from Drizzle, plus
+Rick Clark and Soren Hansen who you all know have strong Ubuntu backgrounds.
+So we decided to stick with a Launchpad centric model, and again made strong
+use of all of the Launchpad features - including blueprints, release series,
+milestones, PPAs and. translations. I imagine someone even uses answers from
+time to time.
+
+Along side of all of this, with OpenStack we automated a process that we had
+been doing by hand in Drizzle, which is a concept we refer to as trunk
+gating. Essentially, this means that we test all code _before_ merge, with
+the theory that every commit to trunk should be golden. I could babble about
+why that's important for QA or release management, but the real gold has to
+do with streamlining the workflow of an individual developer. If all of the
+tests always run on trunk, then a developer can be certain that any test
+failures are caused by their code and are something that they should feel
+responsibility to fix. In general, this is a Good Thing.
+
+To gate trunk, we had jenkins run tarmac, which would request approved merge
+requests, test them, and then complete the merge on successful test run.
+----------------
+
+So what does a patch lifecycle look like for OpenStack?
+
+A developer writes a patch, and then commits it.
+
+In the commit message, he mentions any bug or blueprint he's working on.
+
+He submits it for review. With gerrit, this is done via git push - but we
+have a helper program we wrote which does some fancy things.
+
+If the commit message mentioned a bug, we update the bug. If it mentioned a
+blueprint, we update the blueprint.
+
+Peer review of the patch happens.
+
+If the patch is approved, jenkins is trigger and runs tests on the patch.
+
+Jenkins votes on the patch with verified status or with a negative code
+review comment.
+
+Gerrit completes the merge. Updates bug and blueprint status.
+
+SO - all the dev needs to do is write patches, push them to a location and
+respond to code reviews. All of the rest of the meta-information tracking
+that's necessary is taken care of.
+
+-->
 </body>
+</html>

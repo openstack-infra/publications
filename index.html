@@ -791,13 +791,18 @@ pipelines:
 <div class="slide">
 <h1>Periodic Pipeline</h1>
 <pre>
-  - name: periodic
-    description: Jobs in this queue are triggered on a timer.
+  - name: periodic-stable
+    description: Periodic checks of the stable branches.
     manager: IndependentPipelineManager
     precedence: low
     trigger:
       timer:
-        - time: '0 6 * * *'
+        - time: '1 6 * * *'
+    failure:
+      smtp:
+        from: jenkins@openstack.org
+        to: openstack-stable-maint@lists.openstack.org
+        subject: 'Stable check of {change.project} failed'
 </pre>
 </div>
 
@@ -920,7 +925,7 @@ projects:
 <p><img src="images/stack-o-pancakes-150x150.png"/>
 
 <p>
-These slides available at: <a href="http://docs.openstack.org/infra/publications/zuul/">https://github.com/openstack-ci/publications</a>
+These slides available at: <a href="http://docs.openstack.org/infra/publications/zuul/">http://docs.openstack.org/infra/publications/zuul/</a>
 </p>
 
 </div>

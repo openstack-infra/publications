@@ -57,17 +57,6 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-<h1>Gearman</h1>
-
-<center>
-<img src="images/GearmanOverview.gif"/>
-</center>
-<h3>
-Gearman is a distributed framework that farms out work to machines that are suited to do the work
-</h3>
-</div>
-
-<div class="slide">
 <h1>OpenStack</h1>
 <center>
 <img src="images/openstack-software-diagram.png"/>
@@ -119,29 +108,28 @@ Gearman is a distributed framework that farms out work to machines that are suit
     <li>Nonprofit organizations</li>
     <li>National and local governments</li>
     <li>Number, quality, and area of contributions can change daily</li>
-    <li><font color="red">~700 active contributors</font></li>
+    <li><font color="red">~1000 active contributors</font></li>
   </ul>
 </div>
 
 <div class="slide">
-<h1>Jenkins Jobs (per day)</h1>
-
+<h1>Gerrit Events (per hour)</h1>
 <center>
-<img style="float:center; margin-right:24pt" src="images/jobs_per_day_-7days_oct1st.png"/>
-  <!--
-  http://graphite.openstack.org/render/?from=-7days&height=480&until=now&width=1000&bgcolor=ffffff&fgcolor=000000&target=alias%28summarize%28sumSeries%28stats_counts.zuul.pipeline.*.all_jobs%29,%271d%27%29,%27All%20Jobs%27%29&title=Zuul%20Jobs%20Launched%20%28per%20Day%29&_t=0.5028505692646073  
-  -->
+<img style="float:center; margin-right:24pt" src="images/gerrit_events_per_hour_20140224_to_20140301.png"/>
 </center>
 </div>
 
 <div class="slide">
-<h1>Jenkins Slaves</h1>
-
+<h1>Zuul Jobs (per hour)</h1>
 <center>
-<img style="float:center; margin-right:24pt" src="images/nodes_inuse_per_day_-7days_oct1st.png"/>
-  <!--
-  graphite.openstack.org/render/?from=-7d&height=480&until=now&width=1000&bgcolor=ffffff&fgcolor=000000&areaMode=stacked&target=color(alias(sumSeries(stats.gauges.nodepool.target.*.*.*.used), 'In Use'), '6464ff')&title=Test Nodes&_t=0.5728074144568939#1380649152056
-  -->
+<img style="float:center; margin-right:24pt" src="images/zuul_jobs_per_hour_20140224_to_20140301.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Jenkins Slave Usage</h1>
+<center>
+<img style="float:center; margin-right:24pt" src="images/jenkins_slave_usage_20140224_to_20140226.png"/>
 </center>
 </div>
 
@@ -586,67 +574,91 @@ $(document).ready(function() {
 
 <div class="slide">
 <h1>Architecture (Before)</h1>
-
 <center>
 <img src="images/infra-problems.png"/>
 </center>
 </div>
 
+<div class="slide">
 <h1>Architecture (Now)</h1>
-
 <center>
 <img src="images/infra-now.png"/>
 </center>
 </div>
 
-<!--
 <div class="slide">
 <h1>Gearman</h1>
-
 <center>
 <img src="images/GearmanOverview.gif"/>
 </center>
 <h3>
-Gearman is a distributed framework that farms out work to machines that are suited to do the work
+Gearman is a distributed job queuing system designed to distribute appropriate
+computer tasks to multiple computers, so large tasks can be done more quickly.
 </h3>
 </div>
--->
 
 <div class="slide">
-<h1>Gearman Workflow</h1>
+<h1>Horizontal Scaling</h1>
+<center>
+<img src="images/gearman_plugin_architecture2.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Redundant Jenkins</h1>
 <center>
 <img src="images/gearman-flow1.png"/>
 </center>
 </div>
 
 <div class="slide">
-<h1>Gearman-Jenkins Integration</h1>
-
-<center>
-<img src="images/gearman-flow2.png"/>
-</center>
+<h1>Gearman Features</h1>
+  <div><ul>
+    <li>Gearman plugin reloads on jenkins restart: meaning that when jenkins restarts the gearman worker threads are automatically restarted and reconnect to a gearman server.</li>
+    <li>High availability(ish).  When one master goes down the other master(s) will continue to execute builds however the in flight jobs on the down master will be lost.</li>
+    <li>Horizontal scalability.  Just continue to add more jenkins masters to distribute the load between masters</li>
+    <li>Slaves are always shared between masters.  Offline or disconnect a slave will un-share it</li>
+    <li>Gearman jobs can start a jenkins build</li>
+    <li>Gearman jobs can stop or abort a jenkins build</li>
+    <li>Gearman jobs can change a build description</li>
+    <li>Gearman jobs can pass in parameters to jenkins builds</li>
+    <li>Gearman jobs can automatically set a slave to offline after running a build</li>
+    <li>Gearman plugin is aware of Jenkins project status: meaning that gearman will register/unregister projects when the project is enabled or disabled.</li>
+    <li>Gearman plugin is aware of slave status: meaning that gearman will register/unregister slaves when a slave is set online/offline and connected/disconnected.</li>
+  </ul></li>
+  <ul></div>
 </div>
 
 <div class="slide">
 <h1>Gearman-Jenkins Integration</h1>
-
 <center>
 <img src="images/gearman-flow3.png"/>
 </center>
 </div>
 
 <div class="slide">
-<h1>Gearman Plugin Demo</h1>
-</div>
-
-<!--
-<div class="slide">
-<h1>Gearman Functions</h1>
+<h1>Jenkins Buildables as Gearman Functions</h1>
 <center>
 <img src="images/gearman-flow4.png"/>
 </center>
 </div>
--->
+
+<div class="slide">
+<h1>Gearman Plugin Architecture</h1>
+<center>
+<img src="images/gearman_plugin_architecture1.png"/>
+</center>
+</div>
+
+<div class="slide">
+<h1>Gearman Clients</h1>
+  <div><ul>
+    <li><a href="https://github.com/zaro0508/gearman-plugin-client">simple python client</a></li>
+    <li><a href="https://git.openstack.org/cgit/openstack-infra/gearman-plugin/tree/src/main/java/hudson/plugins/gearman/example">simple java client</a></li>
+    <li><a href="http://git.openstack.org/cgit/openstack-infra/zuul">zuul client</a></li>
+  </ul></li>
+  <ul></div>
+</div>
 
 <div class="slide">
 <h1>Gearman Plugin in Production</h1>
@@ -660,7 +672,6 @@ Gearman is a distributed framework that farms out work to machines that are suit
 
 <div class="slide">
 <h1>Everything Is Automated</h1>
-
 <center>
 <img src="images/status1.png"/>
 </center>
@@ -668,13 +679,10 @@ Gearman is a distributed framework that farms out work to machines that are suit
 
 <div class="slide">
 <h1>Thanks!</h1>
-
 <p><img src="images/stack-o-pancakes-150x150.png"/>
-
 <p>
 These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>
 </p>
-
 </div>
 
 </body>

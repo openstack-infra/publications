@@ -17,3 +17,6 @@ if the presentation "overview" was given at LinuxCon North America
 The 'make-index' script will create an index page based on index.html,
 and all current branches and tags in the repo and their README.rst
 files.
+
+Viewable publications are published to:
+http://docs.openstack.org/infra/publications

@@ -291,6 +291,13 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
+<h1>CI Workflow</h1>
+<center>
+<img src="images/openstack-ci-workflow.png"/>
+</center>
+</div>
+
+<div class="slide">
 <h1>Process Flow</h1>
 <center>
 <img src="images/contribution-path.png"/>
@@ -351,10 +358,10 @@ corvus@shiprock:~/git/neutron$ git commit -a
 
 corvus@shiprock:~/git/neutron$ git review
 remote: Resolving deltas:   0% (0/3)
-remote: 
+remote:
 remote: New Changes:
 remote:   https://review.openstack.org/3072
-remote: 
+remote:
 To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
  * [new branch]      HEAD -> refs/for/master/bug/916018
 </pre>
@@ -560,7 +567,7 @@ function Dependency(paper, source, target, delay)
     this.set = paper.set();
     this.source = source;
     this.target = target;
-    
+
     startx = this.source.right + 8;
     starty = this.source.y;
     tipx = this.target.left - 8;
@@ -611,11 +618,11 @@ function TestSeries(paper, change, tests)
 	    height = len;
 	}
     }
-    
+
     this.width = (1+10*tests.length)
     this.height = offset + height + 10;
     this.set = paper.set();
-    
+
     startpath = "M" + this.x + "," + this.y;
     line = paper.path(startpath+"l0," + offset);
     this.set.push(line);
@@ -639,7 +646,7 @@ function TestSeries(paper, change, tests)
 	curx = curx + 10;
 	line = paper.path("M" + curx + "," + cury + "l0," + len);
 	this.set.push(line);
-	line = paper.path("M" + curx + "," + cury + "m0," + len + 
+	line = paper.path("M" + curx + "," + cury + "m0," + len +
 			  "l0," + (this.height-offset-len));
 	this.set.push(line);
 	line.attr("stroke-dasharray", "-");
@@ -721,7 +728,7 @@ var zuul_simulation = {
             nova_label.attr({x:this.paper.width-(nova_label.getBBox().width/2)-10});
             nova_end = [(this.paper.width-nova_label.getBBox().width-16), 300];
             nova_line = this.paper.path(linePath(520, 300, nova_end[0], nova_end[1]))
-                                        
+
             nova_line.attr({"stroke-width": 2, fill: "#000", stroke: "#000"});
             nova_head = this.paper.circle(520, 300, 9);
             nova_head.attr({fill: "#5069c9", stroke:"#5069c9"});
@@ -779,7 +786,7 @@ var zuul_simulation = {
         if (this.state == 9) {
             change1.merge(480, 290);
             dep21.hide();
-            setTimeout(function() { 
+            setTimeout(function() {
                 nova_line.attr({path: linePath(490, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
@@ -791,7 +798,7 @@ var zuul_simulation = {
             change2.merge(450, 290);
             dep32.hide();
             dep42.hide();
-            setTimeout(function() { 
+            setTimeout(function() {
                 nova_line.attr({path: linePath(460, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
@@ -808,7 +815,7 @@ var zuul_simulation = {
         }
         if (this.state == 15) {
             change4.merge(420, 290);
-            setTimeout(function() { 
+            setTimeout(function() {
                 nova_line.attr({path: linePath(430, 300, nova_end[0], nova_end[1])})
             } , 2000);
         }
@@ -989,6 +996,43 @@ projects:
   <li>They can run their lab - we don't have to know anything about it</li>
 </ul>
 </div>
+
+<div class="slide">
+<h1>Multi-Master Jenkins</h1>
+<ul>
+  <li>Horizontal Scaling</li>
+  <li>Redundancy</li>
+  <li>Uses the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Gearman+Plugin">Jenkins Gearman Plugin</a></li>
+  <li>Masters: jenkins01.openstack.org, jenkins02.o.o, jenkins03.o.o, etc..</li>
+  <li><a href="http://graphite.openstack.org/render/?from=-24hours&height=680&until=now&width=1034&bgcolor=ffffff&fgcolor=000000&target=color(alias(sumSeries(stats.gauges.nodepool.target.*.*.*.used),%20%27In%20Use%27),%20%276464ff%27)&title=Test%20Nodes&_t=0.605142645072192#1395182490817">600+ test nodes</a></div></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Jenkins Slaves</h1>
+  <center>
+    <img style="margin-top:2em;" src="images/jenkins_in_use_slaves.png"/>
+  </center>
+</div>
+
+<div class="slide">
+<h1>Elastic test nodes</h1>
+<ul>
+  <li><a href="http://git.openstack.org/cgit/openstack-infra/nodepool/tree/">Nodepool</a></li>
+  <li>Automate management of test nodes</li>
+  <li>Registers nodes with Jenkins masters</li>
+  <li>Uses Jenkins ZeroMQ events for build status</li>
+  <li>Manages multiple openstack clouds</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Elastic test nodes</h1>o
+  <center>
+    <img style="margin-top:2em;" src="images/elastic_test_nodes.png"/>
+  </center>
+</div>
+
 
 <div class="slide">
 <h1>Thanks!</h1>

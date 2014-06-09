@@ -2,8 +2,14 @@ Publications Repository
 =======================
 
 Each publication should get its own branch and is a living document.
-Each branch should have a README.rst file where the first line is the
-title of the presentation.
+
+In order to create a new slide deck, create your branch from the
+presentation template. See the `template README
+<https://git.openstack.org/cgit/openstack-infra/publications/tree/README.rst?h=template>`_
+for step by step instructions on this process.
+
+Note that each branch should have a README.rst file where the first line
+is the title of the presentation.
 
 Each time a publication is presented or published, the branch should
 be tagged (with a signed, annotated tag).  The first line of the tag

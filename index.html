@@ -47,6 +47,8 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     &lt;<a href="mailto:fungi@yuggoth.org">fungi@yuggoth.org</a>&gt;</div>
   <div class="smaller">Clark Boylan
     &lt;<a href="mailto:cboylan@sapwetik.org">cboylan@sapwetik.org</a>&gt;</div>
+  <div class="smaller">Elizabeth K. Joseph
+    &lt;<a href="mailto:lyz@princessleia.com">lyz@princessleia.com</a>&gt;</div>
 </div>
 
 <div class="slide">
@@ -178,6 +180,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     </ul></li>
     <li>Test/build automation<ul>
       <li>devstack-gate</li>
+      <li>Nodepool</li>
       <li>Jenkins</li>
       <li>JJB</li>
       <li>Zuul</li>
@@ -241,7 +244,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Anyone on the internet can look at our changes</li>
     <li>Anyone can sign up for a code review account</li>
     <li>Anyone can write and propose changes</li>
-    <li>http://git.openstack.org/cgit/openstack-infra/config/tree/</li>
+    <li>https://git.openstack.org/cgit/openstack-infra/config/tree/</li>
   </ul>
 </div>
 
@@ -313,6 +316,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 <li>Stand-alone patch review system</li>
 <li>Integration points: hooks, JSON queries, event-stream</li>
 <li>Extensible review categories, default: Verified, Code-Review</li>
+<li>REST API</li>
 </ul>
 </div>
 
@@ -399,7 +403,7 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
 <h1>Gerrit Git Prep</h1>
 <ul>
 <li>Test the result of the change, not the change</li>
-<li>openstack-infra/config:modules/jenkins/files/slave_scripts/gerrit-git-prep.sh</li>
+<li>openstack-infra/config:modules/openstack_project/files/slave_scripts/gerrit-git-prep.sh</li>
 <li>For each gerrit change:
 <ul>
   <li>grabs target branch</li>
@@ -413,7 +417,7 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
 <div class="slide">
 <h1>Interrelated Integration Testing</h1>
 <ul>
-  <li>devstack-gate<ul>
+  <li>devstack-gate &amp; Nodepool<ul>
     <li>boot fresh servers</li>
     <li>run DevStack</li>
     <li>run integration tests</li>

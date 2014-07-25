@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Publication Title CHANGE ME</title>
+<title>Continuous integration automation - An outline of OpenStack CI Components</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -33,17 +33,15 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Publication Title CHANGE ME<br />
-  <span class="smaller">Publication SubTitle CHANGE ME</span></h1>
+  <h1>Continuous integration automation<br />
+  <span class="smaller">An outline of OpenStack CI components</span></h1>
   <hr />
-  <div class="smaller">Your Name CHANGE ME
-    &lt;<a href="mailto:changeme@example.com">changeme@example.com</a>&gt;</div>
+  <div class="smaller">Yolanda Robla Mota
+    &lt;<a href="mailto:yolanda.robla-mota@hp.com">yolanda.robla-mota@hp.com</a>&gt;</div>
 </div>
 
 <div class="slide">
-  <h1>OpenStack</h1>
-
-  <p>This is the first slide. CHANGE ME and add many more.</p>
+  <h1>What's OpenStack?</h1>
 
   <center>
     <img src="images/openstack-software-diagram.png"/>
@@ -51,15 +49,339 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Thanks!</h1>
+  <h1>Projects</h1>
+  <div style="float:left;width:50%"><ul>
+    <li>Servers<ul>
+      <li>nova (compute)</li>
+      <li>swift (object storage)</li>
+      <li>glance (image service)</li>
+      <li>keystone (identity service)</li>
+      <li>neutron (network service)</li>
+      <li>cinder (volume service)</li>
+      <li>heat (orchestration)</li>
+      <li>ceilometer (telemetry)</li>
+      <li>horizon (dashboard)</li>
+      <li>trove (databases)</li>
+      <li>sahara (hadoop)</li>
+      <li class='gray'>ironic (bare metal)</li>
+      <li class='gray'>marconi (message queueing)</li>
+      <li class='gray'>barbican (key management)</li>
+      <li class='gray'>designate (DNS Services)</li>
+      <li>oslo (common libraries)</li>
+    </ul></li>
+  </ul></div>
+  <div style="float:left;width:50%"><ul>
+    <li>Client libraries<ul>
+      <li>python-novaclient</li>
+      <li>python-swiftclient</li>
+      <li>python-glanceclient</li>
+      <li>python-keystoneclient</li>
+      <li>python-neutronclient</li>
+      <li>python-cinderclient</li>
+      <li>python-heatclient</li>
+      <li>python-ceilometerclient</li>
+      <li>python-openstackclient</li>
+      <li>python-troveclient</li>
+      <li>python-saharaclient</li>
+      <li class='gray'>python-ironicclient</li>
+      <li class='gray'>python-marconiclient</li>
+      <li class='gray'>python-barbicanclient</li>
+      <li class='gray'>python-designateclient</li>
+    </ul></li>
+  </ul></div>
+  <div style="clear:both"></div>
+  <div class="indent"><a href="https://wiki.openstack.org/wiki/Projects">https://wiki.openstack.org/wiki/Projects</a></div>
+</div>
 
+<div class="slide">
+  <h1>Contributors</h1>
+  <div style="float:right;margin-right:24pt;">
+    <img src="images/contributor-pie-chart.png"/>
+    <p style="font-size:14px;">Top contributing companies in number of reviews for OpenStack Juno release</p>
+  </div>
+  <ul>
+    <li>Unaffiliated individuals, commercial entities,<br />nonprofit organizations, national and local governments</li>
+    <li>Number, quality, and area of contributions can change daily</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>CI Workflow</h1>
+
+  <div align="center"><img src="images/os-ci-workflow.png"></div>
+
+</div>
+
+<div class="slide">
+  <h1>Gerrit Code review</h1>
+  <ul>
+    <li>Code review system used in OpenStack</li>
+    <li>Configuration points: projects, groups, users, acl</li>
+    <li>Integration points: hooks, event-stream, REST API</li>
+    <li>Help on configuration: jeepyb</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Gerrit Code review</h1>
+
+  <center>
+    <img src="images/gerrit-snapshot.png"/>
+  </center>
+</div>
+
+<div class="slide">
+  <h1>Jeepyb</h1>
+  <ul>
+    <li>Collection of tools to manage Gerrit easier</li>
+    <li>Easily manage projects and Launchpad/Github integrations (<cite>manage-projects</cite> call)</li>
+    <li>Projects to be defined in a YAML file<br />
+      <pre style="font-size:18px;">
+- project: example/gerrit
+  description: Fork of Gerrit used by Example
+- project: openstack/project-name
+  acl-config: /home/gerrit2/acls/project-name.config
+  upstream: git://github.com/awesumsauce/project-name.git</pre>
+    </li>
+  </ul>
+  <div class="indent"><a href="http://ci.openstack.org/jeepyb.html">http://ci.openstack.org/jeepyb.html</a></div>
+</div>
+
+<div class="slide">
+  <h1>Jeepyb ACLs</h1>
+  <ul><li>To define roles for each project, have a config file with ACL for each project</li>
+  <li>Based on the concept of Gerrit groups: Administrators, Registered Users, Anonymous users</li>
+  <li>Using git refs syntax to describe permissions on projects and branches</li>
+  <li>Follow syntax of Gerrit project config: <a href="https://gerrit-review.googlesource.com/Documentation/config-project-config.html">https://gerrit-review.googlesource.com/Documentation/config-project-config.html</a></li>
+  </ul>
+  <pre style="font-size:16px;">
+[access "refs/heads/*"]
+label-Code-Review = -2..+2 group project-name-core
+label-Workflow = -1..+1 group project-name-core
+
+[access "refs/heads/proposed/*"]
+label-Code-Review = -2..+2 group project-name-milestone
+label-Workflow = -1..+1 group project-name-milestone
+
+[receive]
+requireChangeId = true
+requireContributorAgreement = true
+
+[submit]
+mergeContent = true</pre>
+</div>
+
+<div class="slide">
+  <h1>Zuul</h1>
+  <ul>
+    <li>General purpose trunk gating system</li>
+    <li>Interfaces with Gerrit and Jenkins (Gearman)</li>
+    <li>Two main components: scheduler and merger</li>
+    <li>Allows parallel testing of serialized changes: speculative execution</li>
+    <li>Pipeline oriented</li>
+    <li>Flexible configuration: layout.yaml</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Zuul pipelines</h1>
+  <ul>
+    <li>Different types: check, gate, release, silent, experimental, periodic...</li>
+    <li>Zuul watches events on Gerrit matching to the right pipeline</li>
+    <li>When a match is found, runs the related jobs</li>
+    <li>Pipeline syntax: <br />
+      <pre>pipelines:
+  - name: check
+      manager: IndependentPipelineManager
+      trigger:
+      gerrit:
+        - event: patchset-created
+      success:
+        verified: 1
+      failure:
+        verified: -1</pre>
+    </li>
+  </ul>
+</div>
+<div class="slide">
+  <h1>Zuul projects</h1>
+  <ul>
+    <li>Project syntax:<br />
+      <pre>projects:
+  - name: example/project
+      check:
+        - project-merge:
+          - project-unittest
+          - project-pep8
+          - project-pyflakes
+      gate:
+        - project-merge:
+          - project-unittest
+          - project-pep8
+          - project-pyflakes
+      post:
+        - project-publish</pre>
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Jenkins</h1>
+  <ul>
+    <li>CI system that runs tests and automated tasks</li>
+    <li>Several types of jobs launched: test, docs, builds</li>
+    <li>Controlled by Zuul, using Gearman plugin</li>
+    <li>Gearman: protocol to send jobs between client, job server and job worker/s</li>
+    <li>Configuration of jobs is managed by Jenkins Job Builder (<cite>jjb</cite>)</li>
+    <li>Single-use and reusable slaves are used. Single-use nodes spinned by <cite>nodepool</cite></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Jenkins Job Builder</h1>
+  <ul>
+    <li>Tool for configuring Jenkins jobs using YAML files stored in our repos</li>
+    <li><cite>jjb</cite> communicates with Jenkins using its API: Jenkins user needed</li>
+    <li>Using templated jobs, to apply same jobs to tons of different projects:<br />
+      <pre style="font-size:16px;">
+- job-template:
+    name: 'gate-{name}-docs'
+    builders:
+      - shell: 'git co {branch_name}'
+</pre></li>
+    <li>jjb projects definition:<br /><pre style="font-size:16px;">
+- project:
+   name: project-name
+   branch_name: new_branch
+   jobs:
+     - gate-{name}-docs</pre></li>
+    <li>Grouping of jobs is supported:<br /><pre style="font-size:16px;">
+- job-group:
+    name: '{name}-tests'
+    jobs:
+    - '{name}-unit-tests'
+    - '{name}-perf-tests'
+</pre></li>
+  </ul>
+</div>
+
+<div class="slide">
+    <h1>Jenkins Job Builder jobs</h1>
+    <ul>
+        <li>Simply defining a job:<br />
+        </li><pre>
+- job:
+    name: foo-test
+    project-type: freestyle
+    builders:
+      - make-test
+    publishers:
+      - archive
+</pre></li>
+        <li>Modules can be added to jobs: builders, publishers, etc...</li>
+        <li>Using macros to define actions in Jenkins:<br /><pre>
+- builder:
+  name: make-test
+  builders:
+    - shell: 'make test'</pre></li>
+
+    </ul>
+</div>
+
+<div class="slide">
+  <h1>Nodepool</h1>
+  <ul>
+    <li>Service used to deploy and manage a pool of devstack images on the cloud</li>
+    <li>Works with any OpenStack provider</li>
+    <li>Once per day a new image is generated with cached devstack content</li>
+    <li>Spins instances based on desired image on demand</li>
+    <li>Can use <cite>disk-image-builder</cite> to build images</li>
+    <li>Communicates with Zuul using gearman-servers for getting realtime demand</li>
+    <li>Communicates with Jenkins to attach nodes using Jenkins API</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Nodepool configuration</h1>
+  <ul>
+    <li>Labels: types of nodes that should be created. Maps node types to images:<br />
+    <pre>labels:
+  - name: my-trusty
+    image: trusty
+    min-ready: 2
+    providers:
+      - name: provider1
+      - name: provider2</li>
+    <li>Targets: list the Jenkins masters to which Nodepool should attach nodes:<br />
+      <pre>targets:
+  - name: jenkins1
+    jenkins:
+      url: https://jenkins1.example.org/
+      user: username
+      apikey: key
+      credentials-id: id</pre>
+    </li>
+  </ul>
+</div>
+<div class="slide">
+  <h1>Nodepool providers</h1>
+  <ul>
+    <li>List cloud provider to be used, and define image types for each one.<br />
+    Can use multiple providers to spin up the total instances needed:<br />
+    <pre style='font-size:18px;'>providers:
+  - name: provider1
+    username: 'username'
+    password: 'password'
+    auth-url: 'http://auth.provider1.example.com/'
+    project-id: 'project'
+    service-type: 'compute'
+    service-name: 'compute'
+    region-name: 'region1'
+    max-servers: 96
+    images:
+      - name: trusty
+        base-image: 'Trusty'
+        min-ram: 8192
+        setup: prepare_node.sh
+        username: jenkins
+        private-key: /var/lib/jenkins/.ssh/id_rsa
+    </li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Automated management</h1>
+  <ul>
+    <li>Strong need to use a config management system: Puppet (and Ansible) used, could be using others</li>
+    <li>Puppet agent pulls puppet manifests and configuration from a centralized master</li>
+    <li>Only one central and secure place to hold secure information: neded to store certs, keys and passwods</li>
+    <li>Using <cite>hiera</cite> for systemwide configuration, allowing multiple environments to be defined (development, production), as long as configuration depending on facts</li>
+    <li>Hiera values are simple key-value pairs stored on yaml in the defined path. Keys need to be referenced in every site.pp:<br />
+<pre style="font-size:18px;">node default {
+  class { 'openstack_project::server':
+    sysadmins => hiera('sysadmins', []),
+  }
+}</pre></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Questions</h1>
+
+  <h2>Contact</h2>
+  <ul>
+    <li>Yolanda Robla Mota &lt;<a href="mailto:yolanda.robla-mota@hp.com">yolanda.robla-mota@hp.com</a>&gt;</li>
+  </ul>
+
+  <h2>OpenStack CI Resources</h2>
+
+  <ul>
+    <li><a href="http://ci.openstack.org">http://ci.openstack.org</a></li>
+  </ul>
   <p><img src="images/stack-o-pancakes-150x150.png"/>
 
   <p>
     These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>
   </p>
-
 </div>
-
-</body>
-</html>
+</body></html>

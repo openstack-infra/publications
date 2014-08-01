@@ -6,7 +6,7 @@ in the right place.
 
   1. Clone publications, create and checkout template tracking branch::
 
-       git clone https://git.openstack.org/openstack-infra/publications
+       git clone git://git.openstack.org/openstack-infra/publications
        cd publications
        git review -s
        git checkout -b template origin/template

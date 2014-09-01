@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Publication Title CHANGE ME</title>
+<title>Use of OpenStack CI for your own projects</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,7 +18,6 @@
 <body>
 <div class="background"><img alt="" id="head-icon"
 src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
-
 <div class="slide cover titlepage">
   <!-- hidden style graphics to ensure they are saved with other content -->
   <img class="hidden" src="graphics/bullet.png" alt="" />
@@ -33,17 +32,14 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Publication Title CHANGE ME<br />
-  <span class="smaller">Publication SubTitle CHANGE ME</span></h1>
+  <h1>Use of OpenStack CI for your own projects</h1>
   <hr />
-  <div class="smaller">Your Name CHANGE ME
-    &lt;<a href="mailto:changeme@example.com">changeme@example.com</a>&gt;</div>
+  <div class="smaller">Yolanda Robla Mota
+    &lt;<a href="mailto:yolanda.robla-mota@hp.com">yolanda.robla-mota@hp.com</a>&gt;</div>
 </div>
 
 <div class="slide">
-  <h1>OpenStack</h1>
-
-  <p>This is the first slide. CHANGE ME and add many more.</p>
+  <h1>What's OpenStack?</h1>
 
   <center>
     <img src="images/openstack-software-diagram.png"/>
@@ -51,15 +47,223 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Thanks!</h1>
+  <h1>CI Workflow</h1>
 
+  <div align="center"><img src="images/os-ci-workflow.png"></div>
+
+</div>
+
+<div class="slide">
+  <h1>Why use it?</h1>
+  <ul>
+    <li>Reliable: production ready, handling thousand of tests daily</li>
+    <li>Flexible: can be easily configurated to follow your workflow</li>
+    <li>Easily scalable: design allows to add servers depending on load</li>
+    <li>Uses known tools: Gerrit, Jenkins</li>
+    <li>Supported by the OpenStack community</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Requirements to start</h1>
+  <ul>
+    <li>You need a cloud: our tool is built in top of OpenStack</li>
+    <li>A service account for your CI systems into that cloud(s)</li>
+    <li>Optional: service account for Jenkins nodes</li>
+    <li>Puppet is hostname based: a domain for your servers</li>
+    <li>A git repository to store your code</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>CI system overview</h1>
+  <ul>
+    <li>Full code on: <a href="https://git.openstack.org/openstack-infra/system-config" target="_blank">https://git.openstack.org/openstack-infra/system-config</a></li>
+    <li>Based on puppet</li>
+    <li>Need a puppet master and puppet nodes for each service</li>
+    <li>Minimal services needed: <i>ci-puppetmaster, gerrit, jenkins,<br />nodepool, zuul,</i> and <i>specific slaves</i></li>
+    <li>Using hiera puppet module to store configuration values: keys, certificates...</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>How to adapt system to your project</h1>
+  <ul>
+    <li>manifests/site.pp: update domains for your servers there<br />
+    <pre style='font-size:16px;'>node 'review.openstack.org' {
+  class { 'openstack_project::review':
+    github_oauth_token      => hiera('gerrit_github_token', 'XXX'),
+    github_project_username => hiera('github_project_username', 'username'),
+    github_project_password => hiera('github_project_password', 'XXX'),
+...</pre>
+    </li>
+    <li><a href="https://git.openstack.org/cgit/openstack-infra/project-config" target="_blank">https://git.openstack.org/cgit/openstack-infra/project-config</a>:
+defines the shape of servers, rename it and adapt to your needs</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Bootstrapping</h1>
+  <ul>
+    <li>Install a puppetmaster, replace openstack_project with your own name:<pre style='font-size:14px;'>
+sudo su -
+git clone https://git.openstack.org/openstack-infra/system-config /opt/system-config/production
+/opt/system-config/production/install_puppet.sh
+apt-get install puppetmaster-passenger hiera hiera-puppet</pre><pre style='font-size:14px;'>
+bash /opt/system-config/production/install_modules.sh
+echo $REAL_HOSTNAME > /etc/hostname
+service hostname restart
+puppet apply --modulepath='/opt/system-config/production/modules:/etc/puppet/modules'
+-e 'include openstack_project::puppetmaster'
+</pre></li>
+    <li>Bring up puppetboard</li>
+    <li>Update hiera files according to your needs</li>
+    <li>Add nodes for each of the services you are going to use</li>
+  </ul>
+</div>
+<div class="slide">
+  <h1>Configure gerrit</h1>
+  <div align="center"><img src="images/gerrit-snapshot.png"></div>
+  <ul>
+    <li>Is our code review system</li>
+    <li>List of projects and ACL for each project needs to be configured</li>
+    <li>Can choose authentication type (LDAP, SSO)...</li>
+    <li>Needs custom keys and certificates</li>
+    <li>Can customize look & feel: logo, css</li>
+    <li>CLA files needs to be adapted: are OpenStack specific</li>
+    <li>Node needs at least 10gb to run</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Configure zuul</h1>
+  <ul>
+    <li>Is the scheduler in the OpenStack CI system</li>
+    <li>Configuration relies on zuul <a href="http://git.openstack.org/cgit/openstack-infra/project-config/plain/zuul/layout.yaml">project-config:zuul/layout.yaml</a> file:<br /><ul>
+      <li>pipelines:<br /><pre>
+- name: check
+  manager: IndependentPipelineManager
+  source: gerrit
+  trigger:
+    gerrit:
+      - event: patchset-created
+  success:
+    verified: 1
+  failure:
+    verified: -1</pre></li>
+      <li>projects:<br /><pre>
+projects:
+  - name: example/project
+    check:
+      - project-merge:
+        - project-unittest
+      </pre></li>
+      </ul>
+    </li>
+    <li>Need 1GB node to run</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Configure Jenkins Master(s)</h1>
+  <ul>
+    <li>Only one master needed, but multi-master is recommended</li>
+    <li>Configuration of jobs done using jenkins job builder, relying on <a href="https://git.openstack.org/cgit/openstack-infra/project-config/tree/jenkins/jobs">project-config:jenkins/jobs</a>:<br /><ul>
+      <li>macros:<br /><pre>
+- builder:
+    name: make-test
+    builders:
+      - shell: 'make test'
+</pre></li>
+      <li>job templates:<br /><pre>
+- job-template:
+    name: '{name}-unit-tests'
+    builders:
+      - make-test
+</pre></li>
+      <li>projects:<br /><pre>
+- project:
+    name: project-name
+    jobs:
+      - '{name}-unit-tests'
+</pre></li>
+    </ul></li>
+    <li>Launch the node with a size larger than specified in jenkins.default</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Configure Static slaves</h1>
+  <ul>
+    <li>Two types of slaves: statically managed or dynamically managed by nodepool</li>
+    <li>Reusable or single used defined per job in zuul <i>layout.yaml</i>:<pre>
+jobs:
+  - name: ^.*$
+    parameter-function: single_use_node
+  - name: ^gate-.*$
+    parameter-function: reusable_node
+    </pre></li>
+    <li>Type of node defined in jenkins job builder:<br /><pre>
+- project:
+    name: test_project
+    node: bare-trusty
+    jobs:
+      - python-jobs
+</pre></li>
+    <li>Static slaves can be added manually into Jenkins, dynamic slaves need <i>nodepool</i></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Main problems, improvements</h1>
+  <ul>
+    <li>System not automated 100%, needs manual configuration</li>
+    <li>Initial deployment and learning curve can be complicated</li>
+    <li>Main engine is still related with Openstack configuration: gradual steps to separate it</li>
+    <li>Trying to isolate all project-depending settings into <i>openstack-project</i> folder</li>
+    <li>Some configurations hardcoded, moving to make every setting configurable</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Development / Contributing</h1>
+<ul>
+<li>Git:
+  <a href="https://git.openstack.org/cgit/openstack-infra/system-config">
+    https://git.openstack.org/cgit/openstack-infra/system-config</a><br />
+  <a href="https://git.openstack.org/cgit/openstack-infra/project-config">
+    https://git.openstack.org/cgit/openstack-infra/project-config</a>
+</li>
+<li>Docs:
+  <a href="http://ci.openstack.org">http://ci.openstack.org</a>
+<li>Freenode: #openstack-infra</li>
+<li>Mailing list:
+  <a href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra">
+    http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra
+  </a>
+</li>
+</ul>
+</div>
+
+<div class="slide">
+  <h1>Questions</h1>
+
+  <h2>Contact</h2>
+  <ul>
+    <li>Yolanda Robla Mota &lt;<a href="mailto:yolanda.robla-mota@hp.com">yolanda.robla-mota@hp.com</a>&gt;</li>
+  </ul>
+
+  <h2>OpenStack CI Resources</h2>
+
+  <ul>
+    <li><a href="http://ci.openstack.org">http://ci.openstack.org</a></li>
+  </ul>
   <p><img src="images/stack-o-pancakes-150x150.png"/>
 
   <p>
     These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>
   </p>
-
 </div>
 
-</body>
-</html>
+</body></html>
+

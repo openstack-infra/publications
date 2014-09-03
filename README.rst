@@ -20,3 +20,8 @@ much easier to work on effective solutions through code and configuration
 sharing during the review process. With recent improvements to documentation it
 has allowed also for easier on-boarding of new and casual contributors looking
 to get involved with assisting with infrastructure work.
+
+Throughout this talk, instead of using screenshots embedded in the slides, the
+presenter has the opportunity to go to the live sites themselves which allows
+them to show off how any anonymous user can browse our systems, from monitoring
+to Puppet configurations.

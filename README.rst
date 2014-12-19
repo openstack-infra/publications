@@ -29,3 +29,6 @@ in the right place.
      general talk info.
   7. At this point you are ready to push your new changes back up to
      Gerrit. ``git commit -a && git review``
+  8. Finally, if you want notifications for subsequent branch updates
+     to be shown in the #openstack-infra channel, add your branch to
+     gerritbot/channels.yaml in the project-config repository.

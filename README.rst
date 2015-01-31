@@ -1,34 +1,58 @@
-Template Branch for new OpenStack Infra Publications
-====================================================
+Consuming Open Source Infrastructure
+====================================
 
-Creating new OpenStack Infra Publications is easy and you have started
-in the right place.
 
-  1. Clone publications, create and checkout template tracking branch::
+Infrastructure and configuration are now being represented as code. This code
+is then put into git repositories, OSI approved licenses are attached, and the
+code published. This creates an open source project. There are several instances
+of this now: OpenStack, Mozilla, Wikimedia, and Jenkins all have open sourced
+their infrastructure. It is, however, relatively easy to say "our configuration
+is totally open source, anyone can use it", and it is actually much harder to
+actively consume someone else's configuration. My team consumes one of these ope
+n source configuration projects and sits downstream from it. I will present on
+what we're doing, what has worked, what hasn't, and what we're going to do next.
+I'm going to give actionable advice for people who are consuming or want to be
+cons uming another organization's open source infrastructure, and I'll be
+providing some feedback to those who are currently open sourcing their
+infrastructure on how to make it easier to consume.
 
-       git clone git://git.openstack.org/openstack-infra/publications
-       cd publications
-       git review -s
-       git checkout -b template origin/template
 
-  2. Create a new branch based on this template branch.
-     ``git checkout -b $BRANCH_NAME``.
-  3. Edit ``.gitreview`` and change the defaultbranch value to
-     ``$BRANCH_NAME``.
-  4. Create ``$BRANCH_NAME`` in Gerrit. It should be based on the
-     template branch as well to avoid any potential merge conflicts in
-     your first commit. Not everyone has the ability to do this in
-     Gerrit. If you don't, ask an openstack infra core to do it for you.
-  5. Now we get to do the fun stuff. Edit index.html editing lines with
-     ``CHANGEME`` or ``changeme`` in them. You can also add new slides
-     if you like but that isn't necessary in this bootstrapping change.
-     You can follow up with new slides in subsequent changes.
-  6. Edit this file, ``README.rst``. The title of this document will
-     be the name used on the root publications index so be sure to
-     update the title. You should also add an Abstract section and
-     general talk info.
-  7. At this point you are ready to push your new changes back up to
-     Gerrit. ``git commit -a && git review``
-  8. Finally, if you want notifications for subsequent branch updates
-     to be shown in the #openstack-infra channel, add your branch to
-     gerritbot/channels.yaml in the project-config repository.
+OpenStack's infrastructure team has an open source infrastructure primarily
+using the Puppet configuration management tool. Using hiera they are able to
+separate secrets from Puppet code, and using roles they can keep OpenStack
+specific logic from generically reusable configuration. The infrastructure is
+multifaceted but the core of it is Gerrit for code review, cgit for code
+browsing, zuul for merging/gating, Jenkins and gearman for testing with apach,
+mysql, and zmq doing what they do best.
+
+
+My team at HP consumes this open source infrastructure and replicates it
+internally. We use their Puppet code, and do the dance of the downstream:
+patch/submit patch upstream/reconsume patch after it has landed upstream. We
+call the project Gozer and our admins are called Ghostbusters. We attend the
+weekly meeting that upstream holds, and some of us are well on our way to
+having our upstream commit bits, but our core focus is on maintaining the
+downstream ci/cd pipeline for HP. Configuration management is the reason any
+of this is possible. I'm going to talk about specific ways Puppet code can be
+written to be re-consumable, and highlight a couple 'dead ends' we walked
+down before finding some successful patterns.
+
+
+This presentation covers:
+
+
+* The problems upstream is solving, the problems downstream is solving, where
+those goals align and where they differ
+
+* How we bootstrapped our infrastructure (and why that was a
+problem)
+
+* How we participate upstream
+
+* How the Puppet codebase has evolved to be more consumable, where it started,
+and where it is now
+
+* How we dealt with different network topology between our infrastructure and
+upstream's infrastructure
+
+* How we maintain parity with upstream (consistently consuming it)

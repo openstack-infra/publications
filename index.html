@@ -33,30 +33,510 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Publication Title CHANGE ME<br />
-  <span class="smaller">Publication SubTitle CHANGE ME</span></h1>
+  <h1>Consuming Open Source Infrastructure</h1>
   <hr />
-  <div class="smaller">Your Name CHANGE ME
-    &lt;<a href="mailto:changeme@example.com">changeme@example.com</a>&gt;</div>
+  <div class="smaller">Spencer Krum
+  <ul>
+    &lt;<a href="mailto:nibz@hp.com">nibz@hp.com</a>&gt;<p>
+    irc: nibalizer<p>
+    twitter: nibalizer<p>
+  </div>
 </div>
 
 <div class="slide">
-  <h1>OpenStack</h1>
+  <h1>Who am I?</h1>
+  <ul>
+    <li>Work at HP</li>
+    <li>Open Source: OpenStack and Puppet</li>
+    <li>Build/Run the new ci system inside hp</li>
+    <li>Copy of upstream openstack CI</li>
+  </ul>
+  <div align="center"><img src="images/me.png"></div>
+</div>
 
-  <p>This is the first slide. CHANGE ME and add many more.</p>
 
-  <center>
-    <img src="images/openstack-software-diagram.png"/>
-  </center>
+<div class="slide">
+  <h1>Consuming Open Source Infrastructure</h1>
+  <ul>
+    <li>Not Trivial</li>
+    <li>Target Audience</li>
+    <li>"what we're doing"</li>
+    <li>Takeaways</li>
+  </ul>
+</div>
+
+
+<div class="slide">
+  <h1>Define Terms</h1>
+  <ul>
+    <li>Open Source</li>
+    <li>Infrastructure</li>
+    <li>Consuming</li>
+    <li>Upstream</li>
+    <li>Downstream</li>
+  </ul>
 </div>
 
 <div class="slide">
-  <h1>Thanks!</h1>
+  <h1>Consuming Open Source Infrastructure</h1>
 
+  <div align="center"><img src="images/os-ci-workflow.png"></div>
+
+</div>
+
+<div class="slide">
+  <h1>Configuration Management</h1>
+  <ul>
+<pre>
+
+# Node-OS: trusty
+node 'kdc01.openstack.org' {
+  class { 'openstack_project::kdc':
+    sysadmins => hiera('sysadmins', []),
+  }
+}
+
+# Node-OS: trusty
+node 'kdc02.openstack.org' {
+  class { 'openstack_project::kdc':
+    sysadmins => hiera('sysadmins', []),
+    slave     => true,
+  }
+}
+</pre>
+
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Define Terms</h1>
+  <ul>
+    <li>Open Source</li>
+    <li>Infrastructure</li>
+    <li>Consuming</li>
+    <li>Upstream</li>
+    <li>Downstream</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Examples:</h1>
+  <ul>
+    <li>OpenStack CI Infra</li>
+    <li>Mozilla Infra</li>
+    <li>Jenkins Infra</li>
+    <li>WikiMedia Infra</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">We benefit from consuming the infrastructure because we don't have to do <strong>all</strong> the work ourselves.</div>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">We benefit from consuming the infrastructure because we don't have to do <strong>all</strong> the work ourselves.</div>
+  <div align="center"><img src="images/celebration.gif" width="500"></div>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">We benefit from consuming the infrastructure because we have confidence that the architecture is <strong>viable</strong>.</div>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">We benefit from consuming the infrastructure because we don't have to do <strong>all</strong> the work ourselves.</div>
+<br>
+<br>
+  <div align="center"><strong>Any</strong> departures you take from upstream is technical debt.</div>
+</div>
+
+<div class="slide">
+  <h1>Gozer and the Ghostbusters</h1>
+  <ul>
+    <li>Our project at HP is called gozer</li>
+    <li>Our team is called the ghostbusters</li>
+    <li>We consume openstack ci's infrastructure</li>
+    <ul>
+      <li>Puppet</li>
+      <li>Ansible</li>
+      <li>Git</li>
+      <li>OpenStack</li>
+    </ul>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>How sysadmins use git</h1>
+  <div align="center"><img src="images/git.gif" width="500"></div>
+</div>
+
+<div class="slide">
+  <h1>What problem are we solving</h1>
+  <ul>
+    <li>Upstream</li>
+    <ul>
+    <li>CI needs of openstack developers</li>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    </ul>
+    <li>Downstream</li>
+    <ul>
+    <li>CI needs of hp openstack developers</li>
+    </ul>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What problem are we solving?</h1>
+  <div align="center"><img src="images/best_friends.gif" width="800"></div>
+</div>
+
+<div class="slide">
+  <h1>What problem are we solving?</h1>
+  <ul>
+    <li>Upstream</li>
+    <ul>
+    <li>CI needs of openstack developers</li>
+    <li>Publishing of packages to pypi</li>
+    <li>Development needs</li>
+    <li>Bug tracking</li>
+    <li>Voting/arbitration/governance infra</li>
+    <li>Social Infra</li>
+    </ul>
+    <li>Downstream</li>
+    <ul>
+    <li>CI needs of hp openstack developers</li>
+    <li>CI/CD needs of random hp developers</li>
+    </ul>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What problem are we solving?</h1>
+  <div align="center"><img src="images/Goals_venn_diagram.png"></div>
+</div>
+
+
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">For Downstreams: Identify early which components you wish to replicate.</div>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">For Upstreams: Decouple components from each other.</div>
+</div>
+
+
+<div class="slide">
+  <h1>Context Matters</h1>
+  <ul>
+    <li>Upstream uses 2 openstack clouds</li>
+    <ul>
+    <li>Network implications</li>
+    </ul>
+    <li>Downstream uses 1 openstack cloud, 2 HP DCs</li>
+    <ul>
+    <li>Network implications</li>
+    </ul>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Getting the network to work</h1>
+  <div align="center"><img src="images/cheating.gif" width="500"></div>
+</div>
+
+<div class="slide">
+  <h1>Upstream contribution</h1>
+  <ul>
+    <li>Downstreams must contribute upstream</li>
+    <li>Practical</li>
+    <li>Social</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Upstream contribution</h1>
+  <pre>
+<% if @http_proxy -%>
+export http_proxy=<%= @http_proxy %>
+export HTTP_PROXY=<%= @http_proxy %>
+<% end -%>
+<% if @https_proxy -%>
+export https_proxy=<%= @https_proxy %>
+export HTTPS_PROXY=<%= @https_proxy %>
+<% end -%>
+<% if @no_proxy -%>
+export no_proxy=<%= @no_proxy %>
+<% end -%>
+  </pre>
+</div>
+
+<div class="slide">
+  <h1>Upstream contribution</h1>
+  <ul>
+    <li>Downstreams must contribute upstream</li>
+    <li>Practical</li>
+    <li>Social</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Social Capital</h1>
+  <ul>
+    <li>Get from Upstream</li>
+    <ul>
+      <li>Testing</li>
+      <li>Code</li>
+      <li>Reviews</li>
+      <li>User Support</li>
+      <li>Docs</li>
+    </ul>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Social Capital</h1>
+  <ul>
+    <li>Give to Upstream</li>
+    <ul>
+      <li>Testing</li>
+      <li>Code</li>
+      <li>Reviews</li>
+      <li>User Support</li>
+      <li>Docs</li>
+      <li>Trust</li>
+    </ul>
+    <li>Get back from Upstream</li>
+    <ul>
+      <li>Testing</li>
+      <li>Code</li>
+      <li>Reviews</li>
+      <li>User Support</li>
+      <li>Docs</li>
+      <li>Trust</li>
+    </ul>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">Context matters.</div>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">Upstream Contribution is not an Option</div>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">Upstream Contribution is not an Option</div>
+  <div align="center"><img src="images/there_it_is.gif"/></div>
+</div>
+
+<div class="slide">
+  <h1>Contribution in Shades</h1>
+  <ul>
+    <li>Successful contribution</li>
+    <li>Unsuccessful contribution</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>State of Puppet</h1>
+  <ul>
+    <li>Upstream had hiera for secrets only</li>
+    <li>Puppet 2.7</li>
+    <li>site.pp</li>
+    <li>Monolithic repository</li>
+    <li>Apache module version 0.0.4</li>
+    <li>Forked vcsrepo module</li>
+    <li>Decent Roles system</li>
+    <li>Janky shell script to install packaged modules (wrapped puppet module install)</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Puppet Roles</h1>
+  <ul>
+    <li>Module: 'openstack_project'</li>
+    <li>Class: 'openstack_project::jenkins'</li>
+    <li>Module: 'jenkins'</li>
+    <li>Class: 'openstack_project::zuul'</li>
+    <li>Module: 'zuul'</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What we did</h1>
+  <ul>
+    <li>Deep Copy openstack_project to hp</li>
+    <li>Class: 'openstack_project::jenkins' became 'hp::jenkins'</li>
+    <li>Module: 'jenkins' added to module path</li>
+    <li>Class: 'openstack_project::zuul' became 'hp::zuul'</li>
+    <li>Module: 'zuul' added to module path</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What we did</h1>
+  <ul>
+    <li>Two git repositories</li>
+    <li>One was a new one with 'hp' module in it</li>
+    <li>One was a pull of openstack-infra's monolithic repository</li>
+    <li>Both 'modules/' directories were added to modulepath</li>
+    <li>We can change our role classes in 'hp' and we can pull down upstream whenever</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What we actually have done</h1>
+  <ul>
+    <li>Fork every repo we use</li>
+    <li>We very rarely sync from upstream</li>
+    <li>1000 commits behind</li>
+    <li>Several patches ahead</li>
+    <li>Still on 2.7</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">Find your intermediary between upstream and downstream.</div>
+</div>
+
+<div class="slide">
+  <h1>Takeaway</h1>
+<br>
+<br>
+<br>
+  <div align="center">Small syncs, testing. Reflexive of upstream.</div>
+</div>
+
+<div class="slide">
+  <h1>Keeping up with upstream</h1>
+  <div align="center"><img src="images/sisyphus.gif" width="500"></div>
+</div>
+
+<div class="slide">
+  <h1>What has happend upstream</h1>
+  <ul>
+    <li>Puppet 2.7 -> Puppet 3.7</li>
+    <li>Split of data into separate git repo(not hiera)</li>
+    <li>Split of monolithic repo into repos per module</li>
+    <li>Machinery to release modules to the forge</li>
+    <li>Deep copy of puppetlabs-apache to openstackci-httpd</li>
+    <li>install_modules.sh got pretty smart</li>
+    <li>integration testing against proposed changes to modules</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What is planned upstream</h1>
+  <ul>
+    <li>Symver for modules</li>
+    <li>Git clone for all module dependencies</li>
+    <li>fix vcsrepo</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>What is planned downstream</h1>
+  <ul>
+    <li>Dogfood the HP OpenStack, run everything on OpenStack</li>
+    <li>Upgrade to Puppet 3</li>
+    <li>Deploy some testing</li>
+    <li>Sync modules individually</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Closing thoughts</h1>
+  <ul>
+    <li>Thoughts</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Development / Contributing</h1>
+<ul>
+<li>Git:
+  <a href="https://git.openstack.org/cgit/openstack-infra/system-config">
+    https://git.openstack.org/cgit/openstack-infra/system-config</a><br />
+  <a href="https://git.openstack.org/cgit/openstack-infra/project-config">
+    https://git.openstack.org/cgit/openstack-infra/project-config</a>
+</li>
+<li>Docs:
+  <a href="http://ci.openstack.org">http://ci.openstack.org</a>
+<li>Freenode: #openstack-infra</li>
+<li>Mailing list:
+  <a href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra">
+    http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-infra
+  </a>
+</li>
+</ul>
+</div>
+
+<div class="slide">
+  <h1>Questions</h1>
+
+  <h2>Contact</h2>
+  <ul>
+    <li>Spencer Krum &lt;<a href="mailto:nibz@hp.com">nibz@hp.com</a>&gt;</li>
+    <li>&lt;irc: nibalizer&gt;</li>
+    <li>&lt;twitter: nibalizer&gt;</li>
+  </ul>
+
+  <h2>OpenStack CI Resources</h2>
+
+  <ul>
+    <li><a href="http://ci.openstack.org">http://ci.openstack.org</a></li>
+  </ul>
   <p><img src="images/stack-o-pancakes-150x150.png"/>
 
   <p>
     These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>
+    Images from devopsreactions, xkcd, and imgur.
   </p>
 
 </div>

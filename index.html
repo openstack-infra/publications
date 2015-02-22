@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
 <head>
-<title>Publication Title CHANGE ME</title>
+<title>Scaling Your Jenkins Jobs</title>
 <meta name="generator" content=
 "HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -33,32 +33,219 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <img class="hidden" src="graphics/bullet-nofold-dim.gif" alt="" />
   <img class="hidden" src="graphics/bullet-unfold-dim.gif" alt="" />
   <img src="graphics/openstack-cloud-software-vertical-large.png" alt="OpenStack logo" class="cover" />
-  <h1>Publication Title CHANGE ME<br />
-  <span class="smaller">Publication SubTitle CHANGE ME</span></h1>
+  <h1>Scaling Your Jenkins Jobs<br />
+  <span class="smaller">Jenkins Job Builder</span></h1>
   <hr />
-  <div class="smaller">Your Name CHANGE ME
-    &lt;<a href="mailto:changeme@example.com">changeme@example.com</a>&gt;</div>
+  <div class="smaller">Khai Do
+    &lt;<a href="mailto:zaro0508@gmail.com">zaro0508@gmail.com</a>&gt;</div>
 </div>
 
 <div class="slide">
-  <h1>OpenStack</h1>
+  <h1>Team</h1>
+  <ul>
+    <li>Openstack Infrastructure Team</li>
+    <li>IRC: #openstack-infra on freenode.net</li>
+    <li>Email: openstack-infra@lists.openstack.org</li>
+  </ul>
+</div>
 
-  <p>This is the first slide. CHANGE ME and add many more.</p>
+<div class="slide">
+  <h1>Purpose</h1>
+  <p>Our job is to make sure the OpenStack developers can do <em>their</em> job.</p>
+</div>
 
-  <center>
-    <img src="images/openstack-software-diagram.png"/>
-  </center>
+<div class="slide">
+  <h1>Systems</h1>
+  <ul>
+    <li>Launchpad and Storyboard</li>
+    <li>Git</li>
+    <li>Gerrit</li>
+    <li>Zuul*</li>
+    <li>Gearman</li>
+    <li>Jenkins (with <em>jenkins-job-builder</em>*, <em>devstack-gate</em>*)</li>
+    <li>Nodepool*</li>
+  </ul>
+  <p><small>* Started by the OpenStack Infrastructure team</small></p>
+  <div align="left">
+    <img src="images/launchpad-logo-and-name.png">
+    <img src="images/Git-Logo-1788C.png">
+    <img src="images/diffy-w200.png">
+    <img src="images/jenkins_logo.png">
+  </div>
+</div>
+
+<div class="slide">
+  <h1>Workflow</h1>
+  <div align="center"><img src="images/os-ci-workflow.png"></div>
+</div>
+
+<div class="slide">
+  <h1>What we use it for</h1>
+  <ul>
+    <li>All core OpenStack projects</li>
+    <li>StackForge projects</li>
+    <li>Documentation</li>
+    <li>Translations imports</li>
+    <li>Project specifications</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>OpenStack Code Review (and CI) Challenges</h1>
+  <ul>
+    <li>Lots of individual projects</li>
+    <li>All projects must work together</li>
+    <li>Changes should never break the master</li>
+    <li>Code should be syntactically clean</li>
+    <li>Testing should be completely automated</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>OpenStack Code Review (and CI) Challenges</h1>
+  <ul>
+    <li>Jobs (pep8, doc, deploy, etc..)</li>
+    <li>Job Configurations (multiple backends, multiple clouds, multiple deploy sites, etc..)</li>
+    <li>Git Projects (nova, swift, cinder, etc..)</li>
+    <li>Project Branches (master, stable, experimental, etc..)</li>
+    <li>CI Pipelines (check, gate, release, etc..)</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Problems</h1>
+  <ul>
+    <li>Copy and pasting of Jobs</li>
+    <li>Job explosion</li>
+    <li>Divergent jobs</li>
+    <li>XML difficult to edit and maintain</li>
+    <li>Job definitions not under source control</li>
+    <li>No way to mimic jobs with similar configurations</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Jenkins Job Builder</h1>
+  <ul>
+    <li>Command line tool to create and manage jenkins jobs</li>
+    <li>Job Definitions in yaml</li>
+    <li>Supported on Python 2.7-3.4</li>
+    <li>Active development</li>
+    <li>Open source</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>How we use it</h1>
+  <ul>
+    <li>All jobs are managed by JJB (Jenkins is view only)</li>
+    <li>Jobs definitions created with yaml files</li>
+    <li>Job changes go thru Gerrit code review</li>
+    <li>JJB create multiple jobs from one job definition</li>
+    <li>Puppet instructs JJB to deploy changes</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Demo</h1>
+</div>
+
+<div class="slide">
+  <h1>Simple Job</h1>
+  <div align="left"><img src="images/yaml-simple-job.png"></div>
+</div>
+
+<div class="slide">
+  <h1>Simple Job</h1>
+  <div align="left"><img src="images/xml-simple-job.png"></div>
+</div>
+
+<div class="slide">
+  <h1>Templates</h1>
+  <div align="left"><img src="images/yaml-demo-job.png"></div>
+</div>
+
+<div class="slide">
+  <h1>Run JJB</h1>
+  <div align="left"><img src="images/run-demo-job.png"></div>
+</div>
+
+<div class="slide">
+  <h1>Templates</h1>
+  <div align="left"><img src="images/xml-demo-job.png"></div>
+</div>
+
+<div class="slide">
+  <h1>Benefits</h1>
+  <ul>
+    <li>One common definition for multiple jobs (efficient job creation)</li>
+    <li>Define common parameters for all jobs in one place (easier to maintain jobs)</li>
+    <li>Updates to multiple jobs can be done with one change (update scm polling, update node targets)</li>
+    <li>Less snowflakes and less time spent debugging jobs</li>
+    <li>Job definitions are in SCM</li>
+    <li>Job definitions are easy to read and update</li>
+    <li>Developers are empowered to manage Jenkins jobs</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Features</h1>
+  <ul>
+    <li>Works with Jenkins REST Api</li>
+    <li>Default definitions to reuse parameters</li>
+    <li>Macro definitions to reuse plugins</li>
+    <li>Template definitions to reuse jobs</li>
+    <li>Duplicate job detection</li>
+    <li>Projects to group related jobs</li>
+    <li>Job groups to organize related job templates</li>
+    <li>Test jobs before deploying</li>
+    <li>Automated job removal</li>
+    <li>Job cache for fast job updates</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Future Improvements</h1>
+  <ul>
+    <li>Jenkins folders support</li>
+    <li>Validation of yaml metadata</li>
+    <li>Improve performance of yaml to xml parsing</li>
+    <li>Improve performance of Job uploads</li>
+    <li>Additional Jenkins plugin support</li>
+    <li><strong>Contributions Welcome!</strong></li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>References</h1>
+  <li>Lingo
+    <ul>
+      <li>Jenkins Jobs: aka Jenkins Projects</li>
+      <li>JJB Definitions: yaml metadata for the jobs</li>
+      <li>JJB parsing: Transform JJB yaml to Jenkins xml file</li>
+      <li>JJB modules: JJB python code to represent Jenkins plugins</li>
+      <li>JJB job: definition of a specific Jenkins job</li>
+      <li>JJB templates: a generic definition of a jenkins job</li>
+      <li>JJB job groups: a group of related JJB templates</li>
+      <li>JJB projects: a group of related JJB job groups</li>
+    </ul>
+  </li>
+  <li>Logistics
+    <ul>
+      <li>GIT: http://git.openstack.org/cgit/openstack-infra/jenkins-job-builder/</li>
+      <li>Pypi: https://pypi.python.org/pypi/jenkins-job-builder</li>
+      <li>Documentation (with examples): http://ci.openstack.org/jenkins-job-builder/</li>
+      <li>More Examples: http://git.openstack.org/cgit/openstack-infra/project-config/tree/jenkins/jobs</li>
+    </ul>
+  </li>
 </div>
 
 <div class="slide">
   <h1>Thanks!</h1>
-
   <p><img src="images/stack-o-pancakes-150x150.png"/>
-
   <p>
     These slides available at: <a href="http://docs.openstack.org/infra/publications/">http://docs.openstack.org/infra/publications/</a>
   </p>
-
 </div>
 
 </body>

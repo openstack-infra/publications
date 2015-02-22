@@ -1,34 +1,30 @@
-Template Branch for new OpenStack Infra Publications
-====================================================
+Scaling Your Jenkins Jobs
+=========================
 
-Creating new OpenStack Infra Publications is easy and you have started
-in the right place.
+The OpenStack project is developed by one of the largest open-source
+communities in the world. There are currently over 1000 active
+contributors world wide producing 1,500 changes per day across more
+than 300 git projects. It is a very active project and is growing
+very quickly.
 
-  1. Clone publications, create and checkout template tracking branch::
+The OpenStack continuous integration infrastructure relies heavily on
+Jenkins.  Our system has grown to require over 4,000 Jenkins jobs
+to run all of the builds and tests across all of the OpenStack projects.
+Supporting that many jobs can be quite insane so we created the Jenkins
+Job Builder (JJB) to help us automate and manage that complexity. JJB is
+an open source application that takes simple descriptions of Jenkins
+jobs in YAML format and uses them to create and configure Jenkins
+projects. JJB is written in Python and has a powerful template engine
+that allows us to easily create many Jenkins projects with similar
+configurations.  We are using JJB to create new jobs and update
+existing jobs across multiple build and test dimensions.  We’ve
+integrated JJB with a code review tool (Gerrit) to allow our developers
+to review every job that is created and updated in our CI system.
+We’ve also integrated JJB with a configuration management tool (Puppet)
+to automate the execution of JJB on every change to our Jenkins jobs.
+Since we’ve enabled multiple Jenkins masters, JJB is now used to
+automate and manage over 30,000 Jenkins job!
 
-       git clone git://git.openstack.org/openstack-infra/publications
-       cd publications
-       git review -s
-       git checkout -b template origin/template
-
-  2. Create a new branch based on this template branch.
-     ``git checkout -b $BRANCH_NAME``.
-  3. Edit ``.gitreview`` and change the defaultbranch value to
-     ``$BRANCH_NAME``.
-  4. Create ``$BRANCH_NAME`` in Gerrit. It should be based on the
-     template branch as well to avoid any potential merge conflicts in
-     your first commit. Not everyone has the ability to do this in
-     Gerrit. If you don't, ask an openstack infra core to do it for you.
-  5. Now we get to do the fun stuff. Edit index.html editing lines with
-     ``CHANGEME`` or ``changeme`` in them. You can also add new slides
-     if you like but that isn't necessary in this bootstrapping change.
-     You can follow up with new slides in subsequent changes.
-  6. Edit this file, ``README.rst``. The title of this document will
-     be the name used on the root publications index so be sure to
-     update the title. You should also add an Abstract section and
-     general talk info.
-  7. At this point you are ready to push your new changes back up to
-     Gerrit. ``git commit -a && git review``
-  8. Finally, if you want notifications for subsequent branch updates
-     to be shown in the #openstack-infra channel, add your branch to
-     gerritbot/channels.yaml in the project-config repository.
+This talk is to discuss how we designed Jenkins Job Builder, how it helped
+us scale out the OpenStack CI infrastructure and how it can be used in your
+CI system as well.

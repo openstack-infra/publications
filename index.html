@@ -50,19 +50,21 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Purpose</h1>
-  <p>Our job is to make sure the OpenStack developers can do <em>their</em> job.</p>
+  <h1>OpenStack</h1>
+  <h3>Openstack is <font color="red">open source</font> software for building private and public clouds</h3>
+  <center><img src="images/openstack-software-diagram.png"/></center>
 </div>
 
 <div class="slide">
-  <h1>Systems</h1>
+  <h1>CI System</h1>
   <ul>
-    <li>Launchpad and Storyboard</li>
+    <li>Storyboard</li>
     <li>Git</li>
     <li>Gerrit</li>
     <li>Zuul*</li>
     <li>Gearman</li>
-    <li>Jenkins (with <em>jenkins-job-builder</em>*, <em>devstack-gate</em>*)</li>
+    <li>Jenkins (with <em>jenkins-job-builder*</em> and <em>gearman-plugin*</em>)</li>
+    <li>Devstack*</li>
     <li>Nodepool*</li>
   </ul>
   <p><small>* Started by the OpenStack Infrastructure team</small></p>
@@ -75,52 +77,70 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 </div>
 
 <div class="slide">
-  <h1>Workflow</h1>
+  <h1>CI Workflow</h1>
   <div align="center"><img src="images/os-ci-workflow.png"></div>
 </div>
 
 <div class="slide">
-  <h1>What we use it for</h1>
+  <h1>CI Workflow</h1>
   <ul>
-    <li>All core OpenStack projects</li>
-    <li>StackForge projects</li>
+    <li>OpenStack</li>
     <li>Documentation</li>
-    <li>Translations imports</li>
-    <li>Project specifications</li>
+    <li>Translations</li>
+    <li>Operations</li>
+    <li>Utilities and tools</li>
   </ul>
 </div>
 
 <div class="slide">
-  <h1>OpenStack Code Review (and CI) Challenges</h1>
+  <h1>CI Scale</h1>
   <ul>
-    <li>Lots of individual projects</li>
-    <li>All projects must work together</li>
-    <li>Changes should never break the master</li>
-    <li>Code should be syntactically clean</li>
-    <li>Testing should be completely automated</li>
+    <li>~500 Git Projects</li>
+    <li>~5,000 Jenkins Jobs</li>
+    <li>~10 Jenkins Masters</li>
+    <li>~1,000 Slaves</li>
+    <li>~24,000 Jobs per day</li>
   </ul>
 </div>
 
 <div class="slide">
-  <h1>OpenStack Code Review (and CI) Challenges</h1>
+  <h1>CI Challenges</h1>
   <ul>
-    <li>Jobs (pep8, doc, deploy, etc..)</li>
-    <li>Job Configurations (multiple backends, multiple clouds, multiple deploy sites, etc..)</li>
     <li>Git Projects (nova, swift, cinder, etc..)</li>
-    <li>Project Branches (master, stable, experimental, etc..)</li>
-    <li>CI Pipelines (check, gate, release, etc..)</li>
+    <li>Project Branches (master, stable, feature, etc..)</li>
+    <li>Jobs (pep8, doc, test, deploy, etc..)</li>
+    <li>Job Configurations (multiple backends, multiple clouds, multiple deploy sites, etc..)</li>
+    <li>CI Pipelines (check, gate, release, periodic, etc..)</li>
   </ul>
+</div>
+
+<div class="slide">
+  <h1>CI Challenges</h1>
+  <ul>
+    <li>Many, Many Jobs...</li>
+    <li>nova-py27-unit-master</li>
+    <li>nova-py27-perf-master</li>
+    <li>nova-py26-unit-stable-1.0</li>
+    <li>nova-py26-perf-stable-1.0</li>
+    <li>nova-py34-..</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <h1>Openstack Jobs Over Time</h1>
+  <img src="images/openstack_jobs_growth.png" style="width: 80%; height: 70%" alt="Jobs Growth"/>
 </div>
 
 <div class="slide">
   <h1>Problems</h1>
   <ul>
-    <li>Copy and pasting of Jobs</li>
-    <li>Job explosion</li>
+    <li>XML difficult to maintain</li>
+    <li>Copy and pasting of jobs</li>
     <li>Divergent jobs</li>
-    <li>XML difficult to edit and maintain</li>
     <li>Job definitions not under source control</li>
     <li>No way to mimic jobs with similar configurations</li>
+    <li>1 Job : 1 XML file</li>
+    <li><font color="red">Difficult to create, maintain and automate</font></li>
   </ul>
 </div>
 
@@ -128,26 +148,40 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
   <h1>Jenkins Job Builder</h1>
   <ul>
     <li>Command line tool to create and manage jenkins jobs</li>
-    <li>Job Definitions in yaml</li>
+    <li>Job definitions in yaml</li>
+    <li>Templates to define multiple jobs in one file</li>
     <li>Supported on Python 2.7-3.4</li>
-    <li>Active development</li>
     <li>Open source</li>
+    <li>Active development</li>
   </ul>
+</div>
+
+<div class="slide">
+  <h1>Openstack Job Definitions</h1>
+  <img src="images/openstack_jjb_files.png" style="width: 80%; height: 70%" alt="Jobs Growth"/>
 </div>
 
 <div class="slide">
   <h1>How we use it</h1>
   <ul>
     <li>All jobs are managed by JJB (Jenkins is view only)</li>
-    <li>Jobs definitions created with yaml files</li>
-    <li>Job changes go thru Gerrit code review</li>
-    <li>JJB create multiple jobs from one job definition</li>
-    <li>Puppet instructs JJB to deploy changes</li>
+    <li>Jobs definitions created in yaml files</li>
+    <li>Job creation/changes go thru Gerrit code review</li>
+    <li>JJB creates multiple jobs from one job definition</li>
+    <li>Puppet instructs JJB to deploy and update jobs on Jenkins</li>
   </ul>
 </div>
 
 <div class="slide">
   <h1>Demo</h1>
+  <h2>Install</h2>
+  <ul>
+    <li>pip install jenkins-job-builder</li>
+  </ul>
+  <h2>Run</h2>
+  <ul>
+    <li>jenkins-jobs --conf my_jenkins.ini update simple.yaml</li>
+  </ul>
 </div>
 
 <div class="slide">
@@ -184,7 +218,8 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Less snowflakes and less time spent debugging jobs</li>
     <li>Job definitions are in SCM</li>
     <li>Job definitions are easy to read and update</li>
-    <li>Developers are empowered to manage Jenkins jobs</li>
+    <li><font color="red">Easier and more efficient to create and maintain jobs</font></li>
+    <li><font color="red">Developers empowered to own their Jenkins jobs</font></li>
   </ul>
 </div>
 
@@ -195,12 +230,13 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Default definitions to reuse parameters</li>
     <li>Macro definitions to reuse plugins</li>
     <li>Template definitions to reuse jobs</li>
-    <li>Duplicate job detection</li>
     <li>Projects to group related jobs</li>
     <li>Job groups to organize related job templates</li>
     <li>Test jobs before deploying</li>
     <li>Automated job removal</li>
-    <li>Job cache for fast job updates</li>
+    <li>Cache for idempotent job updates</li>
+    <li>Unit tests (84% coverage)</li>
+    <li>Documented</li>
   </ul>
 </div>
 
@@ -211,8 +247,9 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Validation of yaml metadata</li>
     <li>Improve performance of yaml to xml parsing</li>
     <li>Improve performance of Job uploads</li>
+    <li>Refactor to be usuable API</li>
     <li>Additional Jenkins plugin support</li>
-    <li><strong>Contributions Welcome!</strong></li>
+    <li><font color="red">Contributions Welcome!</font></li>
   </ul>
 </div>
 

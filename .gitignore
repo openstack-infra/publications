@@ -1,1 +1,3 @@
-output
+*.swp
+venv
+_build

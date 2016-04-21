@@ -76,25 +76,6 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
       <li>horizon (dashboard)</li>
       <li>trove (databases)</li>
       <li>sahara (hadoop)</li>
-      <li class="gray">ironic (bare metal)</li>
-      <li class="gray">marconi (message queueing)</li>
-    </ul></li>
-  </ul></div>
-  <div style="float:left;width:50%"><ul>
-    <li>Client libraries<ul>
-      <li>python-novaclient</li>
-      <li>python-swiftclient</li>
-      <li>python-glanceclient</li>
-      <li>python-keystoneclient</li>
-      <li>python-neutronclient</li>
-      <li>python-cinderclient</li>
-      <li>python-heatclient</li>
-      <li>python-ceilometerclient</li>
-      <li>python-openstackclient</li>
-      <li>python-troveclient</li>
-      <li>python-saharaclient</li>
-      <li class="gray">python-ironicclient</li>
-      <li class="gray">python-marconiclient</li>
     </ul></li>
   </ul></div>
   <div class="indent"><a href="https://wiki.openstack.org/wiki/Projects">https://wiki.openstack.org/wiki/Projects</a></div>
@@ -183,11 +164,13 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
       <li>Nodepool</li>
       <li>Jenkins</li>
       <li>JJB</li>
+      <li>Gearman</li>
       <li>Zuul</li>
     </ul></li>
     <li>Repository mirrors<ul>
       <li>Apache</li>
       <li>Cgit</li>
+      <li>Distributions (Ubuntu, CentOS)</li>
       <li>GitHub</li>
       <li>PyPI packages</li>
     </ul></li>
@@ -252,7 +235,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
 <h1>Development Environment</h1>
   <ul>
   <li>Python<ul>
-    <li>CentOS (2.6), Ubuntu LTS (2.7, 3.3, pypy)</li>
+    <li>Ubuntu LTS (2.7, 3.4, pypy)</li>
     <li>PEP-8 standards</li>
     <li>Oslo (common libraries)</li>
     <li>virtualenv/pip/tox</li>
@@ -403,7 +386,7 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
 <h1>Gerrit Git Prep</h1>
 <ul>
 <li>Test the result of the change, not the change</li>
-<li>openstack-infra/config:modules/openstack_project/files/slave_scripts/gerrit-git-prep.sh</li>
+<li>openstack-infra/project-config:jenkins/scripts/gerrit-git-prep.sh</li>
 <li>For each gerrit change:
 <ul>
   <li>grabs target branch</li>

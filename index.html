@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content=
 "Copyright &#169; 2005-2010 W3C (MIT, ERCIM, Keio)" />
-<meta name="duration" content="60" />
+<meta name="duration" content="40" />
 <meta name="font-size-adjustment" content="0" />
 <link rel="stylesheet" href="styles/slidy.css" type="text/css" />
 <link rel="stylesheet" href="styles/openstack.css" type="text/css" />
@@ -76,9 +76,11 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
       <li>horizon (dashboard)</li>
       <li>trove (databases)</li>
       <li>sahara (hadoop)</li>
+      <li>...</li>
     </ul></li>
   </ul></div>
-  <div class="indent"><a href="https://wiki.openstack.org/wiki/Projects">https://wiki.openstack.org/wiki/Projects</a></div>
+  <div class="indent"><a
+href="http://governance.openstack.org/reference/projects/">http://governance.openstack.org/reference/projects/</a></div>
 </div>
 
 <div class="slide">
@@ -227,7 +229,7 @@ src="graphics/openstack-cloud-software-horizontal-small.png" /></div>
     <li>Anyone on the internet can look at our changes</li>
     <li>Anyone can sign up for a code review account</li>
     <li>Anyone can write and propose changes</li>
-    <li>https://git.openstack.org/cgit/openstack-infra/config/tree/</li>
+    <li>https://git.openstack.org/cgit/openstack-infra/system-config/tree/</li>
   </ul>
 </div>
 
@@ -383,15 +385,23 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
 </div>
 
 <div class="slide">
-<h1>Gerrit Git Prep</h1>
+<h1>Gerrit Git Prep / Zuul Cloner</h1>
 <ul>
 <li>Test the result of the change, not the change</li>
 <li>openstack-infra/project-config:jenkins/scripts/gerrit-git-prep.sh</li>
-<li>For each gerrit change:
+<li>Gerrit Git Prep:
 <ul>
   <li>grabs target branch</li>
   <li>cleans tree</li>
   <li>merges change to be tested</li>
+</ul>
+</li>
+<li>Zuul Cloner:
+<ul>
+  <li>grabs target branch (from local cache)</li>
+  <li>cleans tree</li>
+  <li>merges change to be tested</li>
+  <li>cross project dependencies with Depends-On header</li>
 </ul>
 </li>
 </ul>
@@ -405,29 +415,12 @@ To ssh://corvus@review.openstack.org:29418/openstack/neutron.git
     <li>run DevStack</li>
     <li>run integration tests</li>
   </ul></li>
+  <li>OpenStack Puppet Integration<ul>
+    <li>boot fresh servers</li>
+    <li>use puppet to provision OpenStack</li>
+    <li>deploy tempest to run integration tests</li>
+  </ul></li>
   <li>Gate proposed change against current state of other projects</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Devstack-Gate Problems</h1>
-<ul>
-  <li>Tests are slow</li>
-  <li>Cloud API calls can fail</li>
-  <li>External services are unreliable</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Devstack-Gate Solutions</h1>
-<ul>
-  <li>Create a new node</li>
-  <li>Pre-fetch all needed packages, repos</li>
-  <li>Snapshot to cloud image</li>
-  <li>Maintain a pool of cloud nodes</li>
-  <li>Slave can only be used for one test run</li>
-  <li>Python and shell scripts run as jobs</li>
-  <li>Partition tests and run them in parallel</li>
 </ul>
 </div>
 
@@ -931,13 +924,37 @@ projects:
     name: 'gate-{name}-pep8'
 
     builders:
-      - gerrit-git-prep
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
       - pep8:
-          github-org: '{github-org}'
-          project: '{name}'
+          env: pep8
 
     publishers:
       - console-log
+
+    node: ubuntu-trusty
+</pre>
+</div>
+
+<div class="slide">
+<h1>Example Job Group Template</h1>
+<pre>
+- job-group:
+    name: python-jobs
+    jobs:
+      - '{name}-coverage'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-python27'
+      - 'gate-{name}-python34'
+      - 'gate-{name}-pypy'
+      - 'gate-{name}-docs'
+      - 'gate-{name}-requirements'
+      - '{name}-tarball'
+      - '{name}-branch-tarball'
+      - '{name}-announce-release'
 </pre>
 </div>
 
@@ -946,14 +963,28 @@ projects:
 <pre>
 - project:
     name: nova
-    github-org: openstack
     tarball-site: tarballs.openstack.org
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - python-jobs
-      - gate-{name}-pep8
+      - python-db-jobs
+      - python-kilo-bitrot-db-jobs
+      - python-liberty-bitrot-db-jobs
+      - python-mitaka-bitrot-db-jobs
+      - openstack-publish-jobs
+      - 'gate-{name}-tox-db-{envlist}':
+          envlist:
+            - functional
       - translation-jobs
+      - translation-jobs-mitaka
+      - openstack-releasenotes-jobs
+      - periodic-python-jobs-with-oslo-master
+      - gate-{name}-api-guide
+      - '{name}-api-guide':
+          service: compute
+      - gate-{name}-api-ref
+      - '{name}-api-ref':
+          service: compute
 </pre>
 </div>
 
@@ -993,7 +1024,7 @@ projects:
   <li>Redundancy</li>
   <li>Uses the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Gearman+Plugin">Jenkins Gearman Plugin</a></li>
   <li>Masters: jenkins01.openstack.org, jenkins02.o.o, jenkins03.o.o, etc..</li>
-  <li><a href="http://graphite.openstack.org/render/?from=-24hours&height=680&until=now&width=1034&bgcolor=ffffff&fgcolor=000000&target=color(alias(sumSeries(stats.gauges.nodepool.target.*.*.*.used),%20%27In%20Use%27),%20%276464ff%27)&title=Test%20Nodes&_t=0.605142645072192#1395182490817">600+ test nodes</a></div></li>
+  <li><a href="http://grafana.openstack.org/dashboard/db/zuul-status">750+ test nodes</a></div></li>
 </ul>
 </div>
 
@@ -1016,7 +1047,7 @@ projects:
 </div>
 
 <div class="slide">
-<h1>Elastic test nodes</h1>o
+<h1>Elastic test nodes</h1>
   <center>
     <img style="margin-top:2em;" src="images/elastic_test_nodes.png"/>
   </center>

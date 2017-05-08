@@ -1,0 +1,5 @@
+cowsay
+figlet
+libjpeg-dev
+python-dev
+zlib1g-dev

@@ -37,13 +37,14 @@ We Are
 .. figlet:: we are...
 .. container:: progressive
 
-  - systems administrators
-  - application developers
-  - scientists
-  - documentation authors
-  - troubleshooters
+  - Systems administrators
+  - Application developers
+  - Scientists
+  - Documentation authors
+  - Troubleshooters
   - OpenStack operators
-  - free/libre open source advocates
+  - Free/Libre open source advocates
+  - Globally distributed
 
 What
 ----
@@ -59,10 +60,10 @@ We Do
 .. figlet:: we do...
 .. container:: progressive
 
-  - implement technical services for the OpenStack community
-  - help improve software we use in many, many languages
-  - create new solutions to fill in the gaps
-  - pioneer unprecedented software development workflows
+  - Implement technical services for the OpenStack community
+  - Help improve software we use in many, many languages
+  - Create new solutions to fill in the gaps
+  - Pioneer unprecedented software development workflows
   - HAVE FUN
 
 Things Like
@@ -70,13 +71,13 @@ Things Like
 .. transition:: pan
 .. container:: progressive
 
-  - project gating approach to quality assurance
-  - systems administration as code through CI automation
-  - run a massive multi-cloud application
-  - openly maintain several OpenStack-based clouds
-  - develop free software using free software
-  - explain/demonstrate our tools and methods at conferences
-  - enjoy the satisfaction that comes from helping others
+  - Project gating approach to quality assurance
+  - Systems administration as code through CI automation
+  - Run a massive multi-cloud application
+  - Openly maintain several OpenStack-based clouds
+  - Develop free software using free software
+  - Explain/demonstrate our tools and methods at conferences
+  - Enjoy the satisfaction that comes from helping others
 
 Where
 -----

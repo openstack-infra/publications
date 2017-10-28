@@ -17,6 +17,10 @@
 import os
 import subprocess
 
+# For running locally
+using_zuul = False
+remote = "remotes/origin/"
+
 def run_local(cmd, cwd='.', env={}):
     print "Running:", cmd
     newenv = os.environ
@@ -31,7 +35,8 @@ def git_branches():
     r, branch_list = run_local(['git', 'branch', '-a'])
     for branch in branch_list.split("\n"):
         branch = branch.strip()
-        if not branch.startswith('remotes/origin'):
+        # If we use zuul, there's no need for filtering
+        if not using_zuul and not branch.startswith('remotes/origin'):
             continue
         branches.append(branch)
     return branches
@@ -40,22 +45,31 @@ def git_tags():
     r, tag_list = run_local(['git', 'tag', '-n'])
     return [x for x in tag_list.split('\n') if x]
 
+
 current = ''
 previous = ''
 
+# Running under Zuul v3, we do not have remotes/origin.
+# Running locally, it exists. Let's check ZUUL_PROJECT for running under
+# Zuul.
+
+if os.getenv("ZUUL_PROJECT"):
+    remote = ""
+    using_zuul = True
+
 for branch in git_branches():
-    if branch.startswith('remotes/origin/master'):
+    if branch.startswith( remote + 'master'):
         continue
-    if branch.startswith('remotes/origin/template'):
+    if branch.startswith( remote + 'template'):
         continue
-    if branch.startswith('remotes/origin/HEAD'):
+    if branch.startswith( remote + 'HEAD'):
         continue
     if '->' in branch:
         continue
     r,o = run_local(['git', 'show', branch+':README.rst'])
     if not r:
         title = o.split('\n')[0]
-        name = branch[len('remotes/origin/'):]
+        name = branch[len(remote):]
         print "Adding branch %s: %s" % (name, title)
         current += '<a href="%s/">%s</a><br/>\n' % (name, title)
 

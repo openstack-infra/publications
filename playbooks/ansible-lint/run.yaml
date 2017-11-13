@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+    - name: Check linting of playbooks
+      shell: ~/.local/bin/ansible-lint playbooks/*/*.yaml
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+      changed_when: True

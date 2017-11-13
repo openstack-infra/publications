@@ -1,8 +1,0 @@
-- job:
-    name: hello-world
-    description: Say hello world
-
-    builders:
-      - shell: |
-          #!/bin/sh
-          echo 'hello world'

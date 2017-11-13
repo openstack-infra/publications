@@ -1,6 +1,0 @@
-- hosts: all
-  tasks:
-    - name: Install ansible-lint via pip
-      pip:
-        name: ansible-lint
-        extra_args: --user

@@ -21,6 +21,16 @@ Main Title
 
 An OpenStack Infrastructure Team Production
 
+Gerrit Upgrade
+--------------
+
+TODO
+
+Meltdown / Spectre
+------------------
+
+TODO
+
 State of the Clouds
 -------------------
 .. transition:: tilt
@@ -35,53 +45,45 @@ State of the Clouds
   * OVH
   * Rackspace
   * Vexxhost
+  * TODO: arm
 
-* Lost OSIC
+Lost infra-cloud
 
-Infracloud
-----------
+Zuul v3 Deployed
+----------------
 .. transition:: pan
 
-.. container:: handout
+TODO
 
-   Lets focus on the community run aspects rather than the hosting
-   aspects.
+Zuul v3 Secrets
+---------------
+.. transition:: pan
 
-* Community managed. You too can help us run an OpenStack Cloud
-* Running Mitaka
-* Deployed with OpenStack Puppet and Ubuntu packaging
+TODO talk about how secrets work (we've never had anything like this).
 
-Gerrit Upgrade
+Zuul v3 Branches
+---------------
+.. transition:: pan
+
+TODO talk about branch matchers, etc.
+
+Zuul v3 GitHub
 --------------
 .. transition:: pan
 
-* Upgraded from 2.11 to 2.13
-* Only two commits diverged from upstream
-* Mostly a bug fix update
+TODO talk about reporting on GitHub and other projects
 
-  * Better memory management
-  * UI works better on mobile
-  * Votes always show up in event stream
-
-* Stepping stone to Gerrit 2.14/2.15
-
-Zuul v3
--------
+Zuul v3 Job Migration
+---------------------
 .. transition:: pan
 
-* Job definitions are ansible playbooks. Familiar to more people.
-* Pre merge testing of most job configs
-* Handles per project secrets
-* Built in multinode support
+TODO talk about how people should migrate (highlight major changes to the zuulv3 infra-manual page since the initial publication)
 
-  * Zuul talks to all nodes in test environment
-  * Can be heterogenous mixture of test nodes
-
-* Presentation on Migration http://bit.ly/2m1dLmq
-
-Zuul v3 Example
----------------
+Zuul v3 Devstack
+----------------
 .. transition:: pan
+
+TODO update
 
 .. code:: yaml
 
@@ -111,24 +113,11 @@ Zuul v3 Example
           horizon: False
           tempest: False
 
-The Future
-----------
+Zuul v3 Tempest
+---------------
 .. transition:: pan
 
-* Potential new clouds in the pipeline
-* Gerrit 2.14/2.15
-
-  * New Polygerrit UI
-  * Notedb
-  * Hashtags
-  * ACL'd branch deletion
-
-* Path to Zuul v3 release
-
-  * Dashboard
-  * Infra commenting on Github
-  * Line comment reporting
-  * Diverse Nodepool backends
+TODO
 
 TC Top 5 Help Wanted
 --------------------

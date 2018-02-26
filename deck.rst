@@ -24,12 +24,24 @@ An OpenStack Infrastructure Team Production
 Gerrit Upgrade
 --------------
 
-TODO
+* Gerrit upgraded to 2.13
+
+  * Many bugfixes
+  * You can now repush old patchsets
+
+* Plan to upgrade to 2.14.
 
 Meltdown / Spectre
 ------------------
 
-TODO
+* Infra services patched against Meltdown
+
+  * Xen largely avoided this at hypervisor level
+
+* Retpoline showing up to address part of Spectre
+
+  * Performance degradation using UCA qemu post Spectre mitigation
+  * Rely on cloud providers to update hardware
 
 State of the Clouds
 -------------------
@@ -40,14 +52,13 @@ State of the Clouds
 * Current Clouds (in alpha order)
 
   * Citycloud
-  * Infracloud
   * Internap
+  * Linaro (in progress)
   * OVH
   * Rackspace
   * Vexxhost
-  * TODO: arm
 
-Lost infra-cloud
+* No more Infracloud
 
 Zuul v3 Deployed
 ----------------

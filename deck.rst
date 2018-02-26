@@ -62,33 +62,77 @@ State of the Clouds
 
 Zuul v3 Deployed
 ----------------
-.. transition:: pan
+.. transition:: dissolve
+.. hidetitle::
 
-TODO
+.. ansi:: zuul.ans
+
 
 Zuul v3 Secrets
 ---------------
 .. transition:: pan
 
-TODO talk about how secrets work (we've never had anything like this).
+.. code-block::
+
+   - secret:
+       name: kolla_dockerhub_creds
+       data:
+         password: !encrypted/pkcs1-oaep
+           - QLe52Ymma5HJg3K2kgeSEMp7TwarkH8AbEiwcnDTqZ276BUF9wrt+5gPJRfVU1BYty2lq
+             CCzhawJJ09TV0WU2SEUKlicWoXQ/hcbYWNlOHVL6/gm9UxZP/GC8d1eyQfbCS7UUHfiHF
+             BLAHBLAHBLAHBLAHBLAH=
+
+   - job:
+       name: kolla-publish-ubuntu-binary
+       post-run: tests/playbooks/publish.yml
+       secrets:
+         - kolla_dockerhub_creds
+
+   - hosts: all
+     tasks:
+       - name: Login to Dockerhub
+         command: "docker login -u {{ kolla_dockerhub_creds.user }} -p {{ kolla_dockerhub_creds.password }}"
+         no_log: true
+
+       - shell: "for img in $(docker images  --format '{% raw %}{{ .Repository }}:{{ .Tag }}{% endraw %}' | grep kolla ); do docker push $img; done"
+
 
 Zuul v3 Branches
 ---------------
 .. transition:: pan
 
-TODO talk about branch matchers, etc.
-
+* Jobs in branched repos get *implied branch matchers*
+* Jobs in branchless repos have no implied branch matchers
+* Any job can set *explicit branch matchers*
+* We're backporting some jobs to stable branches now
+* In the future, branching should just DTRT
+  
 Zuul v3 GitHub
 --------------
 .. transition:: pan
 
-TODO talk about reporting on GitHub and other projects
+* OpenStack's Zuul can report on projects on GitHub now
+* https://github.com/ansible/ansible/pull/20974
+* Pending TC resolution and docs changes describing process
+
+Zuul v3 Job Docs
+----------------
+.. transition:: pan
+
+* Zuul-sphinx plugin
+* https://docs.openstack.org/infra/zuul-jobs/
+* https://docs.openstack.org/infra/openstack-zuul-jobs/
+* https://docs.openstack.org/infra/zuul/user/config.html
 
 Zuul v3 Job Migration
 ---------------------
 .. transition:: pan
 
-TODO talk about how people should migrate (highlight major changes to the zuulv3 infra-manual page since the initial publication)
+* Auto-migrated jobs start with `legacy-`
+* Migrate those out of openstack-zuul-jobs into your own repos
+* Look into whether existing Ansible roles are useful, or if the jobs or roles
+  that you develop may be generally useful
+* https://docs.openstack.org/infra/manual/zuulv3.html
 
 Zuul v3 Devstack
 ----------------
@@ -136,7 +180,8 @@ TC Top 5 Help Wanted
 
 * Community Infrastructure Sysadmins
 
-  * https://governance.openstack.org/tc/reference/top-5-help-wanted.html
+* https://governance.openstack.org/tc/reference/
+  top-5-help-wanted.html
 
 Contact Info
 ------------
@@ -145,8 +190,11 @@ Contact Info
 * IRC: #openstack-infra on Freenode
 * E-mail: openstack-infra@lists.openstack.org
 * In person: https://www.openstack.org/ptg/
+
+  * Infra help room: *Davin Suite, L4*
+  
 * Documentation: https://docs.openstack.org/infra/system-config/
-* ...and all around the Forum -- feel free to say hi!
+* ...and all around the PTG -- feel free to say hi!
 
 Questions
 ---------

@@ -21,28 +21,6 @@ Main Title
 
 An OpenStack Infrastructure Team Production
 
-Gerrit Upgrade
---------------
-
-* Gerrit upgraded to 2.13
-
-  * Many bugfixes
-  * You can now repush old patchsets
-
-* Plan to upgrade to 2.14.
-
-Meltdown / Spectre
-------------------
-
-* Infra services patched against Meltdown
-
-  * Xen largely avoided this at hypervisor level
-
-* Retpoline showing up to address part of Spectre
-
-  * Performance degradation using UCA qemu post Spectre mitigation
-  * Rely on cloud providers to update hardware
-
 State of the Clouds
 -------------------
 .. transition:: tilt
@@ -53,148 +31,121 @@ State of the Clouds
 
   * Citycloud
   * Internap
-  * Linaro (in progress)
+  * Limestone Networks
+  * Linaro
   * OVH
   * Rackspace
   * Vexxhost
 
 * No more Infracloud
 
-Zuul v3 Deployed
+Multi Arch Support
+------------------
+.. transition:: tilt
+
+* Infra now running on amd64/x86-64 and arm64/aarch64
+* Small pool of test resources for testing on AArch64
+* UEFI support added to diskimage-builder
+
+Storyboard
+----------
+.. transition:: tilt
+
+* More and larger projects are migrating
+* Significant improvements based on feedback from new users
+
+  * 4 byte utf8 support in database
+  * Team based access to private stories
+  * Migration of bugs based on specific tag sets
+
+* Outreachy Intern will be improving search functionality
+
+Zuul v3
 ----------------
-.. transition:: dissolve
+.. transition:: tilt
 .. hidetitle::
 
 .. ansi:: zuul.ans
 
 
-Zuul v3 Secrets
----------------
+Zuul v3 Deployed
+----------------
 .. transition:: pan
 
-.. code-block::
+* Cut over in December
+* Continue to update jobs and fix bugs
+* Version 3.0 release published
 
-   - secret:
-       name: kolla_dockerhub_creds
-       data:
-         password: !encrypted/pkcs1-oaep
-           - QLe52Ymma5HJg3K2kgeSEMp7TwarkH8AbEiwcnDTqZ276BUF9wrt+5gPJRfVU1BYty2lq
-             CCzhawJJ09TV0WU2SEUKlicWoXQ/hcbYWNlOHVL6/gm9UxZP/GC8d1eyQfbCS7UUHfiHF
-             BLAHBLAHBLAHBLAHBLAH=
+  * Major Infra effort marked as done
 
-   - job:
-       name: kolla-publish-ubuntu-binary
-       post-run: tests/playbooks/publish.yml
-       secrets:
-         - kolla_dockerhub_creds
+* Now independent project under OpenStack Foundation CI/CD focus area
 
-   - hosts: all
-     tasks:
-       - name: Login to Dockerhub
-         command: "docker login -u {{ kolla_dockerhub_creds.user }} -p {{ kolla_dockerhub_creds.password }}"
-         no_log: true
-
-       - shell: "for img in $(docker images  --format '{% raw %}{{ .Repository }}:{{ .Tag }}{% endraw %}' | grep kolla ); do docker push $img; done"
-
-
-Zuul v3 Branches
----------------
+Zuul v3 Features
+----------------
 .. transition:: pan
 
-* Jobs in branched repos get *implied branch matchers*
-* Jobs in branchless repos have no implied branch matchers
-* Any job can set *explicit branch matchers*
-* We're backporting some jobs to stable branches now
-* In the future, branching should just DTRT
-  
-Zuul v3 GitHub
---------------
-.. transition:: pan
-
-* OpenStack's Zuul can report on projects on GitHub now
-* https://github.com/ansible/ansible/pull/20974
-* Pending TC resolution and docs changes describing process
+* Pre merge job update testing
+* Github integration (cross community testing)
+* Job config in familiar language (Ansible)
+* Secrets management
+* Native Multinode jobs
+* Implied branch:job mapping
+* Simple, extendable devstack base job
 
 Zuul v3 Job Docs
 ----------------
 .. transition:: pan
 
 * Zuul-sphinx plugin
-* https://docs.openstack.org/infra/zuul-jobs/
 * https://docs.openstack.org/infra/openstack-zuul-jobs/
-* https://docs.openstack.org/infra/zuul/user/config.html
+* https://zuul-ci.org/docs/zuul-jobs/
+* https://zuul-ci.org/docs/zuul/user/config.html
 
-Zuul v3 Job Migration
----------------------
-.. transition:: pan
+Top Level Project Hosting
+-------------------------
+.. transition:: tilt
 
-* Auto-migrated jobs start with `legacy-`
-* Migrate those out of openstack-zuul-jobs into your own repos
-* Look into whether existing Ansible roles are useful, or if the jobs or roles
-  that you develop may be generally useful
-* https://docs.openstack.org/infra/manual/zuulv3.html
+* Modifications made to host different top level projects
 
-Zuul v3 Devstack
-----------------
-.. transition:: pan
+  * Mailing list hosting
+  * Web hosting
+  * Documentation hosting
+  * Git repo hosting
 
-TODO update
-
-.. code:: yaml
-
-  - job:
-      name: devstack
-      parent: multinode
-      description: Base devstack job
-      nodeset: openstack-single-node
-      required-projects:
-        - openstack-dev/devstack
-        - openstack/cinder
-        - openstack/glance
-        - openstack/keystone
-        - openstack/neutron
-        - openstack/nova
-        - openstack/requirements
-        - openstack/swift
-      roles:
-        - zuul: openstack-infra/openstack-zuul-jobs
-      pre-run: playbooks/pre.yaml
-      run: playbooks/devstack.yaml
-      post-run: playbooks/post.yaml
-      vars:
-        devstack_localrc:
-          ADMIN_PASSWORD: secretadmin
-        devstack_services:
-          horizon: False
-          tempest: False
-
-Zuul v3 Tempest
----------------
-.. transition:: pan
-
-TODO
+* Zuul initial consumer of these features
 
 TC Top 5 Help Wanted
 --------------------
-.. transition:: pan
+.. transition:: tilt
 
 * Community Infrastructure Sysadmins
 
-* https://governance.openstack.org/tc/reference/
-  top-5-help-wanted.html
+* https://governance.openstack.org/tc/reference/top-5-help-wanted.html
+
+* Thank you to those who have jumped onboard!
+
+Looking Ahead
+-------------
+.. transition:: tilt
+
+* Updating and Modernizing Config Management
+* Gerrit 2.15
+* Improvements to IRC bot systems
+* Improve multi Arch support
+* Additional Infra efforts may shift out of OpenStack governance
 
 Contact Info
 ------------
-.. transition:: pan
+.. transition:: tilt
 
 * IRC: #openstack-infra on Freenode
 * E-mail: openstack-infra@lists.openstack.org
 * In person: https://www.openstack.org/ptg/
 
-  * Infra help room: *Davin Suite, L4*
-  
+  * Here at the Summit
+  * See you at the next PTG, https://www.openstack.org/ptg/
+
 * Documentation: https://docs.openstack.org/infra/system-config/
-* ...and all around the PTG -- feel free to say hi!
 
 Questions
 ---------

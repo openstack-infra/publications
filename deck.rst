@@ -80,6 +80,24 @@ Things Like
   - Enjoy the satisfaction that comes from helping others
   - http://specs.openstack.org/openstack-infra/infra-specs/#help-wanted
 
+Because Everyone Asks
+--------------------
+.. transition:: tilt
+   :duration: 2
+.. hidetitle::
+.. figlet:: Because Everyone Asks
+
+Path to root
+------------
+.. transition:: pan
+.. container:: progressive
+
+  - Reviews particularly on changes to system functionality
+  - Pushing changes to Gerrit to modify systems
+  - Core reviewer on some Infra projects
+  - Root then based on judgement exhibited in reviews and
+    elsewhere. There is no undo button.
+
 Where
 -----
 .. transition:: tilt
@@ -99,21 +117,3 @@ To Find Us
   - In person: https://www.openstack.org/ptg/
   - Documentation: https://docs.openstack.org/infra/system-config/
   - ...and all around the Forum this week--feel free to say hi!
-
-Becase Everyone Asks
---------------------
-.. transition:: tilt
-   :duration: 2
-.. hidetitle::
-.. figlet:: Because Everyone Asks
-
-Path to root
-------------
-.. transition:: pan
-.. container:: progressive
-
-  - Reviews particularly on changes to system functionality
-  - Pushing changes to Gerrit to modify systems
-  - Core reviewer on some Infra projects
-  - Root then based on judgement exhibited in reviews and
-    elsewhere. There is no undo button.

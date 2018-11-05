@@ -27,79 +27,70 @@ State of the Clouds
    :duration: 2
 
 * Thank you to all our infra resource donors!
-* Current Clouds (in alpha order)
+* Rocky Cycle Clouds (in alpha order)
 
-  * Citycloud
+  * Arm CI Cloud
   * Internap
   * Limestone Networks
   * Linaro
   * OVH
+  * Packethost + Platform9
   * Rackspace
   * Vexxhost
 
-* No more Infracloud
-
-Multi Arch Support
-------------------
+Arm64
+-----
 .. transition:: tilt
 
-* Infra now running on amd64/x86-64 and arm64/aarch64
-* Small pool of test resources for testing on AArch64
-* UEFI support added to diskimage-builder
+* Added Arm CI Cloud
+* Added second Linaro Cloud region
+* Total of 3 arm64 cloud regions
 
-Storyboard
-----------
+Modernizing Config Management
+-----------------------------
 .. transition:: tilt
 
-* More and larger projects are migrating
-* Significant improvements based on feedback from new users
+* Migrating away from Puppet
 
-  * 4 byte utf8 support in database
-  * Team based access to private stories
-  * Migration of bugs based on specific tag sets
+  * Puppet 3 to 4 to 5 transition is costly
 
-* Outreachy Intern will be improving search functionality
+* Interest of team have shifted to other tools
+* Convert to Ansible for config management
+* Use containers for "packaging"
+* Bastion host and DNS servers now running without puppet
+* Complete transition will take time
 
-Zuul v3
-----------------
+  * Puppet 4 work being done for some services
+
+Zuul
+----
 .. transition:: tilt
 .. hidetitle::
 
 .. ansi:: zuul.ans
 
-
-Zuul v3 Deployed
+Working Together
 ----------------
 .. transition:: pan
 
-* Cut over in December
-* Continue to update jobs and fix bugs
-* Version 3.0 release published
+* Zuul now an independent top level project
+* Significant overlap in teams
 
-  * Major Infra effort marked as done
+  * Zuul and Infra growing independently too
 
-* Now independent project under OpenStack Foundation CI/CD focus area
+* Infra and OpenStack act as beta testers for Zuul
 
-Zuul v3 Features
-----------------
+  * If it works for us, it will probably work for you too
+
+In Project Configs
+------------------
 .. transition:: pan
 
-* Pre merge job update testing
-* Github integration (cross community testing)
-* Job config in familiar language (Ansible)
-* Secrets management
-* Native Multinode jobs
-* Implied branch:job mapping
-* Simple, extendable devstack base job
-
-Zuul v3 Job Docs
-----------------
-.. transition:: pan
-
-* Zuul-sphinx plugin
-* https://docs.openstack.org/infra/openstack-zuul-jobs/
-* https://zuul-ci.org/docs/zuul-jobs/
-* https://zuul-ci.org/docs/zuul/user/config.html
+* OpenStack has moved majority of configs into project repos
+* Simplifies python3 first transition in OpenStack
+* Allows for pre merge testing of in repo job configs
+* Infra no longer blocker on most job config changes
+* Branchless jobs still in Infra configs
 
 Top Level Project Hosting
 -------------------------
@@ -112,27 +103,29 @@ Top Level Project Hosting
   * Documentation hosting
   * Git repo hosting
 
-* Zuul initial consumer of these features
+* Now hosting tools for Airship, Kata, StarlingX, and Zuul.
 
-TC Top 5 Help Wanted
---------------------
-.. transition:: tilt
+OpenDev
+-------
+.. transition:: pan
 
-* Community Infrastructure Sysadmins
+* Neutral name to host top level projects under
+* Be more welcoming to projects that are not "OpenStack"
+* Support broader FOSS ecosystem if projects find our tools useful
+* Slow iterative transition
 
-* https://governance.openstack.org/tc/reference/top-5-help-wanted.html
+  * Expect a service or two to be renamed at a time
 
-* Thank you to those who have jumped onboard!
+* OpenStack not going anywhere. Still our biggest user.
 
 Looking Ahead
 -------------
 .. transition:: tilt
 
-* Updating and Modernizing Config Management
+* Continue with Modernizing Config Management
 * Gerrit 2.15
 * Improvements to IRC bot systems
-* Improve multi Arch support
-* Additional Infra efforts may shift out of OpenStack governance
+* OpenDev
 
 Contact Info
 ------------
@@ -140,11 +133,7 @@ Contact Info
 
 * IRC: #openstack-infra on Freenode
 * E-mail: openstack-infra@lists.openstack.org
-* In person: https://www.openstack.org/ptg/
-
-  * Here at the Summit
-  * See you at the next PTG, https://www.openstack.org/ptg/
-
+* Here at the Summit
 * Documentation: https://docs.openstack.org/infra/system-config/
 
 Questions
